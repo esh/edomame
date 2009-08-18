@@ -47,7 +47,7 @@
 					request.params["title"],
 					request.params["upload"],
 					request.params["tags"])
-			if(twit) require("twitter.js")(p)
+			if(twit) require("utils/twitter.js")(p)
 			
 			return ["redirect", "/blog/show/all/" + post.key]
 		})

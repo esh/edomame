@@ -13,7 +13,7 @@
 										
 					open(path, "base64").write(photo)
 					var post = require("model/post.js")(db).persist(null, title, path, tags)
-					if(twit) require("twitter.js")(post)
+					if(twit) require("utils/twitter.js")(post)
 					
 					return ["ok", "ok"]
 				} else {
