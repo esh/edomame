@@ -1,3 +1,0 @@
-[submodule "latte-framework"]
-	path = latte-framework
-	url = git@github.com:esh/latte.git
