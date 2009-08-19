@@ -2,6 +2,13 @@
 	function show() {
 		return login()
 	}
+
+	function deploy() {
+		log.info("deploy request from: " + request.hostname)
+
+		log.info(shell("./scripts/deploy.local.sh"))	
+		return ["ok", ""]
+	}
 	
 	function login() {
 		if(request.params["passcode"] == config.sitepass) {
@@ -17,6 +24,7 @@
 	
 	return {
 		show: show,
+		deploy: deploy,
 		login: login,
 		logout: logout
 	}
