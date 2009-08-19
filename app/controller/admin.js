@@ -4,13 +4,14 @@
 	}
 
 	function deploy() {
-		log.info("deploy request from: " + request.hostname)
-		if(true) {
+		if(request.hostname.match(/(github.com)|(engineyard.com)/) {
+			log.info("redeploying...")
+			try { log.info(shell("./scripts/deploy.local.sh")) } catch(e) {}
+			return ["ok", ""]	
+		} else {
+			log.info("blocked deploy request from: " + request.hostname)
+			return ["unauthorized"]
 		}
-
-	
-		try { log.info(shell("./scripts/deploy.local.sh")) } catch(e) {}	
-		return ["ok", ""]
 	}
 	
 	function login() {
