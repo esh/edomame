@@ -1,5 +1,5 @@
 #Introduction
-I am currently using latte to power <http://www.edomame.com>, my personal website. Its a simple picture blog that I can update via email or it's REST interface. The code for edomame is bundled into this project.
+I am currently using latte to power <http://www.edomame.com>, my personal website. Its a simple picture blog that I can update via email or it's REST interface. The site also has automatic redeployment from github using service hooks.
 
 #Dependencies
 * \*nix OS
