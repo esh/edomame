@@ -4,7 +4,7 @@
 	}
 
 	function deploy() {
-		if(request.hostname.match(/(github.com)|(engineyard.com)/) {
+		if(request.hostname.match(/(github.com)|(engineyard.com)/)) {
 			log.info("redeploying...")
 			try { log.info(shell("./scripts/deploy.local.sh")) } catch(e) {}
 			return ["ok", ""]	
