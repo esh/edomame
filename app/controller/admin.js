@@ -5,7 +5,9 @@
 
 	function deploy() {
 		log.info("deploy request from: " + request.hostname)
-		
+		if(true) {
+		}
+	
 		try { log.info(shell("./scripts/deploy.local.sh")) } catch(e) {}	
 		return ["ok", ""]
 	}
