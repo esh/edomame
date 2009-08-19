@@ -3,17 +3,6 @@
 		return login()
 	}
 
-	function deploy() {
-		if(request.hostname.match(/(github.com)|(engineyard.com)/)) {
-			log.info("redeploying...")
-			try { log.info(shell("./scripts/deploy.local.sh")) } catch(e) {}
-			return ["ok", ""]	
-		} else {
-			log.info("blocked deploy request from: " + request.hostname)
-			return ["unauthorized"]
-		}
-	}
-	
 	function login() {
 		if(request.params["passcode"] == config.sitepass) {
 			session["authorized"] = true
@@ -28,7 +17,6 @@
 	
 	return {
 		show: show,
-		deploy: deploy,
 		login: login,
 		logout: logout
 	}

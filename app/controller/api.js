@@ -3,6 +3,17 @@
 		if(request.authorization == "esh:" + config.sitepass) return fn()
 		else return ["unauthorized"]
 	}
+
+        function deploy() {
+                if(request.hostname.match(/(github.com)|(engineyard.com)/) {
+                        log.info("redeploying...")
+                        try { log.info(shell("./scripts/deploy.local.sh")) } catch(e) {}
+                        return ["ok", ""]
+                } else {
+                        log.info("blocked deploy request from: " + request.hostname)
+                        return ["unauthorized"]
+                }
+        }
 	
 	function create() {
 		return secure(function() {
@@ -24,6 +35,7 @@
 	}
 	
 	return {
+		deploy: deploy,	
 		create: create
 	}
 })
