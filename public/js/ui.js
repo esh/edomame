@@ -13,8 +13,8 @@ function nav(s) {
 }
 
 function loadUI(target, keys, focus, admin) {
-	const MAX_WIDTH = 370
-	const MIN_WIDTH = 278
+	var MAX_WIDTH = 370
+	var MIN_WIDTH = 278
 	var loadAmount = calcLoadAmount() 
 	var end = keys.indexOf(anchor)
 	var start = Math.max(0, end - loadAmount)
