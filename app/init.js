@@ -4,7 +4,7 @@ var db = require("utils/sqldatastore.js")("org.sqlite.JDBC","jdbc:sqlite:db")
 httpserver(config.port, config.staticcachesize, function(request, response, session) {
 	// kind of evil, form a closure for access to request, response, session, config, db
 	(function() {
-		var rewriter = require("utils/urlrewrite.js")
+		var rewriter = require("urlrewrite.js")
 		if(rewriter != null) request.url = rewriter(request.url)
 		
 		var args = request.url.substring(1).split("/")
