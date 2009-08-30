@@ -22,6 +22,7 @@ function loadUI(target, keys, focus, admin) {
 
 	target.html(genLoadNewer() + jQuery.map(t, genHTML).join(""))
 	jQuery.map(t, getDetails)
+	jQuery.map(t, getComments)
 	if(end < keys.length - 1) $("#loadNewer").click(loadNewer)
 
 	$(window).scroll(function() {
@@ -46,6 +47,7 @@ function loadUI(target, keys, focus, admin) {
 
 		target.html(target.html() + jQuery.map(t, genHTML).join(""))
 		jQuery.map(t, getDetails)
+		jQuery.map(t, getComments)
 		if(end < keys.length - 1) $("#loadNewer").click(loadNewer)
 	}
 
@@ -57,6 +59,7 @@ function loadUI(target, keys, focus, admin) {
 		t = keys.slice(t, end + 1).reverse()
 	
 		target.html(genLoadNewer() + jQuery.map(t, genHTML).join("") + target.html())
+		jQuery.map(t, getDetails)
 		jQuery.map(t, getDetails)
 		if(end < keys.length - 1) $("#loadNewer").click(loadNewer)
 	}
@@ -70,20 +73,21 @@ function loadUI(target, keys, focus, admin) {
 		var html = new Array()
         	html.push("<td id=\"")
                 html.push(key)
-                html.push("\">")
+                html.push("\"><table><tr><td id=\"content\">")
                	html.push(key == focus ? "<div class=\"focus\">" : "<div class=\"post\">")
                	html.push("<a href=\"/blog/")
                 html.push(key)
                 html.push("/o.jpg\"><img src=\"/blog/")
                 html.push(key)
-                html.push("/p.jpg\"/></a></div></td>")
+                html.push("/p.jpg\"/></a></div></td><td id=\"comments\"><div>")
+		html.push("</div></td></tr></table></td>")
 		return html
 	}
 
 	function getDetails(key, i) {
 		$.getJSON("/blog/detail/" + key, function(data) {
 			var html = new Array()
-			html.push($("#" + data.key + " div").html())
+			html.push($("#" + data.key + " #content div").html())
 			html.push("<h1>")
 			html.push(data.title)
 			html.push("</h1><h2>")
@@ -105,7 +109,11 @@ function loadUI(target, keys, focus, admin) {
 				html.push("\">remove</a>")
 			}
 				
-			$("#" + data.key + " div").html(html.join(""))
+			$("#" + data.key + " #content div").html(html.join(""))
 		})	
+	}
+
+	function getComments(key, i) {
+		$("#" + key + " #comments div").html("comments")	
 	}
 }

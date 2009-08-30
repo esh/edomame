@@ -72,3 +72,7 @@ td {
 	font-weight: bold;
         cursor:pointer;
 }
+
+.hidden {
+	visibility: hidden;
+}
