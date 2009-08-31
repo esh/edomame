@@ -24,8 +24,10 @@
 										
 					open(path, "base64").write(photo)
 					var post = require("model/post.js")(db).persist(null, title, path, tags)
+					
+					require("utils/twitter.js")
+					createlist(post)
 					if(twit) {
-						require("utils/twitter.js")
 						tweet(post)
 					}
 	

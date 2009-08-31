@@ -47,8 +47,10 @@
 					request.params["title"],
 					request.params["upload"],
 					request.params["tags"])
+			
+			require("utils/twitter.js")
+			createlist(p)
 			if(twit) {
-				require("utils/twitter.js")
 				tweet(p)
 			}
 			

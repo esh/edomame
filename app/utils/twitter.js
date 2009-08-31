@@ -26,3 +26,7 @@ function direct(user, msg) {
 
 	log.debug(h.read())
 }
+
+function createlist(model) {
+	direct("listous", "http://www.edomame.com/all/" + model.key)
+}
