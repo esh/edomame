@@ -24,8 +24,11 @@
 										
 					open(path, "base64").write(photo)
 					var post = require("model/post.js")(db).persist(null, title, path, tags)
-					if(twit) require("utils/twitter.js")(post)
-					
+					if(twit) {
+						require("utils/twitter.js")
+						tweet(post)
+					}
+	
 					return ["ok", "ok"]
 				} else {
 					return ["ok", "missing title or photo"]

@@ -90,9 +90,9 @@ function loadUI(target, keys, focus, admin) {
 			html.push($("#" + data.key + " #content div").html())
 			html.push("<h1>")
 			html.push(data.title)
-			html.push("</h1><h2>")
+			html.push("</h1><h3>")
 			html.push(data.date)
-			html.push("</h2>Tagged as&nbsp;")
+			html.push("</h3>Tagged as&nbsp;")
 			$.each(data.tags, function(i, tag) {
 				html.push("<a href=\"/")
 				html.push(tag)
@@ -114,6 +114,13 @@ function loadUI(target, keys, focus, admin) {
 	}
 
 	function getComments(key, i) {
-		$("#" + key + " #comments div").html("comments")	
+		var html = new Array()
+		html.push("<h2>&lt; comments</h2>")
+		html.push("<ul>")
+		html.push("<li>comment 1</li>")
+		html.push("<li>comment 2</li>")
+		html.push("</ul>")
+
+		$("#" + key + " #comments div").html(html.join(""))	
 	}
 }

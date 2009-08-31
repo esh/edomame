@@ -1,6 +1,6 @@
-(function(model) {
-	require("utils/common.js")
+require("utils/common.js")
 
+function tweet(model) {
 	var auth = config.twitteruser + ":" + config.twitterpass
 	auth = "Basic " + auth.toBase64()
 	
@@ -12,5 +12,17 @@
 	h.write("status=" + status.escapeURL())
 
 	log.debug(h.read())
-})
+}
+
+function direct(user, msg) {
+	var auth = config.twitteruser + ":" + config.twitterpass
+	auth = "Basic " + auth.toBase64()
 	
+	var h = hopen("http://twitter.com/direct_messages/new.json", {"Authorization": auth})
+	
+	if(msg.length > 140) msg.substring(0, 137) + "..."
+	
+	h.write("user=" + user + "&text=" + msg.escapeURL())
+
+	log.debug(h.read())
+}
