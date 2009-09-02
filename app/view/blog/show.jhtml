@@ -34,7 +34,7 @@
 		<script type="text/javascript">
 			var keys = <%= params["keys"].toSource() %>
 			var match = window.location.href.match(/.+\/(\d+)?/)
-			var anchor = match != null && match.length >= 2 && typeof match[1] == "number" ? parseInt(match[1]) : keys[keys.length - 1]
+			var anchor = match != null && match.length >= 2 ? parseInt(match[1]) : keys[keys.length - 1]
 			loadUI($("#content"), keys, anchor, <%= params["admin"] %>)
 		</script>
 		
