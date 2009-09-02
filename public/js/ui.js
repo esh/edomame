@@ -114,13 +114,28 @@ function loadUI(target, keys, focus, admin) {
 	}
 
 	function getComments(key, i) {
-		var html = new Array()
-		html.push("<h2>&lt; comments</h2>")
-		html.push("<ul>")
-		html.push("<li>comment 1</li>")
-		html.push("<li>comment 2</li>")
-		html.push("</ul>")
-
-		$("#" + key + " #comments div").html(html.join(""))	
+		$.ajax({
+			type: "GET",
+			url: "/blog/comments/" + key,
+			success: function(xml) {
+				var html = new Array()
+				$(xml).find("item").each(function() {
+					html.push("<li>")
+					html.push($(this).find("text").text())
+					html.push("&nbsp;-&nbsp;<a href=\"http://www.twitter.com/")
+					var user = $(this).find("author").text()
+					html.push(user)
+					html.push("\">")
+					html.push(user)
+					html.push("</a></li>")	
+				})
+				
+				if(html.length > 0) {
+					html.unshift("<h2>&lt; comments</h2><ul>")
+					html.push("</ul>")
+					$("#" + key + " #comments div").html(html.join(""))	
+				}
+			}
+		})
 	}
 }
