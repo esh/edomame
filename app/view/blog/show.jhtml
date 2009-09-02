@@ -23,7 +23,7 @@
         		}).join(" "))
 			%>	
 			</select>
-			<span style="font-size:12px;margin-right:20px"><a href="http://www.github.com/esh/edomame/">powered by latte</a></span>
+			<span style="font-size:12px;margin-right:20px"><a href="http://www.github.com/esh/edomame/">latte powered</a>, &nbsp;<a href="http://www.listous.com">listous mashed</a></span>
 		</div>
 		<div id="body">
 			<table>
