@@ -100,6 +100,7 @@ function loadUI(target, keys, focus, admin) {
 				html.push(tag)
 				html.push("</a>&nbsp;")
 			})
+			html.push("<br/><br/><a id=\"comment_link\">comment</a>")
 
 			if(admin) {
 				html.push("<br/><br/><a href=\"/blog/edit/")
@@ -110,6 +111,9 @@ function loadUI(target, keys, focus, admin) {
 			}
 				
 			$("#" + data.key + " #content div").html(html.join(""))
+			$("#" + data.key + " #content div #comment_link").click(function() {
+				alert("tweet this! @listous @esh2chan http://www.edomame.com/all/" + data.key + " <your comment here!>")
+			})
 		})	
 	}
 
