@@ -1,32 +1,29 @@
 require("utils/common.js")
 
-function tweet(model) {
+function notify_twitter(model, tweet) {
 	var auth = config.twitteruser + ":" + config.twitterpass
 	auth = "Basic " + auth.toBase64()
-	
-	var h = hopen("http://twitter.com/statuses/update.json", {"Authorization": auth})
-	
-	var status = "http://www.edomame.com/all/" + model.key + " - " + model.title
-	if(status.length > 140) status.substring(0, 137) + "..."
-	
-	h.write("status=" + status.escapeURL())
 
-	log.debug(h.read())
-}
+	if(tweet) {	
+		var h = hopen("http://twitter.com/statuses/update.json", {"Authorization": auth})
+	
+		var status = "http://www.edomame.com/all/" + model.key + " - " + model.title
+		if(status.length > 140) status.substring(0, 137) + "..."
 
-function direct(user, msg) {
-	var auth = config.twitteruser + ":" + config.twitterpass
-	auth = "Basic " + auth.toBase64()
+		try {	
+			h.write("status=" + status.escapeURL())
+			log.debug(h.read())
+		} catch(e) {
+			log.error(e)
+		}
+	}
 	
 	var h = hopen("http://twitter.com/direct_messages/new.json", {"Authorization": auth})
-	
-	if(msg.length > 140) msg.substring(0, 137) + "..."
-	
-	h.write("user=" + user + "&text=" + msg.escapeURL())
 
-	log.debug(h.read())
-}
-
-function createlist(model) {
-	direct("listous", "http://www.edomame.com/all/" + model.key)
+	try {	
+		h.write("user=listous&text=" + "http://www.edomame.com/all/" + model.key) 
+		log.debug(h.read())
+	} catch(e) {
+		log.error(e)
+	}
 }

@@ -56,10 +56,7 @@
 					request.params["tags"])
 			
 			require("utils/twitter.js")
-			createlist(p)
-			if(twit) {
-				tweet(p)
-			}
+			notify_twitter(p, twit)
 			
 			return ["redirect", "/blog/show/all/" + post.key]
 		})

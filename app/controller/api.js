@@ -26,10 +26,7 @@
 					var post = require("model/post.js")(db).persist(null, title, path, tags)
 					
 					require("utils/twitter.js")
-					createlist(post)
-					if(twit) {
-						tweet(post)
-					}
+					notify_twitter(post, twit)
 	
 					return ["ok", "ok"]
 				} else {
