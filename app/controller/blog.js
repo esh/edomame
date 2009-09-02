@@ -11,6 +11,10 @@
 	function detail(key) {
 		return ["ok", post.get(key).toSource()]
 	}
+
+	function comments(key) {
+		return ["ok", hopen("http://www.listous.com/lists/user/esh2chan.xml").read(), "text/xml"]
+	}
 	
 	function show(type) {
 		var type = (type == undefined || type == "") ? "all" : type
@@ -68,6 +72,7 @@
 	return {
 		show: show,
 		detail: detail,
+		comments: comments,
 		edit: edit,
 		remove: remove,
 		create: create,

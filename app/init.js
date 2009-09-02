@@ -20,7 +20,8 @@ httpserver(config.port, config.staticcachesize, function(request, response, sess
 		var result = controller[action].apply(controller, args)
 		switch(result[0]) {
 		case "ok":
-			response.setContentType("text/html; charset=UTF-8")
+			if(result.length >= 3) response.setContentType(result[2])
+			else response.setContentType("text/html; charset=UTF-8")
 			response.setCharacterEncoding("UTF-8")
 			response.setStatus(200)
 			response.getWriter().append(result[1])

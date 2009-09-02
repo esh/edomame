@@ -24,7 +24,7 @@
 					function(rss, post) {
 						rss.channel.item += post
 						return rss
-					})]
+					}), "application/rss+xml"]
 		}
 	}
 })
