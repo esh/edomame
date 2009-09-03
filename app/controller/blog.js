@@ -15,7 +15,7 @@
 	function comments(key) {
 		return [
 			"ok",
-			hopen("http://www.listous.com/lists/user/esh2chan.xml?list=http://www.edomame.com/all/" + key).read(),
+			hopen("http://www.listous.com/lists/user/esh2chan.xml?list=http://edomame.com/" + key).read(),
 			"text/xml"]
 	}
 	

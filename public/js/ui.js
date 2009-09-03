@@ -73,21 +73,20 @@ function loadUI(target, keys, focus, admin) {
 		var html = new Array()
         	html.push("<td id=\"")
                 html.push(key)
-                html.push("\"><table><tr><td id=\"content\">")
-               	html.push(key == focus ? "<div class=\"focus\">" : "<div class=\"post\">")
+                html.push("\"><div")
+               	html.push(key == focus ? " class=\"focus\">" : " class=\"post\">")
                	html.push("<a href=\"/blog/")
                 html.push(key)
                 html.push("/o.jpg\"><img src=\"/blog/")
                 html.push(key)
-                html.push("/p.jpg\"/></a></div></td><td id=\"comments\"><div>")
-		html.push("</div></td></tr></table></td>")
+                html.push("/p.jpg\"/></a></div><div/></td>")
 		return html
 	}
 
 	function getDetails(key, i) {
 		$.getJSON("/blog/detail/" + key, function(data) {
 			var html = new Array()
-			html.push($("#" + data.key + " #content div").html())
+			html.push($("#" + data.key + " div:eq(0)").html())
 			html.push("<h1>")
 			html.push(data.title)
 			html.push("</h1><h3>")
@@ -100,7 +99,9 @@ function loadUI(target, keys, focus, admin) {
 				html.push(tag)
 				html.push("</a>&nbsp;")
 			})
-			html.push("<br/><br/><a id=\"comment_link\">comment</a>")
+			html.push("<br/><br/><a class=\"comment\" onclick=\"javascript:alert('send a tweet with: @listous @esh2chan http://edomame.com/")
+			html.push(data.key)
+			html.push(" <your comment>')\">comment</a>")
 
 			if(admin) {
 				html.push("<br/><br/><a href=\"/blog/edit/")
@@ -110,10 +111,7 @@ function loadUI(target, keys, focus, admin) {
 				html.push("\">remove</a>")
 			}
 				
-			$("#" + data.key + " #content div").html(html.join(""))
-			$("#" + data.key + " #content div #comment_link").click(function() {
-				alert("tweet this! @listous @esh2chan http://www.edomame.com/all/" + data.key + " <your comment here!>")
-			})
+			$("#" + data.key + " div:eq(0)").html(html.join(""))
 		})	
 	}
 
@@ -125,19 +123,20 @@ function loadUI(target, keys, focus, admin) {
 				var html = new Array()
 				$(xml).find("item").each(function() {
 					html.push("<li>")
-					html.push($(this).find("text").text())
-					html.push("&nbsp;-&nbsp;<a href=\"http://www.twitter.com/")
+					html.push("<a href=\"http://www.twitter.com/")
 					var user = $(this).find("author").text()
 					html.push(user)
 					html.push("\">")
 					html.push(user)
-					html.push("</a></li>")	
+					html.push("</a>:&nbsp;")
+					html.push($(this).find("text").text())
+					html.push("</li>")	
 				})
 				
 				if(html.length > 0) {
-					html.unshift("<h2>&lt; comments</h2><ul>")
+					html.unshift("<ul>")
 					html.push("</ul>")
-					$("#" + key + " #comments div").html(html.join(""))	
+					$("#" + key + " div:eq(1)").html(html.join(""))	
 				}
 			}
 		})
