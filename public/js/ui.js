@@ -60,7 +60,7 @@ function loadUI(target, keys, focus, admin) {
 	
 		target.html(genLoadNewer() + jQuery.map(t, genHTML).join("") + target.html())
 		jQuery.map(t, getDetails)
-		jQuery.map(t, getDetails)
+		jQuery.map(t, getComments)
 		if(end < keys.length - 1) $("#loadNewer").click(loadNewer)
 	}
 
