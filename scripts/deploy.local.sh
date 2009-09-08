@@ -7,6 +7,6 @@ rsync	--verbose --progress --stats --compress \
 	--recursive --times --perms --links --delete \
 	--exclude "app/config.js" --exclude "public/blog/*" \
 	--exclude "db/*" --exclude "LICENSE" \
-	--exclude "README.markdown" \
+	--exclude "README.markdown" --exclude "log/*" \
 	* ../../live/edomame
 fi
