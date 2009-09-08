@@ -11,14 +11,17 @@ function run(dir) {
 			failed = failed.concat(res.failed)
 		}
 		else if(f.match(/^test_\w+.js$/) != null) {
-			var test = dir.substring(dir.indexOf("/") + 1) + "/" + f
-			
-			function assert(expr) {
-				if(expr) ok.push(test)
-				else failed.push(test)		
-			}
+			var path = dir.substring(dir.indexOf("/") + 1) + "/" + f
+			var tests = require(path)
 
-			require(test)
+			for(var test in tests) {
+				function assert(expr) {
+					if(expr) ok.push(path + " - " + test)
+					else failed.push(path + " - " + test)		
+				}
+				
+				tests[test]()
+			}
 		}
 	})
 
