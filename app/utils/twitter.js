@@ -15,7 +15,8 @@ function notify_twitter(model, tweet) {
 		}
 	}
 
-	var auth = "Basic " + (config.twitteruser + ":" + config.twitterpass).toBase64()
+	var auth = config.twitteruser + ":" + config.twitterpass
+	auth = "Basic " + auth.toBase64()
 
 	if(tweet) {	
 		var status = "http://edomame.com/" + model.key + " - " + model.title
