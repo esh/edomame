@@ -5,12 +5,10 @@ function notify_twitter(model, tweet) {
 		// retry every minute for 1 hour until success or failure
 		for(var i = 0 ; i < 60 ; i++) {	
 			try {
-				var h = hopen(url, params)
-				h.write(msg)
-				return h.read()
+				return hpost(url, params, msg)
 			} catch(e) {
 				log.error(e)
-				sleep(1000)
+				sleep(1000*60)
 			}
 		}
 	}
