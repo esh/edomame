@@ -3,6 +3,11 @@
 		return login()
 	}
 
+	function secure(fn) {
+		if(session["authorized"]) return fn()
+		else return ["unauthorized"]
+	}
+
 	function login() {
 		if(request.params["passcode"] == config.sitepass) {
 			session["authorized"] = true
@@ -22,9 +27,16 @@
 		return ["redirect", "/"]
 	}
 	
+	function log() {
+		return secure(function() {
+			return ["ok", open("log/server.log").read()]
+		})
+	}
+
 	return {
 		show: show,
 		login: login,
-		logout: logout
+		logout: logout,
+		log: log
 	}
 })
