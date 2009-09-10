@@ -1,7 +1,5 @@
 body {
 	font-family: helvetica;
-	background-image: url(/img/header.jpg);
-	background-repeat: repeat-x;
 	background-color: white;
 	margin: 0;
 	padding: 0;
@@ -14,16 +12,16 @@ a {
 }
 
 select {
-	font-size: 25px;
+	font-size: 18px;
 }
 
 h1 {
-	font-size: 25px;
+	font-size: 20px;
 	margin: 5px 0px 5px 0px;
 }
 
 h2 {
-	font-size: 20px;
+	font-size: 18px;
 	margin: 5px 0px 5px 0px;
 }
 
@@ -53,14 +51,19 @@ td {
 	vertical-align:top;
 }
 
-#header {
+#nav {
 	position:fixed;
-	left:10px;
-	top:10px
+	left:0px;
+	top:30px;
+	text-align: right;
+	background-color: white;
+	height: 100%;
+	padding-right: 10px;
+	width: 210px;
 }
 
 #body {
-	margin-top:103px;
+	margin: 70px 0px 0px 220px;
 }
 
 #loadNewer div {
