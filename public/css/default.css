@@ -40,7 +40,7 @@ img {
 ul {
 	list-style-type: none;
 	margin: 0;
-	padding: 0px 5px 0px 5px;
+	padding: 0; 
 }
 
 li {
@@ -48,20 +48,9 @@ li {
 }
 
 td {
-	padding: 0;
+	padding: 7px 5px 5px 5px;
 	margin: 0;
 	vertical-align:top;
-}
-
-.post {
-	padding: 7px 5px 5px 5px;
-}
-
-.focus {
-	padding: 5px 5px 5px 5px;
-	border:2px;
-	border-style:dashed;
-	background-color: #B0B0B0;
 }
 
 #header {
