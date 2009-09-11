@@ -1,5 +1,5 @@
 body {
-	font-family: Verdana;
+	font-family: Helvetica;
 	background-color: white;
 	margin: 0;
 	padding: 0;
@@ -63,7 +63,7 @@ td {
 }
 
 #body {
-	margin: 70px 0px 0px 220px;
+	margin: 70px 0px 0px 230px;
 }
 
 #loadNewer div {
