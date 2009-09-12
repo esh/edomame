@@ -1,4 +1,6 @@
 .pid
 db
 public/blog
+public/css/*.generated
+public/js/*.generated
 log
