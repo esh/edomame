@@ -78,9 +78,9 @@ function loadUI(target, keys, focus, admin) {
                 html.push("/o.jpg\"><img src=\"/blog/")
                 html.push(key)
                 html.push("/p.jpg\"/></a></div><div/>")
-		html.push("<br/><a class=\"comment\" onclick=\"javascript:alert('send a tweet with: @listous @esh2chan http://edomame.com/")
+		html.push("<br/><a class=\"comment\" href=\"http://twitter.com/home/?status=@listous%20@esh2chan%20http://edomame.com/")
 		html.push(key)
-		html.push(" <your comment>')\">comment</a></td>")
+		html.push("%20\" target=\"_blank\"">tweet your comment!</a></td>")
 
 		return html
 	}
