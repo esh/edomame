@@ -23,8 +23,8 @@ function notify_twitter(model, tweet) {
 		var status = "http://edomame.com/" + model.key + " - " + model.title
 		if(status.length > 140) status.substring(0, 137) + "..."
 
-		reliable("http://twitter.com/statuses/update.json", {"Authorization": auth}, "status=" + status.escapeURL())
+		hpost("http://twitter.com/statuses/update.json", {"Authorization": auth}, "status=" + status.escapeURL())
 	}
 	
-	reliable("http://twitter.com/direct_messages/new.json", {"Authorization": auth}, "user=listous&text=" + "http://edomame.com/" + model.key) 
+	hpost("http://twitter.com/direct_messages/new.json", {"Authorization": auth}, "user=listous&text=" + "http://edomame.com/" + model.key) 
 }
