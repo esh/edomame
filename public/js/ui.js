@@ -80,7 +80,7 @@ function loadUI(target, keys, focus, admin) {
                 html.push("/p.jpg\"/></a></div><div/>")
 		html.push("<br/><a class=\"comment\" href=\"http://twitter.com/home/?status=@listous%20@esh2chan%20http://edomame.com/")
 		html.push(key)
-		html.push("%20\" target=\"_blank\"">tweet your comment!</a></td>")
+		html.push("%20\" target=\"_blank\">tweet your comment!</a></td>")
 
 		return html
 	}
