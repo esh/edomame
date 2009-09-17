@@ -27,7 +27,7 @@
 		return ["redirect", "/"]
 	}
 	
-	function log() {
+	function logs() {
 		return secure(function() {
 			return ["ok", open("log/server.log").read()]
 		})
@@ -37,6 +37,6 @@
 		show: show,
 		login: login,
 		logout: logout,
-		log: log
+		logs: logs
 	}
 })
