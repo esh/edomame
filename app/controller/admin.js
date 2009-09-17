@@ -14,6 +14,7 @@
 			session["attempt"] = null
 			return ["redirect", "/"]
 		} else if(session["attempt"] == null || session["last"] < (new Date()).getTime()) {
+			log.error("incorrect password attempt by: " + request.address)
 			session["attempt"] = session["attempt"] == null ? 1 : session["attempt"] + 1
 			session["last"] = (new Date()).getTime() + 8000 * session["attempt"]
 			return ["ok", render("view/admin/password.jhtml", new Object())]

@@ -28,11 +28,12 @@ httpserver(config.port, config.staticcachesize, function(request, response, sess
 			break
 		case "error":
 			response.sendError(500)
+			log.error(request.address + " caused:")
 			log.error(result[1])
 			break
 		case "unauthorized":
 			response.sendError(401)
-			log.error("blocked " + request.url)
+			log.error("blocked " + request.address + " from " + request.url)
 			break
 		case "redirect":
 			response.sendRedirect(result[1])
