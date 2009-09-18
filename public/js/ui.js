@@ -12,6 +12,20 @@ function nav(s) {
 	window.location = "/" + s.options[s.selectedIndex].value
 }
 
+function escapeXML(text) {
+	var map = [{target: "&", replace: "&amp;"},
+		   {target: "'", replace: "&apos;"},
+		   {target: "\"", replace: "&quot;"},
+		   {target: ">", replace: "&gt;"},
+		   {target: "<", replace: "&lt;"}]
+
+	$.each(map, function(i, m) {
+		text = text.replace(m.target, m.replace)
+	})
+
+	return text
+}
+
 function loadUI(target, keys, focus, admin) {
 	var MAX_WIDTH = 370
 	var MIN_WIDTH = 278
@@ -122,12 +136,12 @@ function loadUI(target, keys, focus, admin) {
 				$(xml).find("item").each(function() {
 					html.push("<li>")
 					html.push("<a href=\"http://www.twitter.com/")
-					var user = $(this).find("author").text()
+					var user = escapeXML($(this).find("author").text())
 					html.push(user)
 					html.push("\">")
 					html.push(user)
 					html.push("</a>:&nbsp;")
-					html.push($(this).find("text").text())
+					html.push(escapeXML($(this).find("text").text()))
 					html.push("</li>")	
 				})
 				
