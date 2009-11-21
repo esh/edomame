@@ -55,7 +55,7 @@
 					request.params["upload"],
 					request.params["tags"])
 		
-			if(p.tags.contains("tweet")) {	
+			if(p.tags.indexOf("tweet") != -1) {	
 				require("utils/twitter.js")
 				notify_twitter(p, twit)
 			}
