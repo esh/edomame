@@ -54,9 +54,11 @@
 					request.params["title"],
 					request.params["upload"],
 					request.params["tags"])
-			
-			require("utils/twitter.js")
-			notify_twitter(p, twit)
+		
+			if(p.tags.contains("tweet")) {	
+				require("utils/twitter.js")
+				notify_twitter(p, twit)
+			}
 			
 			return ["redirect", "/blog/show/all/" + post.key]
 		})

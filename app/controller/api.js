@@ -25,8 +25,10 @@
 					open(path, "base64").write(photo)
 					var post = require("model/post.js")(db).persist(null, title, path, tags)
 					
-					require("utils/twitter.js")
-					notify_twitter(post, twit)
+					if(post.tags.contains("tweet")) {					
+						require("utils/twitter.js")
+						notify_twitter(post, twit)
+					}
 	
 					return ["ok", "ok"]
 				} else {
