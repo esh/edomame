@@ -12,13 +12,6 @@
 		return ["ok", post.get(key).toSource()]
 	}
 
-	function comments(key) {
-		return [
-			"ok",
-			hget("http://www.listous.com/lists/user/esh2chan.xml?list=http://edomame.com/" + key),
-			"text/xml"]
-	}
-	
 	function show(type) {
 		var type = (type == undefined || type == "") ? "all" : type
 		return ["ok", render(
@@ -74,7 +67,6 @@
 	return {
 		show: show,
 		detail: detail,
-		comments: comments,
 		edit: edit,
 		remove: remove,
 		create: create,
