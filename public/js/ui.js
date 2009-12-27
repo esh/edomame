@@ -59,8 +59,7 @@ function loadUI(target, keys, focus, admin) {
 		t = keys.slice(start, t + 1).reverse()
 
 		target.html(target.html() + jQuery.map(t, genHTML).join(""))
-		jQuery.map(t, getDetails)
-		jQuery.map(t, getComments)
+		$.each(t, getDetails)
 		if(end < keys.length - 1) $("#loadNewer").click(loadNewer)
 	}
 
@@ -72,8 +71,7 @@ function loadUI(target, keys, focus, admin) {
 		t = keys.slice(t, end + 1).reverse()
 	
 		target.html(genLoadNewer() + jQuery.map(t, genHTML).join("") + target.html())
-		jQuery.map(t, getDetails)
-		jQuery.map(t, getComments)
+		$.each(t, getDetails)
 		if(end < keys.length - 1) $("#loadNewer").click(loadNewer)
 	}
 
@@ -98,7 +96,7 @@ function loadUI(target, keys, focus, admin) {
 		return html
 	}
 
-	function getDetails(key, i) {
+	function getDetails(i, key) {
 		$.getJSON("/blog/detail/" + key, function(data) {
 			var html = new Array()
 			html.push($("#" + data.key + " div:eq(0)").html())
