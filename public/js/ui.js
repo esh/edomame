@@ -35,8 +35,7 @@ function loadUI(target, keys, focus, admin) {
 	var t = keys.slice(start, end + 1).reverse()
 
 	target.html(genLoadNewer() + jQuery.map(t, genHTML).join(""))
-	jQuery.map(t, getDetails)
-	jQuery.map(t, getComments)
+	$.each(t, getDetails)
 	if(end < keys.length - 1) $("#loadNewer").click(loadNewer)
 
 	$(window).scroll(function() {
@@ -92,7 +91,7 @@ function loadUI(target, keys, focus, admin) {
                 html.push("/o.jpg\"><img src=\"/blog/")
                 html.push(key)
                 html.push("/p.jpg\"/></a></div><div/>")
-		html.push("<br/><a class=\"comment\" href=\"http://twitter.com/home/?status=@listous%20@esh2chan%20http://edomame.com/")
+		html.push("<br/><a class=\"comment\" href=\"http://twitter.com/home/?status=@esh2chan%20http://edomame.com/")
 		html.push(key)
 		html.push("%20\" target=\"_blank\">tweet this!</a></td>")
 
@@ -125,32 +124,5 @@ function loadUI(target, keys, focus, admin) {
 				
 			$("#" + data.key + " div:eq(0)").html(html.join(""))
 		})	
-	}
-
-	function getComments(key, i) {
-		$.ajax({
-			type: "GET",
-			url: "/blog/comments/" + key,
-			success: function(xml) {
-				var html = new Array()
-				$(xml).find("item").each(function() {
-					html.push("<li>")
-					html.push("<a href=\"http://www.twitter.com/")
-					var user = escapeXML($(this).find("author").text())
-					html.push(user)
-					html.push("\">")
-					html.push(user)
-					html.push("</a>:&nbsp;")
-					html.push(escapeXML($(this).find("text").text()))
-					html.push("</li>")	
-				})
-				
-				if(html.length > 0) {
-					html.unshift("<h2>comments</h2><ul>")
-					html.push("</ul>")
-					$("#" + key + " div:eq(1)").html(html.join(""))	
-				}
-			}
-		})
 	}
 }
