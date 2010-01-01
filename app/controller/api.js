@@ -27,7 +27,7 @@
 					
 					if(post.tags.indexOf("tweet") != -1) {					
 						require("utils/twitter.js")
-						notify_twitter(post, twit)
+						notify_twitter(post)
 					}
 	
 					return ["ok", "ok"]
