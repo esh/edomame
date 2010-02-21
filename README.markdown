@@ -1,5 +1,7 @@
 #Introduction
-I am currently using latte to power <http://www.edomame.com>, my personal website. Its a simple picture blog that I can update via email or it's REST interface. The site also has automatic redeployment from github using service hooks.
+I am currently using latte to power <http://www.edomame.com>, my personal website. To post a picture, I email the picture to my website. I can also do this programatically using it's REST interface.
+
+Pushing out new code is competely automated. I push my changes to github where it invokes the site's redeploy script using github service hooks. The script will run a suite of unit tests and if the tests pass, will push the new code to the live site. 
 
 #Dependencies
 * \*nix OS
