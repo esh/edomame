@@ -34,19 +34,19 @@
 			if(key == null || key == undefined) {
 				ds.update("INSERT INTO posts (title, timestamp) VALUES('" + escape(title) + "','" + new Date().toGMTString() + "')")
 				ds.query("SELECT last_insert_rowid() AS id", function(rs) {
-					log.debug("getting key")
+					log.info("getting key")
 					if(rs.next()) key = rs.getInt("id")
 					else throw "impossible exception"
 				})
 								
 				tags.forEach(function(tag) {
-					log.debug(tag + ":" + key)
+					log.info(tag + ":" + key)
 					ds.update("INSERT INTO tags (name, post) VALUES('" + escape(tag) + "'," + key + ")")
 				})
 				
 				try { shell("mkdir public/blog/" + key) } catch(e) {}
 				
-				log.debug("new model: " + key)
+				log.info("new model: " + key)
 			} else {
 				ds.update("UPDATE posts SET title='" + escape(title) + "',timestamp='" + new Date().toGMTString() + "' WHERE id=" + key)
 				ds.update("DELETE from tags WHERE post=" + key)
@@ -56,7 +56,7 @@
 			}
 			
 			if(path != null && path != undefined && path.length > 0) {
-				log.debug("using picture: " + path)
+				log.info("using picture: " + path)
 				var newPath = "public/blog/" + key;
 				try { shell("rm " + newPath + "/*") } catch(e) {}
 								
