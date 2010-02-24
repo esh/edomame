@@ -9,7 +9,7 @@ function notify_twitter(model) {
 					log.info(hpost(url, params, msg))
 					return
 				} catch(e) {
-					log.warn(e)
+					log.warning(e)
 					sleep(1000*60)
 				}
 			}
