@@ -1,8 +1,8 @@
 var config = require("config.js")
 var db = require("utils/sqldatastore.js")("org.sqlite.JDBC","jdbc:sqlite:db/live")
 
-httpserver(config.port, config.staticcachesize, function(request, response, session) {
-	// kind of evil, form a closure for access to request, response, session, config, db
+httpserver(config, function(request, response, session) {
+	// kind of evil, form a closure for access to request, response, session, config
 	(function() {
 		try {
 			var rewriter = require("urlrewrite.js")
@@ -29,7 +29,7 @@ httpserver(config.port, config.staticcachesize, function(request, response, sess
 				break
 			case "unauthorized":
 				response.sendError(401)
-				log.error("blocked " + request.address + " from " + request.url)
+				log.warn("blocked " + request.address + " from " + request.url)
 				break
 			case "redirect":
 				response.sendRedirect(result[1])
@@ -40,8 +40,8 @@ httpserver(config.port, config.staticcachesize, function(request, response, sess
 		} catch(e) {
 			
 			response.sendError(500)
-			log.error(request.address + " caused:")
-			log.error(e)
+			log.warn(request.address + " caused:")
+			log.warn(e)
 		}
 	})()
 })
