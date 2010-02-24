@@ -4,3 +4,5 @@ bin
 public/blog
 lib/latte.jar
 log
+.project
+.classpath
