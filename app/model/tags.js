@@ -1,14 +1,20 @@
 (function(ds) {
-	function get() {
-		var tags = new Array()
-		ds.query("SELECT DISTINCT name FROM tags ORDER BY name ASC", function(rs) {
-			while(rs.next()) tags.push(rs.getString("name"))
-		})
+	require("utils/common.js")
 		
-		return tags
-	}
-	
 	return {
-		get: get
+		get: function() {
+			var tags = new Array()
+			for(var t in ds.find("all")
+					.map(function(e) {
+						return e.tags
+					})
+					.reduce({}, function(tags, e) {
+						tags[e] = 0	
+					})) {
+				tags.push(t)	
+			}
+
+			return tags 
+		}
 	}
 })

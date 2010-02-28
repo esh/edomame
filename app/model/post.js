@@ -1,28 +1,8 @@
 (function(ds) {
 	require("utils/common.js")
-	require("utils/imageutils.js")
 		
-	function get(id) {
-		var model
-		ds.query("SELECT id, title, timestamp FROM posts WHERE id=" + escape(id), function(rs) {
-			if(rs.next()) {
-				model = {
-					key: rs.getInt("id"),
-					title: unescape(rs.getString("title")),
-					date: rs.getString("timestamp"),
-					tags: function(post) {
-						var tags = new Array()
-						ds.query("SELECT name FROM tags WHERE post=" + escape(id), function(rs) {
-							while(rs.next()) tags.push(rs.getString("name"))
-						})
-						
-						return tags
-					}(id)
-				}
-			} else throw "no such post: " + id
-		})
-		
-		return model
+	function get(key) {
+		return ds.get(key)
 	}
 	
 	function persist(key, title, path, tags) {
