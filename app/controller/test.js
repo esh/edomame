@@ -1,18 +1,27 @@
 (function() {
-	function sw(arg) {
-		session["key"] = arg 
-		return ["ok", arg]
+	function dw(arg) {
+		var key
+		ds.transaction(function(ds) {
+			key = ds.put("test", {hello: arg})
+		})
+
+		return ["ok", key] 
 	}
-	
-	function sr() {
-		return ["ok", session["key"]] 
+
+	function df() {
+		return ["ok", ds.find("test").toSource()]
+	}
+
+	function dg(arg) {
+		return ["ok", ds.get(arg).toSource()]
 	}
 
 	return {
 		show: function() {
 			return ["ok", "hello world"]
 		},
-		sr: sr,
-		sw: sw
+		dw: dw,
+		dg: dg,
+		df: df
 	}
 })
