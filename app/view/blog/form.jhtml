@@ -18,11 +18,11 @@
       Title:<br/>
       <input type="text" name="title" value="<%= params["title"]; %>" style="width: 600px"/>
       </p>          
-      <% if(params["key"] != null) echo("<p><img src=\"/blog/" + params["key"] + "/p.jpg\"></p>"); %>
-      <p>
+      <% //if(params["key"] != null) echo("<p><img src=\"/blog/" + params["key"] + "/p.jpg\"></p>"); %>
+      <!--p>
       Upload:<br/>
       <input type="file" name="upload" style="width: 600px"/>
-      </p>
+      </p-->
  
       <p>
       Tags:<br/>
