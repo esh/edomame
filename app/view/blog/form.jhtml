@@ -7,7 +7,7 @@
     <title>form</title>
   </head>
   <body>
-    <form action="/blog/save" method="post" enctype="multipart/form-data" style="width: 600px; margin:auto">
+    <form action="/blog/save" method="post" style="width: 600px; margin:auto">
       <%      	
 	if(params["key"] != null) {
 		echo('<input type="hidden" name="key" value="' + params["key"] + '"/>\n');
@@ -19,11 +19,7 @@
       <input type="text" name="title" value="<%= params["title"]; %>" style="width: 600px"/>
       </p>          
       <% //if(params["key"] != null) echo("<p><img src=\"/blog/" + params["key"] + "/p.jpg\"></p>"); %>
-      <!--p>
-      Upload:<br/>
-      <input type="file" name="upload" style="width: 600px"/>
-      </p-->
- 
+      
       <p>
       Tags:<br/>
       <input type="text" name="tags" value="<%= params["tags"]; %>" style="width: 600px"/>

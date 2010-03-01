@@ -41,6 +41,7 @@
 	
 	function save() {
 		return secure(function() {
+			log.info("HI: " + request.toSource())
 			var twit = request.params["key"] == null
 			var p = post.persist(
 					request.params["key"],
