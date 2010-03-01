@@ -5,7 +5,7 @@
 		return ds.get(key)
 	}
 	
-	function persist(key, title, path, tags) {
+	function persist(key, title, tags) {
 		var model
 		ds.transaction(function(ds) {
 			// split the tags into an array and ensure we have the "all" tag
@@ -19,6 +19,7 @@
 	
 			if(key == null || key == undefined) {
 				key = ds.put("posts", model)
+				model.key = key
 				log.info("new model: " + key)
 			} 
 

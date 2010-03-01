@@ -45,7 +45,6 @@
 			var p = post.persist(
 					request.params["key"],
 					request.params["title"],
-					request.params["upload"],
 					request.params["tags"])
 		
 			if(twit && p.tags.indexOf("tweet") != -1) {	
@@ -53,7 +52,7 @@
 				notify_twitter(p)
 			}
 			
-			return ["redirect", "/blog/show/all/" + post.key]
+			return ["redirect", "/blog/show/all/" + p.key]
 		})
 	}
 	
