@@ -8,8 +8,10 @@
 					.map(function(e) {
 						return e.tags
 					})
-					.reduce({}, function(tags, e) {
-						tags[e] = 0	
+					.reduce({}, function(hash, tags) {
+						tags.forEach(function(t) {
+							hash[t] = 0
+						})	
 					})) {
 				tags.push(t)	
 			}

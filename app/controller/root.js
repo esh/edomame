@@ -1,1 +1,1 @@
-require("controller/test.js")
+require("controller/blog.js")
