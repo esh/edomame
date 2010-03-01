@@ -1,7 +1,9 @@
 <appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
 	<application>edomamejs</application>
-	<version>1</version>
-	<static-files/>
+	<version>dev</version>
+	<static-files>
+        	<include path="/public/**.*"/>
+	</static-files>
 	<resource-files/>
 	<sessions-enabled>true</sessions-enabled>
 </appengine-web-app>

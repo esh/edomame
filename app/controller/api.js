@@ -23,7 +23,7 @@
 					log.info("api create: " + title + " => " + path)
 										
 					open(path, "base64").write(photo)
-					var post = require("model/post.js")(db).persist(null, title, path, tags)
+					var post = require("model/post.js")(ds).persist(null, title, path, tags)
 					
 					if(post.tags.indexOf("tweet") != -1) {					
 						require("utils/twitter.js")
