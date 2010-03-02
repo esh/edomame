@@ -12,7 +12,7 @@
 						null,
 						title,
 						tags,
-						new org.apache.commons.codec.binary.Base64().decode(photo))
+						org.apache.commons.codec.binary.Base64.decodeBase64(photo))
 
 					if(post.tags.indexOf("tweet") != -1) {					
 						require("utils/twitter.js")
