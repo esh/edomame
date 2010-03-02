@@ -4,19 +4,15 @@
 	return {
 		get: function() {
 			var tags = new Array()
-			for(var t in ds.find("all")
-					.map(function(e) {
-						return e.tags
+			for(var t in ds.find("posts").reduce({}, function(hash, e) {
+					e.tags.forEach(function(t) {
+						hash[t] = 0
 					})
-					.reduce({}, function(hash, tags) {
-						tags.forEach(function(t) {
-							hash[t] = 0
-						})	
-					})) {
+					return hash	
+				})) {
 				tags.push(t)	
 			}
-
-			return tags 
+			return tags.sort()
 		}
 	}
 })
