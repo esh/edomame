@@ -5,7 +5,7 @@
 		return ds.get(key)
 	}
 	
-	function persist(key, title, tags) {
+	function persist(key, title, tags, photo) {
 		var model
 		ds.transaction(function(ds) {
 			// split the tags into an array and ensure we have the "all" tag
