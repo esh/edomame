@@ -1,7 +1,7 @@
 (function() {
-	var post = require("model/post.js")(ds)
-	var tagset = require("model/tagset.js")(ds)
-	var tags = require("model/tags.js")(ds)
+	var post = require("model/post.js")()
+	var tagset = require("model/tagset.js")()
+	var tags = require("model/tags.js")()
 
 	function secure(fn) {
 		if(session["authorized"]) return fn()

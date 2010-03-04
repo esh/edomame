@@ -2,8 +2,8 @@
 	return {
 		show: function() {
 			require("utils/common.js")
-			var post = require("model/post.js")(ds)
-			var keys = require("model/tagset.js")(ds).get("all").slice(-16)
+			var post = require("model/post.js")()
+			var keys = require("model/tagset.js")().get("all").slice(-16)
 			return ["ok", "<?rss version=\"1.0\"?>\n" + keys.map(function(key) {
 				var p = post.get(key)
 				return  <item>
