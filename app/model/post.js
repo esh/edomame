@@ -1,6 +1,8 @@
 (function() {
 	require("utils/common.js")
 	importPackage(com.google.appengine.api.datastore)
+	importPackage(org.apache.commons.codec.binary)
+
 	var ds = DatastoreServiceFactory.getDatastoreService()
 	
 	var MAX_SIZE = 1000*1000
@@ -26,18 +28,24 @@
 			}
 		
 			if(photo) {
+				photo = Base64.decodeBase64(photo) 
 				model.original = new Array()
 				// save the original by splitting into MAX_SIZE byte chunks
 				var keys = ds.allocateIds(parent, "original", Math.ceil(photo.length / MAX_SIZE)).iterator()
-				var i = 0
+				var chunk = 0
 				while(keys.hasNext()) {
 					var key = keys.next()
 					var entity = new Entity(key)
-					entity.setProperty("data", new Text(photo.slice(i * MAX_SIZE, Math.min((i + 1) * MAX_SIZE, photo.length))))
+
+					var b = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, Math.min(photo.length - chunk * MAX_SIZE, MAX_SIZE))
+					for(var i = chunk * MAX_SIZE, j = 0 ; i < Math.min((chunk + 1) * MAX_SIZE, photo.length) ; i++, j++) {
+						b[j] = photo[i]
+					} 
+					entity.setProperty("data", new Blob(b))
 					ds.put(entity)
 
 					model.original.push(key.getId())
-					i++
+					chunk++
 				}
 			}
 
