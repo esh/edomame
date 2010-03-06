@@ -5,15 +5,13 @@
 	return {
 		get: function(tag) {
 			var posts = new Array()
-
-			var itor = ds.prepare(new Query("posts")).asIterator()
-			while(itor.hasNext()) {
-				var model = eval(itor.next().getProperty("data").getValue())
+			for(var e in Iterator(ds.prepare(new Query("posts")).asIterator())) {
+				var model = eval(e.getProperty("data").getValue())
 				if(model.tags.indexOf(tag) != 0) {
-					posts.push(model.key)
+					posts.push(KeyFactory.keyToString(e.getKey()))
 				}
 			}
-
+			
 			return posts
 		}
 	}

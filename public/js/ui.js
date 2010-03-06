@@ -116,7 +116,7 @@ function loadUI(target, keys, focus, admin) {
 				html.push("\">remove</a>")
 			}
 				
-			$("#" + data.key + " div:eq(0)").html(html.join(""))
+			$("#" + key + " div:eq(0)").html(html.join(""))
 		})	
 	}
 }

@@ -8,10 +8,10 @@
 	var MAX_SIZE = 1000*1000
 	
 	function get(key) {
-		return eval(ds.get(KeyFactory.createKey("posts", key)))
+		return eval(ds.get(KeyFactory.stringToKey(key)).getProperty("data").getValue())
 	}
 	
-	function persist(key, title, tags, photo) {
+	function persist(key, title, tags, photo, ext) {
 		var transaction = ds.beginTransaction()
 		try {
 			var parent = ds.allocateIds("posts", 1).getStart() 
@@ -27,7 +27,8 @@
 				timestamp: new Date()
 			}
 		
-			if(photo) {
+			if(photo && ext) {
+				model.ext = ext
 				photo = Base64.decodeBase64(photo) 
 				model.original = new Array()
 				// save the original by splitting into MAX_SIZE byte chunks
