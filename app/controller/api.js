@@ -7,7 +7,6 @@
 	function create() {
 		return secure(function() {
 			var t = eval(request.content)
-
 			if(t.title != undefined && t.photo != undefined) {
 				var post = require("model/post.js")().persist(null, t.title, t.tags, t.photo, t.ext)
 

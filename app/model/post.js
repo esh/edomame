@@ -32,16 +32,11 @@
 				photo = Base64.decodeBase64(photo) 
 				model.original = new Array()
 				// save the original by splitting into MAX_SIZE byte chunks
-				var keys = ds.allocateIds(parent, "original", Math.ceil(photo.length / MAX_SIZE)).iterator()
 				var chunk = 0
-				while(keys.hasNext()) {
-					var key = keys.next()
+				for(var key in Iterator(ds.allocateIds(parent, "original", Math.ceil(photo.length / MAX_SIZE)).iterator())) {
 					var entity = new Entity(key)
-
 					var b = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, Math.min(photo.length - chunk * MAX_SIZE, MAX_SIZE))
-					for(var i = chunk * MAX_SIZE, j = 0 ; i < Math.min((chunk + 1) * MAX_SIZE, photo.length) ; i++, j++) {
-						b[j] = photo[i]
-					} 
+					java.lang.System.arraycopy(photo, chunk * MAX_SIZE, b, 0, Math.min((chunk + 1) * MAX_SIZE, photo.length))
 					entity.setProperty("data", new Blob(b))
 					ds.put(entity)
 
