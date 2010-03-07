@@ -15,11 +15,15 @@
 			var result = controller[action].apply(controller, args)
 			switch(result[0]) {
 			case "ok":
-				if(result.length >= 3) response.setContentType(result[2])
-				else response.setContentType("text/html; charset=UTF-8")
-				response.setCharacterEncoding("UTF-8")
-				response.setStatus(200)
-				response.getWriter().append(result[1])
+				var contentType = result.length >= 3 ? result[2] : "text/html; charset=UTF-8"
+				response.setContentType(contentType)
+				if(contentType.indexOf("image") >= 0) {
+					response.getOutputStream().write(result[1], 0, result[1].length) 
+				} else {
+					response.setCharacterEncoding("UTF-8")
+					response.setStatus(200)
+					response.getWriter().append(result[1])
+				}
 				break
 			case "unauthorized":
 				response.sendError(401)

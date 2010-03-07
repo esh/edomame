@@ -14,7 +14,7 @@
 	}
 
 	function image(type, key) {
-		if(type == "original" || type == "preview" || type == "thumb") {
+		if(type == "original" || type == "preview") {
 			var p = post.get(key)
 			return ["ok", img.get(p[type]), "image/" + p.ext]
 		} else {
