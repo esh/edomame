@@ -45,7 +45,7 @@
 					entity.setProperty("data", new Blob(b))
 					ds.put(entity)
 
-					model.original.push(key.getId())
+					model.original.push(KeyFactory.keyToString(key))
 					chunk++
 				}
 			}

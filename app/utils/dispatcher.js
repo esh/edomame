@@ -32,7 +32,6 @@
 				throw "unknown response"
 			}
 		} catch(e) {
-			
 			response.sendError(500)
 			log.warning(request.address + " caused:")
 			log.warning(e)

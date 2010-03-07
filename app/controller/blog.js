@@ -2,6 +2,7 @@
 	var post = require("model/post.js")()
 	var tagset = require("model/tagset.js")()
 	var tags = require("model/tags.js")()
+	var img = require("model/image.js")()
 
 	function secure(fn) {
 		if(session["authorized"]) return fn()
@@ -10,6 +11,15 @@
 			
 	function detail(key) {
 		return ["ok", post.get(key).toSource()]
+	}
+
+	function image(type, key) {
+		if(type == "original" || type == "preview" || type == "thumb") {
+			var p = post.get(key)
+			return ["ok", img.get(p[type]), "image/" + p.ext]
+		} else {
+			return ["error", "invalid type"]
+		}
 	}
 
 	function show(type) {
@@ -66,6 +76,7 @@
 	return {
 		show: show,
 		detail: detail,
+		image: image,
 		edit: edit,
 		remove: remove,
 		create: create,
