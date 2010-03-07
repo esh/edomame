@@ -48,7 +48,7 @@
 			
 				model.title = title
 				model.tags = tags
-				model.timestamp = timestamp ? new Date(timestamp) : new Date()
+				model.date = timestamp ? new Date(timestamp) : new Date()
 		
 				if(photo && ext) {
 					model.ext = ext
@@ -97,7 +97,7 @@
 			var transaction = ds.beginTransaction()
 			try {
 				var key = KeyFactory.stringToKey(key)
-				var model = eval(ds.get(key))
+				var model = get(key) 
 
 				removeImages(model.original)
 				removeImages(model.preview)
