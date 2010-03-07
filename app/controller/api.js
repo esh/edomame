@@ -8,8 +8,8 @@
 		return secure(function() {
 			var t = eval(request.content)
 			if(t.title != undefined && t.photo != undefined) {
-				var post = require("model/post.js")().persist(null, t.title, t.tags, t.photo, t.ext)
-
+				var post = require("model/post.js")().persist(null, t.title, t.tags, t.photo, t.ext, t.timestamp)
+				
 				if(post.tags.indexOf("tweet") != -1) {					
 					require("utils/twitter.js")
 					notify_twitter(post)

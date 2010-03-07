@@ -40,9 +40,10 @@
 		})
 	}
 
-	function edit(pkey) {
+	function edit(key) {
 		return secure(function() {
-			var p = post.get(pkey)
+			var p = post.get(key)
+			p.key = key
 			p.tags = p.tags.join(" ")
 			
 			return ["ok", render("view/blog/form.jhtml", p)]
@@ -52,17 +53,14 @@
 	function save() {
 		return secure(function() {
 			var twit = request.params["key"] == null
-			var p = post.persist(
-					request.params["key"],
-					request.params["title"],
-					request.params["tags"])
-		
+			var p = post.persist(request.params["key"], request.params["title"], request.params["tags"])
+					
 			if(twit && p.tags.indexOf("tweet") != -1) {	
 				require("utils/twitter.js")
 				notify_twitter(p)
 			}
 			
-			return ["redirect", "/blog/show/all/" + p.key]
+			return ["redirect", "/" + request.params["key"]]
 		})
 	}
 	
