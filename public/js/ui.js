@@ -84,18 +84,18 @@ function loadUI(target, keys, focus, admin) {
 		var html = new Array()
         	html.push("<td id=\"")
                 html.push(key)
-                html.push("\"><div><a href=\"/public/blog/")
+                html.push("\"><div><a href=\"/blog/image/original/")
                 html.push(key)
-                html.push("/o.jpg\"><img src=\"/public/blog/")
+                html.push("\"><img src=\"/blog/image/preview/")
                 html.push(key)
-                html.push("/p.jpg\"/></a></div><div/>")
+                html.push("\"/></a></div><div/>")
 		return html
 	}
 
 	function getDetails(i, key) {
 		$.getJSON("/blog/detail/" + key, function(data) {
 			var html = new Array()
-			html.push($("#" + data.key + " div:eq(0)").html())
+			html.push($("#" + key + " div:eq(0)").html())
 			html.push("<h1>")
 			html.push(data.title)
 			html.push("</h1>")
@@ -110,9 +110,9 @@ function loadUI(target, keys, focus, admin) {
 			})
 			if(admin) {
 				html.push("<br/><br/><a href=\"/blog/edit/")
-				html.push(data.key)
+				html.push(key)
 				html.push("\">edit</a>&nbsp;<a href=\"/blog/remove/")
-				html.push(data.key)
+				html.push(key)
 				html.push("\">remove</a>")
 			}
 				
