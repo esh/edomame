@@ -10,18 +10,8 @@
 	var MAX_SIZE = 1000*1000
 
 	function transaction(fn) {
-		var transaction = ds.beginTransaction()
-		try {
-			var res = fn()
-			transaction.commit()
-			return res
-		} catch(e) {
-			log.severe(e)
-			log.severe("rolling back")
-			transaction.rollback()
 
-			throw e
-		}
+			var res = fn()
 	}
 
 	function removeImages(keys) {
@@ -37,20 +27,20 @@
 	return {
 		get: get,
 		persist: function(key, title, tags, photo, ext, timestamp) {
-			return transaction(function() {
+			var transaction = ds.beginTransaction()
+			try {
 				log.info(key + " " + title + " " + tags)
 				var parent
 				var model
 
 				if(key) {
 					parent = KeyFactory.stringToKey(key)
-					model = ds.get(parent)
+					model = get(key) 
 				} else {
 					parent = ds.allocateIds("posts", 1).getStart()
 					model = new Object()
 				}
 
-				log.info(model.toSource())
 
 				// split the tags into an array and ensure we have the "all" tag
 				tags = tags != null && tags.trim().length > 0 ? tags.trim().toLowerCase().split(" ") : new Array()
@@ -93,11 +83,19 @@
 				entity.setProperty("data", new Text(model.toSource()))
 				ds.put(entity)
 
+				transaction.commit()
 				return model 
-			})
+			} catch(e) {
+				log.severe(e)
+				log.severe("rolling back")
+				transaction.rollback()
+
+				throw e
+			}
 		},
 		remove: function(key) {
-			transaction(function() {
+			var transaction = ds.beginTransaction()
+			try {
 				var key = KeyFactory.stringToKey(key)
 				var model = eval(ds.get(key))
 
@@ -107,7 +105,13 @@
 				ds["delete"](key)
 
 				transaction.commit()
-			})	
+			} catch(e) {
+				log.severe(e)
+				log.severe("rolling back")
+				transaction.rollback()
+
+				throw e
+			}
 		}
 	}
 })
