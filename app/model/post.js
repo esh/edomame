@@ -1,11 +1,13 @@
 (function() {
 	require("utils/common.js")
 	importPackage(com.google.appengine.api.datastore)
+	importPackage(com.google.appengine.api.images)
 	importPackage(org.apache.commons.codec.binary)
 
 	var ds = DatastoreServiceFactory.getDatastoreService()
+	var is = ImagesServiceFactory.getImagesService()
 	
-	var MAX_SIZE = 20000 //1000*1000
+	var MAX_SIZE = 1000*1000
 	
 	function get(key) {
 		return eval(ds.get(KeyFactory.stringToKey(key)).getProperty("data").getValue())
@@ -44,14 +46,21 @@
 					model.original.push(KeyFactory.keyToString(key))
 					chunk++
 				}
+
+				// resize the original for a preview image
+				photo = ImagesServiceFactory.makeImage(photo)
+        			photo = is.applyTransform(ImagesServiceFactory.makeResize(370, photo.getHeight() * photo.getWidth() / 370), photo)
+				var preview = ds.allocateIds(parent, "preview", 1).getStart()
+				var entity = new Entity(preview)
+				entity.setProperty("data", new Blob(photo.getImageData()))
+				ds.put(entity)
+
+				model.preview = [KeyFactory.keyToString(preview)]
 			}
 
 			var entity = new Entity(parent)
 			entity.setProperty("data", new Text(model.toSource()))
 			ds.put(entity)
-
-			// create preview
-			// resize(newPath + "/o.jpg", newPath + "/p.jpg", 370)
 
 			transaction.commit()
 
