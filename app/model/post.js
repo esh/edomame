@@ -5,7 +5,7 @@
 
 	var ds = DatastoreServiceFactory.getDatastoreService()
 	
-	var MAX_SIZE = 1000*1000
+	var MAX_SIZE = 20000 //1000*1000
 	
 	function get(key) {
 		return eval(ds.get(KeyFactory.stringToKey(key)).getProperty("data").getValue())
@@ -35,8 +35,9 @@
 				var chunk = 0
 				for(var key in Iterator(ds.allocateIds(parent, "original", Math.ceil(photo.length / MAX_SIZE)).iterator())) {
 					var entity = new Entity(key)
-					var b = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, Math.min(photo.length - chunk * MAX_SIZE, MAX_SIZE))
-					java.lang.System.arraycopy(photo, chunk * MAX_SIZE, b, 0, Math.min((chunk + 1) * MAX_SIZE, photo.length))
+					var l = Math.min(photo.length - chunk * MAX_SIZE, MAX_SIZE)
+					var b = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, l)
+					java.lang.System.arraycopy(photo, chunk * MAX_SIZE, b, 0, l)
 					entity.setProperty("data", new Blob(b))
 					ds.put(entity)
 
