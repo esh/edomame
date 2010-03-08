@@ -1,20 +1,29 @@
 (function() {
-	importPackage(com.google.appengine.api.labs.taskqueue)
-
 	function secure(fn) {
 		if(request.authorization == "esh:" + config.sitepass) return fn()
 		else return ["unauthorized"]
 	}
 
-	return {
-		create: function() {
-			return secure(function() {
-				var queue = QueueFactory.getQueue("post-queue")
-				queue.add(TaskOptions.Builder.url("/blog/process").payload(new java.lang.String(request.content).getBytes(), "application/json"))
+	function create() {
+		return secure(function() {
+			var t = eval(request.content)
+			if(t.title != undefined && t.photo != undefined) {
+				var post = require("model/post.js")().persist(null, t.title, t.tags, t.photo, t.ext, t.timestamp)
+				
+				if(post.tags.indexOf("tweet") != -1) {					
+					require("utils/twitter.js")
+					notify_twitter(post)
+				}
 
 				return ["ok", "ok"]
-			})
-		}
+			} else {
+				return ["ok", "missing title or photo"]
+			}
+		})
+	}
+	
+	return {
+		create: create
 	}
 })
 
