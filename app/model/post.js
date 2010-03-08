@@ -96,13 +96,11 @@
 		remove: function(key) {
 			var transaction = ds.beginTransaction()
 			try {
-				var key = KeyFactory.stringToKey(key)
 				var model = get(key) 
-
 				removeImages(model.original)
 				removeImages(model.preview)
 
-				ds["delete"](key)
+				ds["delete"](KeyFactory.stringToKey(key))
 
 				transaction.commit()
 			} catch(e) {
