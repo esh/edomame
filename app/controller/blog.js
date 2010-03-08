@@ -1,4 +1,6 @@
 (function() {
+	importPackage(com.google.appengine.api.labs.taskqueue)
+
 	var post = require("model/post.js")()
 	var tagset = require("model/tagset.js")()
 	var tags = require("model/tags.js")()
@@ -50,27 +52,39 @@
 		})
 	}
 	
-	function save() {
-		return secure(function() {
-			var twit = request.params["key"] == null
-			var p = post.persist(request.params["key"], request.params["title"], request.params["tags"])
-					
-			if(twit && p.tags.indexOf("tweet") != -1) {	
-				require("utils/twitter.js")
-				notify_twitter(p)
-			}
-			
-			return ["redirect", "/" + request.params["key"]]
-		})
-	}
-	
 	function remove(key) {
 		return secure(function() {
 			post.remove(key)
 			return show()
 		})
 	}
-	
+
+	function save() {
+		var p = {
+			key: request.params["key"],
+			title: request.params["title"],
+			tags: request.params["tags"]
+		}
+
+		var queue = QueueFactory.getQueue("post-queue")
+		queue.add(TaskOptions.url("/blog/process").payload(new java.lang.String(p.toSource()).getBytes(), "application/json"))
+
+		return ["redirect", "/"]
+	}
+
+	function process() {
+		var twit = request.params["key"] == null
+		var p = eval(request.content)
+		p = post.persist(p.key, p.title, p.tags)
+				
+		if(twit && p.tags.indexOf("tweet") != -1) {	
+			require("utils/twitter.js")
+			notify_twitter(p)
+		}
+		
+		return ["ok", "ok"]
+	}
+
 	return {
 		show: show,
 		detail: detail,
@@ -78,6 +92,7 @@
 		edit: edit,
 		remove: remove,
 		create: create,
-		save: save
+		save: save,
+		process: process
 	}
 })
