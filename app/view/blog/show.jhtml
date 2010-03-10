@@ -41,7 +41,7 @@ require("utils/common.js")
 		
 		<script type="text/javascript">
 			var keys = <%= params["keys"].toSource() %>
-			var match = window.location.href.match(/.+\/([a-zA-Z0-9]+)?/)
+			var match = window.location.href.match(/\/[a-zA-Z]+\/([a-zA-Z0-9]+)?/)
 			var anchor = match != null && match.length >= 2 && match[1] != undefined && match[1] != "" ? match[1] : keys[keys.length - 1]
 			loadUI($("#content"), keys, anchor, <%= params["admin"] %>)
 		</script>
