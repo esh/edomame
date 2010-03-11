@@ -1,10 +1,12 @@
 (function() {
 	require("utils/common.js")
 	importPackage(com.google.appengine.api.datastore)
+	importPackage(com.google.appengine.api.memcache)
 	importPackage(com.google.appengine.api.images)
 	importPackage(org.apache.commons.codec.binary)
 
 	var ds = DatastoreServiceFactory.getDatastoreService()
+	var cache = MemcacheServiceFactory.getMemcacheService()
 	var is = ImagesServiceFactory.getImagesService()
 	
 	var MAX_SIZE = 1000*1000
@@ -45,7 +47,12 @@
 				// split the tags into an array and ensure we have the "all" tag
 				tags = tags != null && tags.trim().length > 0 ? tags.trim().toLowerCase().split(" ") : new Array()
 				if(tags.indexOf("all") == -1) tags.push("all")
-			
+	
+				// invalidate cache
+				tags.forEach(function(tag) {
+					cache["delete"](tag)
+				})
+		
 				model.title = title
 				model.tags = tags
 				model.date = timestamp ? new Date(timestamp) : new Date()
@@ -99,6 +106,11 @@
 				var model = get(key) 
 				removeImages(model.original)
 				removeImages(model.preview)
+				
+				// invalidate cache
+				model.tags.forEach(function(tag) {
+					cache["delete"](tag)
+				})
 
 				ds["delete"](KeyFactory.stringToKey(key))
 
