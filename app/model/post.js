@@ -1,22 +1,20 @@
 (function() {
 	require("utils/common.js")
 	importPackage(com.google.appengine.api.datastore)
+	importPackage(com.google.appengine.api.memcache)
 	importPackage(com.google.appengine.api.images)
 	importPackage(org.apache.commons.codec.binary)
 
 	var ds = DatastoreServiceFactory.getDatastoreService()
+	var cache = MemcacheServiceFactory.getMemcacheService()
 	var is = ImagesServiceFactory.getImagesService()
 	
 	var MAX_SIZE = 1000*1000
 
-	function transaction(fn) {
-
-			var res = fn()
-	}
-
 	function removeImages(keys) {
 		keys.forEach(function(e) {
 			ds["delete"](KeyFactory.stringToKey(e))
+			cache["delete"](e)
 		})
 	}
 
@@ -45,7 +43,13 @@
 				// split the tags into an array and ensure we have the "all" tag
 				tags = tags != null && tags.trim().length > 0 ? tags.trim().toLowerCase().split(" ") : new Array()
 				if(tags.indexOf("all") == -1) tags.push("all")
-			
+	
+				// invalidate cache
+				tags.forEach(function(tag) {
+					cache["delete"](tag)
+				})
+				cache["delete"]("_tags")
+		
 				model.title = title
 				model.tags = tags
 				model.date = timestamp ? new Date(timestamp) : new Date()
@@ -70,7 +74,12 @@
 
 					// resize the original for a preview image
 					photo = ImagesServiceFactory.makeImage(photo)
-					photo = is.applyTransform(ImagesServiceFactory.makeResize(370, photo.getHeight() * photo.getWidth() / 370), photo)
+					if(photo.getWidth() > photo.getHeight()) {
+						photo = is.applyTransform(ImagesServiceFactory.makeResize(370, photo.getHeight() * 370 / photo.getWidth()), photo)
+					} else {
+						photo = is.applyTransform(ImagesServiceFactory.makeResize(photo.getWidth() * 370 / photo.getHeight(), 370), photo)
+					}
+
 					var preview = ds.allocateIds(parent, "preview", 1).getStart()
 					var entity = new Entity(preview)
 					entity.setProperty("data", new Blob(photo.getImageData()))
@@ -99,6 +108,11 @@
 				var model = get(key) 
 				removeImages(model.original)
 				removeImages(model.preview)
+				
+				// invalidate cache
+				model.tags.forEach(function(tag) {
+					cache["delete"](tag)
+				})
 
 				ds["delete"](KeyFactory.stringToKey(key))
 

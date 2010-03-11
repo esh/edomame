@@ -1,12 +1,19 @@
 (function() {
 	importPackage(com.google.appengine.api.datastore)
+	importPackage(com.google.appengine.api.memcache)
 	var ds = DatastoreServiceFactory.getDatastoreService()
+	var cache = MemcacheServiceFactory.getMemcacheService()
 
 	return {
 		get: function(keys) {
 			var size = 0
 			var chunks = keys.map(function(e) {
-				var b = ds.get(KeyFactory.stringToKey(e)).getProperty("data").getBytes()
+				var b = cache.get(e)
+				if(!b) {
+					b = ds.get(KeyFactory.stringToKey(e)).getProperty("data").getBytes()
+					cache.put(e, b)
+				}
+
 				size += b.length
 				return b
 			})
