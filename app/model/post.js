@@ -74,7 +74,12 @@
 
 					// resize the original for a preview image
 					photo = ImagesServiceFactory.makeImage(photo)
-					photo = is.applyTransform(ImagesServiceFactory.makeResize(370, photo.getHeight() * photo.getWidth() / 370), photo)
+					if(photo.getWidth() > photo.getHeight()) {
+						photo = is.applyTransform(ImagesServiceFactory.makeResize(370, photo.getHeight() * 370 / photo.getWidth()), photo)
+					} else {
+						photo = is.applyTransform(ImagesServiceFactory.makeResize(photo.getWidth() * 370 / photo.getHeight(), 370), photo)
+					}
+
 					var preview = ds.allocateIds(parent, "preview", 1).getStart()
 					var entity = new Entity(preview)
 					entity.setProperty("data", new Blob(photo.getImageData()))
