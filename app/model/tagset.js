@@ -2,7 +2,7 @@
 	importPackage(com.google.appengine.api.datastore)
 	importPackage(com.google.appengine.api.memcache)
 	var ds = DatastoreServiceFactory.getDatastoreService()
-	var cache MemcacheServiceFactory.getMemcacheService()
+	var cache = MemcacheServiceFactory.getMemcacheService()
 
 	return {
 		get: function(tag) {
