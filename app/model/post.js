@@ -11,11 +11,6 @@
 	
 	var MAX_SIZE = 1000*1000
 
-	function transaction(fn) {
-
-			var res = fn()
-	}
-
 	function removeImages(keys) {
 		keys.forEach(function(e) {
 			ds["delete"](KeyFactory.stringToKey(e))
