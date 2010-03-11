@@ -14,6 +14,7 @@
 	function removeImages(keys) {
 		keys.forEach(function(e) {
 			ds["delete"](KeyFactory.stringToKey(e))
+			cache["delete"](e)
 		})
 	}
 
