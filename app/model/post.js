@@ -47,6 +47,7 @@
 				tags.forEach(function(tag) {
 					cache["delete"](tag)
 				})
+				cache["delete"]("_tags")
 		
 				model.title = title
 				model.tags = tags
