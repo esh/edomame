@@ -1,4 +1,7 @@
 (function() {
+	importPackage(com.google.appengine.api.memcache)
+	var cache = MemcacheServiceFactory.getMemcacheService()
+
 	function show() {
 		return login()
 	}
@@ -27,9 +30,10 @@
 		return ["redirect", "/"]
 	}
 	
-	function logs() {
+	function clearCache() {
 		return secure(function() {
-			return ["ok", open("log/server.log").read()]
+			cache.clearAll()	
+			return ["ok", "ok"]	
 		})
 	}
 
@@ -37,6 +41,6 @@
 		show: show,
 		login: login,
 		logout: logout,
-		logs: logs
+		clearCache: clearCache 
 	}
 })
