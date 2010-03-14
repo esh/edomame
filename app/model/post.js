@@ -49,7 +49,8 @@
 					cache["delete"](tag)
 				})
 				cache["delete"]("_tags")
-		
+
+				model.key = KeyFactory.keyToString(parent)	
 				model.title = title
 				model.tags = tags
 				model.date = timestamp ? new Date(timestamp) : new Date()
