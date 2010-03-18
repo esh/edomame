@@ -2,6 +2,9 @@
 	importPackage(com.google.appengine.api.datastore)
 	importPackage(com.google.appengine.api.memcache)
 
+	var ds = DatastoreServiceFactory.getDatastoreService()
+	var cache = MemcacheServiceFactory.getMemcacheService()
+
 	return {
 		buildIndex: function() {
 			var index = new Object()
@@ -24,11 +27,13 @@
 				tags.push(tag)
 
 				// cache the individual tags
-				cache.put(tag, index[tag].sort(function(a, b) { return a.date - b.date }).map(function(e) { return e.key }))
+				cache.put(tag, index[tag].sort(function(a, b) { return a.date - b.date }).map(function(e) { return e.key }).toSource())
 			}
 
 			// cache the tagset
 			cache.put("_tags", tags.sort().toSource())
+
+			return ["ok", "ok"]
 		}
 	}
 })
