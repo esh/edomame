@@ -44,12 +44,6 @@
 				tags = tags != null && tags.trim().length > 0 ? tags.trim().toLowerCase().split(" ") : new Array()
 				if(tags.indexOf("all") == -1) tags.push("all")
 	
-				// invalidate cache
-				tags.forEach(function(tag) {
-					cache["delete"](tag)
-				})
-				cache["delete"]("_tags")
-
 				model.key = KeyFactory.keyToString(parent)	
 				model.title = title
 				model.tags = tags
@@ -93,6 +87,8 @@
 				entity.setProperty("data", new Text(model.toSource()))
 				ds.put(entity)
 
+				// rebuild the index 
+
 				transaction.commit()
 				return model 
 			} catch(e) {
@@ -110,12 +106,7 @@
 				removeImages(model.original)
 				removeImages(model.preview)
 				
-				// invalidate cache
-				model.tags.forEach(function(tag) {
-					cache["delete"](tag)
-				})
-
-				ds["delete"](KeyFactory.stringToKey(key))
+				// rebuild index
 
 				transaction.commit()
 			} catch(e) {
