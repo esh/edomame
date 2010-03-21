@@ -2,13 +2,15 @@
 	require("utils/common.js")
 	importPackage(com.google.appengine.api.datastore)
 	importPackage(com.google.appengine.api.memcache)
+	importPackage(com.google.appengine.api.labs.taskqueue)
 	importPackage(com.google.appengine.api.images)
 	importPackage(org.apache.commons.codec.binary)
 
 	var ds = DatastoreServiceFactory.getDatastoreService()
 	var cache = MemcacheServiceFactory.getMemcacheService()
 	var is = ImagesServiceFactory.getImagesService()
-	
+	var queue = QueueFactory.getQueue("tasks")
+
 	var MAX_SIZE = 1000*1000
 
 	function removeImages(keys) {
@@ -19,7 +21,12 @@
 	}
 
 	function get(key) {
-		return eval(ds.get(KeyFactory.stringToKey(key)).getProperty("data").getValue())
+		var model = cache.get(key)
+		if(model == null) {
+			model = eval(ds.get(KeyFactory.stringToKey(key)).getProperty("data").getValue())
+		}
+		
+		return model
 	}
 
 	return {
@@ -38,7 +45,6 @@
 					parent = ds.allocateIds("posts", 1).getStart()
 					model = new Object()
 				}
-
 
 				// split the tags into an array and ensure we have the "all" tag
 				tags = tags != null && tags.trim().length > 0 ? tags.trim().toLowerCase().split(" ") : new Array()
@@ -87,7 +93,10 @@
 				entity.setProperty("data", new Text(model.toSource()))
 				ds.put(entity)
 
+				// invalidate cache	
+				cache["delete"](KeyFactory.keyToString(parent))
 				// rebuild the index 
+				queue.add(TaskOptions.Builder.url("/_tasks/buildIndex"))	
 
 				transaction.commit()
 				return model 
@@ -105,8 +114,11 @@
 				var model = get(key) 
 				removeImages(model.original)
 				removeImages(model.preview)
-				
+
+				// invalidate cache	
+				cache["delete"](key)
 				// rebuild index
+				queue.add(TaskOptions.Builder.url("/_tasks/buildIndex"))	
 
 				transaction.commit()
 			} catch(e) {

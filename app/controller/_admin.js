@@ -1,6 +1,9 @@
 (function() {
 	importPackage(com.google.appengine.api.memcache)
+	importPackage(com.google.appengine.api.labs.taskqueue)
+
 	var cache = MemcacheServiceFactory.getMemcacheService()
+	var queue = QueueFactory.getQueue("tasks")
 
 	function show() {
 		return login()
@@ -37,10 +40,18 @@
 		})
 	}
 
+	function buildIndex() {
+		return secure(function() {
+			queue.add(TaskOptions.Builder.url("_tasks/buildIndex"))	
+			return ["ok", "ok"]	
+		})
+	}
+
 	return {
 		show: show,
 		login: login,
 		logout: logout,
-		clearCache: clearCache 
+		clearCache: clearCache,
+		buildIndex: buildIndex 
 	}
 })
