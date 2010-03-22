@@ -7,11 +7,13 @@
 	return {
 		get: function() {
 			var tags = cache.get("_tags")
-			if(tags) {
-				return eval(tags)
-			} else {
-				return []
-			}
+			if(tags == null) {
+				log.info("cache miss: _tags")
+				tags = ds.get(KeyFactory.createKey("tags", "_tags")).getProperty("data").getValue()
+				cache.put("_tags", tags)
+			} 
+			
+			return eval(tags)
 		}
 	}
 })

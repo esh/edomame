@@ -23,10 +23,12 @@
 	function get(key) {
 		var model = cache.get(key)
 		if(model == null) {
-			model = eval(ds.get(KeyFactory.stringToKey(key)).getProperty("data").getValue())
+			log.info("cache miss: " + key) 
+			model = ds.get(KeyFactory.stringToKey(key)).getProperty("data").getValue()
+			cache.put(key, model)
 		}
 		
-		return model
+		return eval(model)
 	}
 
 	return {
