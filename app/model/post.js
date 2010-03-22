@@ -20,6 +20,12 @@
 		})
 	}
 
+	function invalidateCache(key, tags) {
+		cache["delete"](key)
+		cache["delete"](KeyFactory.keyToString(KeyFactory.createKey("tags", "_tag")))
+		tags.forEach(function(tag) { cache["delete"](tag) })
+	}
+
 	function get(key) {
 		var model = cache.get(key)
 		if(model == null) {
@@ -95,8 +101,8 @@
 				entity.setProperty("data", new Text(model.toSource()))
 				ds.put(entity)
 
-				// invalidate cache	
-				cache["delete"](KeyFactory.keyToString(parent))
+				invalidateCache(KeyFactory.keyToString(parent), model.tags)
+
 				// rebuild the index 
 				queue.add(TaskOptions.Builder.url("/_tasks/buildIndex"))	
 
@@ -117,8 +123,8 @@
 				removeImages(model.original)
 				removeImages(model.preview)
 
-				// invalidate cache	
-				cache["delete"](key)
+				invalidateCache(key, model.tags)
+
 				// rebuild index
 				queue.add(TaskOptions.Builder.url("/_tasks/buildIndex"))	
 
