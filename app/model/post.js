@@ -122,6 +122,8 @@
 				var model = get(key) 
 				removeImages(model.original)
 				removeImages(model.preview)
+				
+				ds["delete"](KeyFactory.stringToKey(key))
 
 				invalidateCache(key, model.tags)
 
