@@ -20,12 +20,6 @@
 		})
 	}
 
-	function invalidateCache(key, tags) {
-		cache["delete"](key)
-		cache["delete"](KeyFactory.keyToString(KeyFactory.createKey("tags", "_tag")))
-		tags.forEach(function(tag) { cache["delete"](tag) })
-	}
-
 	function get(key) {
 		var model = cache.get(key)
 		if(model == null) {
@@ -101,12 +95,13 @@
 				entity.setProperty("data", new Text(model.toSource()))
 				ds.put(entity)
 
-				invalidateCache(KeyFactory.keyToString(parent), model.tags)
+				cache["delete"](KeyFactory.keyToString(parent))
+
+				transaction.commit()
 
 				// rebuild the index 
 				queue.add(TaskOptions.Builder.url("/_tasks/buildIndex"))	
 
-				transaction.commit()
 				return model 
 			} catch(e) {
 				log.severe(e)
@@ -125,12 +120,12 @@
 				
 				ds["delete"](KeyFactory.stringToKey(key))
 
-				invalidateCache(key, model.tags)
+				cache["delete"](key)
+
+				transaction.commit()
 
 				// rebuild index
 				queue.add(TaskOptions.Builder.url("/_tasks/buildIndex"))	
-
-				transaction.commit()
 			} catch(e) {
 				log.severe(e)
 				log.severe("rolling back")

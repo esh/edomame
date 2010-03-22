@@ -42,7 +42,7 @@
 
 	function buildIndex() {
 		return secure(function() {
-			queue.add(TaskOptions.Builder.url("_tasks/buildIndex"))	
+			queue.add(TaskOptions.Builder.url("/_tasks/buildIndex"))	
 			return ["ok", "ok"]	
 		})
 	}
