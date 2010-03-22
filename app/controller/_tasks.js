@@ -23,13 +23,13 @@
 			for(var tag in index) {
 				tags.push(tag)
 
-				var entity = new Entity(KeyFactory.createKey("tags", tag)
+				var entity = new Entity(KeyFactory.createKey("tags", tag))
 				entity.setProperty("data", new Text(index[tag].sort(function(a, b) { return a.date - b.date }).map(function(e) { return e.key }).toSource()))
 				ds.put(entity)
 			}
 
 			// save down the entire set
-			var entity = new Entity(KeyFacotry.createKey("tags", "_tags")
+			var entity = new Entity(KeyFactory.createKey("tags", "_tags"))
 			entity.setProperty("data", new Text(tags.sort().toSource()))
 			ds.put(entity)
 
