@@ -2,13 +2,15 @@
 	require("utils/common.js")
 	importPackage(com.google.appengine.api.datastore)
 	importPackage(com.google.appengine.api.memcache)
+	importPackage(com.google.appengine.api.labs.taskqueue)
 	importPackage(com.google.appengine.api.images)
 	importPackage(org.apache.commons.codec.binary)
 
 	var ds = DatastoreServiceFactory.getDatastoreService()
 	var cache = MemcacheServiceFactory.getMemcacheService()
 	var is = ImagesServiceFactory.getImagesService()
-	
+	var queue = QueueFactory.getQueue("tasks")
+
 	var MAX_SIZE = 1000*1000
 
 	function removeImages(keys) {
@@ -19,7 +21,14 @@
 	}
 
 	function get(key) {
-		return eval(ds.get(KeyFactory.stringToKey(key)).getProperty("data").getValue())
+		var model = cache.get(key)
+		if(model == null) {
+			log.info("cache miss: " + key) 
+			model = ds.get(KeyFactory.stringToKey(key)).getProperty("data").getValue()
+			cache.put(key, model)
+		}
+		
+		return eval(model)
 	}
 
 	return {
@@ -39,16 +48,10 @@
 					model = new Object()
 				}
 
-
 				// split the tags into an array and ensure we have the "all" tag
 				tags = tags != null && tags.trim().length > 0 ? tags.trim().toLowerCase().split(" ") : new Array()
 				if(tags.indexOf("all") == -1) tags.push("all")
 	
-				// invalidate cache
-				tags.forEach(function(tag) {
-					cache["delete"](tag)
-				})
-				cache["delete"]("_tags")
 				model.key = KeyFactory.keyToString(parent)	
 				model.title = title
 				model.tags = tags
@@ -92,7 +95,13 @@
 				entity.setProperty("data", new Text(model.toSource()))
 				ds.put(entity)
 
+				cache["delete"](KeyFactory.keyToString(parent))
+
 				transaction.commit()
+
+				// rebuild the index 
+				queue.add(TaskOptions.Builder.url("/_tasks/buildIndex"))	
+
 				return model 
 			} catch(e) {
 				log.severe(e)
@@ -109,14 +118,14 @@
 				removeImages(model.original)
 				removeImages(model.preview)
 				
-				// invalidate cache
-				model.tags.forEach(function(tag) {
-					cache["delete"](tag)
-				})
-
 				ds["delete"](KeyFactory.stringToKey(key))
 
+				cache["delete"](key)
+
 				transaction.commit()
+
+				// rebuild index
+				queue.add(TaskOptions.Builder.url("/_tasks/buildIndex"))	
 			} catch(e) {
 				log.severe(e)
 				log.severe("rolling back")

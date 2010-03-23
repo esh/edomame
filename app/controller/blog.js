@@ -67,7 +67,7 @@
 	function remove(key) {
 		return secure(function() {
 			post.remove(key)
-			return show()
+			return ["redirect", "/"] 
 		})
 	}
 	
