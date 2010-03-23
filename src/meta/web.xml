@@ -3,7 +3,7 @@
 	xmlns="http://java.sun.com/xml/ns/j2ee" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
-  	<servlet>
+	<servlet>
 		<servlet-name>latte</servlet-name>
 		<servlet-class>org.latte.LatteServlet</servlet-class>
 	</servlet>
@@ -11,5 +11,13 @@
 		<servlet-name>latte</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
+	<security-constraint>
+		<web-resource-collection>
+			<url-pattern>/_tasks/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>admin</role-name>
+		</auth-constraint>
+	</security-constraint>
 </web-app>
 
