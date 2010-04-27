@@ -9,7 +9,7 @@
 			var posts = cache.get(tag)
 			if(posts == null) {
 				log.info("cache miss: " + tag) 
-				posts = ds.get(KeyFactory.createKey("tags", tag)).getProperty("data").getValue()
+				posts = ds.get(KeyFactory.createKey("meta", tag)).getProperty("data").getValue()
 				cache.put(tag, posts)
 			}
 

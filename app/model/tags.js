@@ -9,7 +9,7 @@
 			var tags = cache.get("_tags")
 			if(tags == null) {
 				log.info("cache miss: _tags")
-				tags = ds.get(KeyFactory.createKey("tags", "_tags")).getProperty("data").getValue()
+				tags = ds.get(KeyFactory.createKey("meta", "_tags")).getProperty("data").getValue()
 				cache.put("_tags", tags)
 			} 
 			

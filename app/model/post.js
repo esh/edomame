@@ -24,7 +24,14 @@
 		var model = cache.get(key)
 		if(model == null) {
 			log.info("cache miss: " + key) 
-			model = ds.get(KeyFactory.stringToKey(key)).getProperty("data").getValue()
+			var mapping = cache.get("_mapping")
+			if(mapping == null) {
+				log.info("cache miss _mapping")
+				mapping = ds.get(KeyFactory.createKey("meta", "_mapping")).getProperty("data").getValue()
+				cache.put("_mapping", mapping)
+			}
+			mapping = eval(mapping)
+			model = ds.get(KeyFactory.stringToKey(mapping[key])).getProperty("data").getValue()
 			cache.put(key, model)
 		}
 		
@@ -41,7 +48,7 @@
 				var model
 
 				if(key) {
-					parent = KeyFactory.stringToKey(key)
+					parent = KeyFactory.createKey("posts", key)
 					model = get(key) 
 				} else {
 					parent = ds.allocateIds("posts", 1).getStart()
@@ -52,7 +59,7 @@
 				tags = tags != null && tags.trim().length > 0 ? tags.trim().toLowerCase().split(" ") : new Array()
 				if(tags.indexOf("all") == -1) tags.push("all")
 	
-				model.key = KeyFactory.keyToString(parent)	
+				model.key = parent.getId()
 				model.title = title
 				model.tags = tags
 				model.date = timestamp ? new Date(timestamp) : new Date()
@@ -95,7 +102,7 @@
 				entity.setProperty("data", new Text(model.toSource()))
 				ds.put(entity)
 
-				cache["delete"](KeyFactory.keyToString(parent))
+				cache["delete"](model.key)
 
 				transaction.commit()
 
@@ -118,8 +125,7 @@
 				removeImages(model.original)
 				removeImages(model.preview)
 				
-				ds["delete"](KeyFactory.stringToKey(key))
-
+				ds["delete"](KeyFactory.createKey("posts", key))
 				cache["delete"](key)
 
 				transaction.commit()

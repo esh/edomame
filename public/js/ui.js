@@ -30,7 +30,7 @@ function loadUI(target, keys, focus, admin) {
 	var MAX_WIDTH = 370
 	var MIN_WIDTH = 278
 	var loadAmount = calcLoadAmount() 
-	var end = keys.indexOf(anchor)
+	var end = keys.indexOf(focus)
 	var start = Math.max(0, end - loadAmount)
 	var t = keys.slice(start, end + 1).reverse()
 
