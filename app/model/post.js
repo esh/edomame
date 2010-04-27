@@ -20,18 +20,22 @@
 		})
 	}
 
+	function translateKey(key) {
+		var mapping = cache.get("_mapping")
+		if(mapping == null) {
+			log.info("cache miss _mapping")
+			mapping = ds.get(KeyFactory.createKey("meta", "_mapping")).getProperty("data").getValue()
+			cache.put("_mapping", mapping)
+		}
+		mapping = eval(mapping)
+		return mapping[key]
+	}
+
 	function get(key) {
 		var model = cache.get(key)
 		if(model == null) {
 			log.info("cache miss: " + key) 
-			var mapping = cache.get("_mapping")
-			if(mapping == null) {
-				log.info("cache miss _mapping")
-				mapping = ds.get(KeyFactory.createKey("meta", "_mapping")).getProperty("data").getValue()
-				cache.put("_mapping", mapping)
-			}
-			mapping = eval(mapping)
-			model = ds.get(KeyFactory.stringToKey(mapping[key])).getProperty("data").getValue()
+			model = ds.get(KeyFactory.stringToKey(translateKey(key))).getProperty("data").getValue()
 			cache.put(key, model)
 		}
 		
@@ -48,8 +52,9 @@
 				var model
 
 				if(key) {
-					parent = KeyFactory.createKey("posts", key)
-					model = get(key) 
+					parent = KeyFactory.stringToKey(translateKey(key))
+					model = get(key)
+					log.info("existing model: " + model.toSource()) 
 				} else {
 					parent = ds.allocateIds("posts", 1).getStart()
 					model = new Object()
@@ -98,11 +103,12 @@
 					model.preview = [KeyFactory.keyToString(preview)]
 				}
 
+				log.info("saving: " + model.toSource())
 				var entity = new Entity(parent)
 				entity.setProperty("data", new Text(model.toSource()))
 				ds.put(entity)
 
-				cache["delete"](model.key)
+				cache["delete"](String(model.key))
 
 				transaction.commit()
 
@@ -125,7 +131,7 @@
 				removeImages(model.original)
 				removeImages(model.preview)
 				
-				ds["delete"](KeyFactory.createKey("posts", key))
+				ds["delete"](KeyFactory.stringToKey(translateKey(key)))
 				cache["delete"](key)
 
 				transaction.commit()
