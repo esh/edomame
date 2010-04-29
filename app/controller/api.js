@@ -1,4 +1,8 @@
 (function() {
+	importPackage(com.google.appengine.api.labs.taskqueue)
+	
+	var queue = QueueFactory.getQueue("tasks")
+
 	function secure(fn) {
 		if(request.authorization == "esh:" + config.sitepass) return fn()
 		else return ["unauthorized"]
@@ -10,8 +14,7 @@
 			if(t.title != undefined && t.photo != undefined) {
 				var post = require("model/post.js")().persist(null, t.title, t.tags, t.photo, t.ext, t.timestamp)
 				if(post.tags.indexOf("tweet") != -1) {					
-					require("utils/twitter.js")
-					notify_twitter(post)
+					queue.add(TaskOptions.Builder.url("/_tasks/tweet").param("model", post.toSource()))
 				}
 
 				return ["ok", "ok"]

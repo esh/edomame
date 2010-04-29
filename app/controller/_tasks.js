@@ -63,7 +63,15 @@
 			var twitter = new TwitterFactory().getInstance()
 			twitter.setOAuthConsumer(config.twitterconsumerkey, config.twitterconsumersecret)
 			twitter.setOAuthAccessToken(new AccessToken(config.twitteraccesstoken, config.twitteraccesstokensecret))
-			twitter.updateStatus("hello world")
+		
+			var model = eval(request.params.model)
+			var url = " http://www.edomame.com/" + model.key
+			if(model.title.length + url.length > 140) {
+				model.title = model.title.substring(0, 140 - url.length - 3) + "..."
+			}
+
+			log.info("tweeting: " + model.title + url) 
+			twitter.updateStatus(model.title + url)
 
 			return ["ok", "ok"]
 		}

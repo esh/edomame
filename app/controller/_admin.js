@@ -1,6 +1,5 @@
 (function() {
-	importPackage(com.google.appengine.api.memcache)
-	importPackage(com.google.appengine.api.labs.taskqueue)
+	importPackage(com.google.appengine.api.memcache, com.google.appengine.api.labs.taskqueue)
 
 	var cache = MemcacheServiceFactory.getMemcacheService()
 	var queue = QueueFactory.getQueue("tasks")
@@ -47,11 +46,24 @@
 		})
 	}
 
+	function tweet() {
+		return secure(function() {
+			var model = {
+				key: "testing",
+				title: "testing edomame - tweeter"
+			}
+
+			queue.add(TaskOptions.Builder.url("/_tasks/tweet").param("model", model.toSource()))
+			return ["ok", "ok"]	
+		})
+	}
+
 	return {
 		show: show,
 		login: login,
 		logout: logout,
 		clearCache: clearCache,
-		buildIndex: buildIndex 
+		buildIndex: buildIndex,
+		tweet: tweet
 	}
 })

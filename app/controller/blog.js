@@ -1,4 +1,7 @@
 (function() {
+	importPackage(com.google.appengine.api.labs.taskqueue)
+
+	var queue = QueueFactory.getQueue("tasks")
 	var post = require("model/post.js")()
 	var tagset = require("model/tagset.js")()
 	var tags = require("model/tags.js")()
@@ -55,9 +58,8 @@
 			var twit = request.params["key"] == null
 			var p = post.persist(request.params["key"], request.params["title"], request.params["tags"])
 					
-			if(twit && p.tags.indexOf("tweet") != -1) {	
-				require("utils/twitter.js")
-				notify_twitter(p)
+			if(twit && p.tags.indexOf("tweet") != -1) {
+				queue.add(TaskOptions.Builder.url("/_tasks/tweet").param("model", p.toSource()))
 			}
 			
 			return ["redirect", "/" + request.params["key"]]
