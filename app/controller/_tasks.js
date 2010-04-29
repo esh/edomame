@@ -1,6 +1,6 @@
 (function() {
 	importPackage(com.google.appengine.api.datastore, com.google.appengine.api.memcache, Packages.twitter4j, Packages.twitter4j.http)
-	
+
 	var ds = DatastoreServiceFactory.getDatastoreService()
 	var cache = MemcacheServiceFactory.getMemcacheService()
 
@@ -10,7 +10,7 @@
 
 			var mapping = new Object()
 			var index = new Object()
-			for(var e in Iterator(ds.prepare(new Query("posts")).asIterator())) {
+			for(var e in Iterator(ds.prepare(new com.google.appengine.api.datastore.Query("posts")).asIterator())) {
 				var model = eval(e.getProperty("data").getValue())
 				var key = e.getKey().getId()
 				mapping[key] = KeyFactory.keyToString(e.getKey()) 
@@ -31,7 +31,7 @@
 			log.info("index: " + index.toSource())
 
 			// remove old ones
-			for(var e in Iterator(ds.prepare(new Query("meta")).asIterator())) {
+			for(var e in Iterator(ds.prepare(new com.google.appengine.api.datastore.Query("meta")).asIterator())) {
 				ds["delete"](e.getKey())
 				cache["delete"](e.getKey().getName())
 			}
