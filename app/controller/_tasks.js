@@ -1,6 +1,5 @@
 (function() {
-	importPackage(com.google.appengine.api.datastore)
-	importPackage(com.google.appengine.api.memcache)
+	importPackage(com.google.appengine.api.datastore, com.google.appengine.api.memcache, Packages.twitter4j, Packages.twitter4j.http)
 	
 	var ds = DatastoreServiceFactory.getDatastoreService()
 	var cache = MemcacheServiceFactory.getMemcacheService()
@@ -58,6 +57,14 @@
 			entity.setProperty("data", new Text(mapping.toSource()))
 			ds.put(entity)
 			
+			return ["ok", "ok"]
+		},
+		tweet: function() {
+			var twitter = new TwitterFactory().getInstance()
+			twitter.setOAuthConsumer(config.twitterconsumerkey, config.twitterconsumersecret)
+			twitter.setOAuthAccessToken(new AccessToken(config.twitteraccesstoken, config.twitteraccesstokensecret))
+			twitter.updateStatus("hello world")
+
 			return ["ok", "ok"]
 		}
 	}
