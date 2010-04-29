@@ -99,7 +99,7 @@ function loadUI(target, keys, focus, admin) {
 			html.push("<h1>")
 			html.push(data.title)
 			html.push("</h1>")
-			html.push(data.date)
+			html.push(data.date.toDateString())
 			html.push("<br/>Tags:&nbsp;")
 			$.each(data.tags, function(i, tag) {
 				html.push("<a href=\"/")
