@@ -108,6 +108,10 @@ function loadUI(target, keys, focus, admin) {
 				html.push(tag)
 				html.push("</a>&nbsp;")
 			})
+			html.push("<br/>")
+			html.push('<iframe style="margin-top:2px" src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.edomame.com%2F')
+			html.push(key + "")
+			html.push('&amp;layout=button_count&amp;show_faces=false&amp;width=120&amp;action=like&amp;colorscheme=light" scrolling="no" frameborder="0" allowTransparency="true" style="border:none; overflow:hidden; width:120px; height:px"></iframe>')
 			if(admin) {
 				html.push("<br/><br/><a href=\"/blog/edit/")
 				html.push(key)
