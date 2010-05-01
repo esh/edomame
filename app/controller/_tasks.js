@@ -7,10 +7,23 @@
 	return {
 		buildIndex: function() {
 			log.info("rebuilding index")
-
 			var mapping = new Object()
 			var index = new Object()
-			for(var e in Iterator(ds.prepare(new com.google.appengine.api.datastore.Query("posts")).asIterator())) {
+			var from = 0
+
+			if(request.params.buildIndex != null) {
+				mapping = eval(request.params.buildIndex.mapping)
+				index = eval(request.params.buildIndex.index)
+				from = eval(request.params.buildIndex.from)
+			}
+
+			var query = ds.prepare(new com.google.appengine.api.datastore.Query("posts")
+					.addFilter(
+						"__id__",
+						com.google.appengine.api.datastore.Query.FilterOperator.GREATER_THAN_OR_EQUAL,
+						from))
+
+			for(var e in Iterator(query.asIterator())) {
 				var model = eval(e.getProperty("data").getValue())
 				var key = e.getKey().getId()
 				mapping[key] = KeyFactory.keyToString(e.getKey()) 
@@ -27,17 +40,10 @@
 				})
 			}
 
+			log.info("from: " + from)
 			log.info("mapping: " + mapping.toSource())
 			log.info("index: " + index.toSource())
 
-			// remove old ones
-			for(var e in Iterator(ds.prepare(new com.google.appengine.api.datastore.Query("meta")).asIterator())) {
-				ds["delete"](e.getKey())
-				cache["delete"](e.getKey().getName())
-			}
-			cache["delete"]("_mapping")
-			cache["delete"]("_tags")
-	
 
 			var tags = new Array()
 			for(var tag in index) {
@@ -47,6 +53,14 @@
 				entity.setProperty("data", new Text(index[tag].sort(function(a, b) { return a.date - b.date }).map(function(e) { return e.key }).toSource()))
 				ds.put(entity)
 			}
+
+			// remove old ones
+			for(var e in Iterator(ds.prepare(new com.google.appengine.api.datastore.Query("meta")).asIterator())) {
+				ds["delete"](e.getKey())
+				cache["delete"](e.getKey().getName())
+			}
+			cache["delete"]("_mapping")
+			cache["delete"]("_tags")
 
 			// save down the entire set
 			var entity = new Entity(KeyFactory.createKey("meta", "_tags"))
