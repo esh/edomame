@@ -9,6 +9,7 @@
 				log.info("FROM: " + from)
 			})
 
+			log.info("MAIL TYPE:" + mail.getContentType())
 			var title = mail.getSubject().trim()	
 			var photo
 			var tags
@@ -17,11 +18,15 @@
 			for(var i = 0 ; i < multipart.getCount() ; i++) {
 				var part = multipart.getBodyPart(i)
 				log.info("PART TYPE:" + part.getContentType())
-				if(part.getContentType().matches(/text/)) {
-					tags = part.getContent().trim().split(" ")
-				} else if(part.getContentType().matches(/image/)) {
+				if(part.getContentType().match(/text/)) {
+					tags = part.getContent().trim()
+				} else if(part.getContentType().match(/image/)) {
 					photo = IOUtils.toByteArray(part.getInputStream())
 				}	
+			}
+			
+			if(tags == null) {
+				tags = ""
 			}
 
 			log.info(title + " " + photo + " " + tags)
