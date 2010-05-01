@@ -1,10 +1,6 @@
 (function() {
 	require("utils/common.js")
-	importPackage(com.google.appengine.api.datastore)
-	importPackage(com.google.appengine.api.memcache)
-	importPackage(com.google.appengine.api.labs.taskqueue)
-	importPackage(com.google.appengine.api.images)
-	importPackage(org.apache.commons.codec.binary)
+	importPackage(com.google.appengine.api.datastore, com.google.appengine.api.memcache, com.google.appengine.api.labs.taskqueue, com.google.appengine.api.images)
 
 	var ds = DatastoreServiceFactory.getDatastoreService()
 	var cache = MemcacheServiceFactory.getMemcacheService()
@@ -71,7 +67,6 @@
 		
 				if(photo && ext) {
 					model.ext = ext
-					photo = Base64.decodeBase64(photo) 
 					model.original = new Array()
 					// save the original by splitting into MAX_SIZE byte chunks
 					var chunk = 0
