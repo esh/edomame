@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<datastore-indexes
+  autoGenerate="false">
+    <datastore-index kind="posts" ancestor="false">
+        <property name="__key__" direction="desc" />
+    </datastore-index>
+</datastore-indexes>
