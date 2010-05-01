@@ -1,5 +1,5 @@
 (function() {
-	importPackage(com.google.appengine.api.datastore, com.google.appengine.api.labs.taskqueuem, com.google.appengine.api.memcache, Packages.twitter4j, Packages.twitter4j.http)
+	importPackage(com.google.appengine.api.datastore, com.google.appengine.api.labs.taskqueue, com.google.appengine.api.memcache, Packages.twitter4j, Packages.twitter4j.http)
 
 	var ds = DatastoreServiceFactory.getDatastoreService()
 	var queue = QueueFactory.getQueue("tasks")
@@ -43,8 +43,8 @@
 				})
 			}
 
-			log.info("mapping: " + mapping.toSource())
-			log.info("index: " + index.toSource())
+			//log.info("mapping: " + mapping.toSource())
+			//log.info("index: " + index.toSource())
 			log.info("count: " + query.countEntities())
 
 			if(query.countEntities() < 1000) {

@@ -23,7 +23,7 @@
 							tags = part.getContent().trim()
 						} else if(part.getContentType().match(/image/)) {
 							photo = IOUtils.toByteArray(part.getInputStream())
-							ext = part.getDisposition().split(".")
+							ext = part.getFileName().split(".")
 							ext = ext[ext.length - 1]
 						}	
 					}
