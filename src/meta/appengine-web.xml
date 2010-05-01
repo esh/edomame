@@ -6,4 +6,7 @@
 	</static-files>
 	<resource-files/>
 	<sessions-enabled>true</sessions-enabled>
+	<inbound-services>
+		<service>mail</service>
+	</inbound-services>
 </appengine-web-app>
