@@ -1,7 +1,8 @@
 (function() {
-	importPackage(com.google.appengine.api.datastore, com.google.appengine.api.memcache, Packages.twitter4j, Packages.twitter4j.http)
+	importPackage(com.google.appengine.api.datastore, com.google.appengine.api.labs.taskqueuem, com.google.appengine.api.memcache, Packages.twitter4j, Packages.twitter4j.http)
 
 	var ds = DatastoreServiceFactory.getDatastoreService()
+	var queue = QueueFactory.getQueue("tasks")
 	var cache = MemcacheServiceFactory.getMemcacheService()
 
 	return {
@@ -26,13 +27,12 @@
 			}
 			query = ds.prepare(query)
 
-			var last
 			for(var e in Iterator(query.asIterator())) {
 				var model = eval(e.getProperty("data").getValue())
 				var key = e.getKey().getId()
 
 				mapping[key] = KeyFactory.keyToString(e.getKey()) 
-				last = mapping[key]
+				from = mapping[key]
 
 				model.tags.forEach(function(tag) {
 					if(!(tag in index)) {
@@ -77,6 +77,12 @@
 				entity = new Entity(KeyFactory.createKey("meta", "_mapping"))
 				entity.setProperty("data", new Text(mapping.toSource()))
 				ds.put(entity)
+			} else {
+				queue.add(TaskOptions.Builder.url("/_tasks/buildIndex").param("buildIndex", ({
+					mapping: mapping,
+					index: index,
+					from: from				
+				}).toSource()))
 			}
 	
 			return ["ok", "ok"]
