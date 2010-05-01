@@ -13,20 +13,17 @@
 			var from = null
 
 			if(request.params.buildIndex != null) {
-				mapping = eval(request.params.buildIndex.mapping)
-				index = eval(request.params.buildIndex.index)
-				from = KeyFactory.stringToKey(request.params.buildIndex.from)
+				var t = eval(request.params.buildIndex)
+				mapping = t.mapping
+				index = t.index
+				from = KeyFactory.stringToKey(t.from)
 			}
 
-			var query = new com.google.appengine.api.datastore.Query("posts")
+			var query = new com.google.appengine.api.datastore.Query("posts").addSort("__key__")
 			if(from) {
-				query = query.addFilter(
-						"__key__",
-						com.google.appengine.api.datastore.Query.FilterOperator.GREATER_THAN_OR_EQUAL,
-						from)
+				query = query.addFilter("__key__", com.google.appengine.api.datastore.Query.FilterOperator.GREATER_THAN, from)
 			}
 			query = ds.prepare(query)
-
 			for(var e in Iterator(query.asIterator())) {
 				var model = eval(e.getProperty("data").getValue())
 				var key = e.getKey().getId()
@@ -46,12 +43,19 @@
 				})
 			}
 
-
 			log.info("mapping: " + mapping.toSource())
 			log.info("index: " + index.toSource())
 			log.info("count: " + query.countEntities())
 
 			if(query.countEntities() < 1000) {
+				// remove old ones
+				for(var e in Iterator(ds.prepare(new com.google.appengine.api.datastore.Query("meta")).asIterator())) {
+					ds["delete"](e.getKey())
+					cache["delete"](e.getKey().getName())
+				}
+				cache["delete"]("_mapping")
+				cache["delete"]("_tags")
+
 				var tags = new Array()
 				for(var tag in index) {
 					tags.push(tag)
@@ -61,14 +65,7 @@
 					ds.put(entity)
 				}
 
-				// remove old ones
-				for(var e in Iterator(ds.prepare(new com.google.appengine.api.datastore.Query("meta")).asIterator())) {
-					ds["delete"](e.getKey())
-					cache["delete"](e.getKey().getName())
-				}
-				cache["delete"]("_mapping")
-				cache["delete"]("_tags")
-
+				
 				// save down the entire set
 				var entity = new Entity(KeyFactory.createKey("meta", "_tags"))
 				entity.setProperty("data", new Text(tags.sort().toSource()))
@@ -77,7 +74,10 @@
 				entity = new Entity(KeyFactory.createKey("meta", "_mapping"))
 				entity.setProperty("data", new Text(mapping.toSource()))
 				ds.put(entity)
+
+				log.info("index built")
 			} else {
+				log.info("continuing index build...")
 				queue.add(TaskOptions.Builder.url("/_tasks/buildIndex").param("buildIndex", ({
 					mapping: mapping,
 					index: index,
