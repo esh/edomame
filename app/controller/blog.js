@@ -25,14 +25,27 @@
 		}
 	}
 
-	function show(type) {
-		var type = (type == undefined || type == "") ? "all" : type
+	function show(a, b) {
+		log.info("show: " + a + " " + b)
+		var type = "all"
+		var p
+
+		if(a != undefined && isNaN(a)) {
+			type = a
+		}
+		if(a != undefined && !isNaN(a)) {
+			p = post.get(a)
+		} else if(b != undefined && !isNaN(b)) {
+			p = post.get(b) 
+		}
+
 		return ["ok", render(
 				"view/blog/show.jhtml",
 				{ 
 					type: type, 
 					keys: tagset.get(type),
 					cloud: tags.get(),
+					post: p,
 					admin: session["authorized"] == true
 				})]
 	}
