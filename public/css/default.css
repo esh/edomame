@@ -21,28 +21,8 @@ h1 {
 	margin: 5px 0px 5px 0px;
 }
 
-h2 {
-	font-size: 14px;
-	margin: 5px 0px 5px 0px;
-}
-
-h3 {
-	font-size: 14px;
-	margin: 8px 0px 0px 0px;
-}
-
 img {
 	border:0px;
-}
-
-ul {
-	list-style-type: none;
-	margin: 0; 
-	padding: 0; 
-}
-
-li {
-	padding: 3px 0px 0px 0px;
 }
 
 td {
@@ -72,8 +52,4 @@ td {
 	font-size: 120px;
 	font-weight: bold;
         cursor:pointer;
-}
-
-.hidden {
-	visibility: hidden;
 }

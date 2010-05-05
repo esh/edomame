@@ -23,7 +23,6 @@ require("utils/common.js")
 			<br/>
 			<br/>
 			<span style="font-size:18;font-weight:bold">tagged</span>
-			<br/>
 			<select onchange="nav(this)">
 			<%
         		echo(params["cloud"].map(function(e) {
@@ -33,7 +32,7 @@ require("utils/common.js")
 			</select>
 			<br/>
 			<br/>
-			<a href="http://www.github.com/esh/edomame/">latte powered</a>
+			<a href="http://www.github.com/esh/latte">latte powered</a>
 		</div>
 		<div id="body">
 			<table>
@@ -45,10 +44,8 @@ require("utils/common.js")
 			var keys = <%= params["keys"].toSource() %>
 			var match = window.location.href.split("/")
 			var focus = match[match.length - 1].match(/[0-9]+/) ? parseInt(match[match.length - 1]) : keys[keys.length - 1]
-			loadUI($("#content"), keys, focus, <%= params["admin"] %>)
-		</script>
+			loadUI(keys, focus, <%= params["admin"] %>)
 		
-		<script type="text/javascript">
 			var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
 			document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
 		</script>

@@ -12,21 +12,7 @@ function nav(s) {
 	window.location = "/" + s.options[s.selectedIndex].value
 }
 
-function escapeXML(text) {
-	var map = [{target: "&", replace: "&amp;"},
-		   {target: "'", replace: "&apos;"},
-		   {target: "\"", replace: "&quot;"},
-		   {target: ">", replace: "&gt;"},
-		   {target: "<", replace: "&lt;"}]
-
-	$.each(map, function(i, m) {
-		text = text.replace(m.target, m.replace)
-	})
-
-	return text
-}
-
-function loadUI(target, keys, focus, admin) {
+function loadUI(keys, focus, admin) {
 	var MAX_WIDTH = 370
 	var MIN_WIDTH = 278
 	var loadAmount = calcLoadAmount() 
@@ -34,7 +20,7 @@ function loadUI(target, keys, focus, admin) {
 	var start = Math.max(0, end - loadAmount)
 	var t = keys.slice(start, end + 1).reverse()
 
-	target.html(genLoadNewer() + jQuery.map(t, genHTML).join(""))
+	$("#content").html(genLoadNewer() + jQuery.map(t, genHTML).join(""))
 	$.each(t, getDetails)
 	if(end < keys.length - 1) $("#loadNewer").click(loadNewer)
 
@@ -58,7 +44,7 @@ function loadUI(target, keys, focus, admin) {
 		start = Math.max(0, start - loadAmount) 
 		t = keys.slice(start, t + 1).reverse()
 
-		target.html(target.html() + jQuery.map(t, genHTML).join(""))
+		$("#content").html($("#content").html() + jQuery.map(t, genHTML).join(""))
 		$.each(t, getDetails)
 		if(end < keys.length - 1) $("#loadNewer").click(loadNewer)
 	}
@@ -70,7 +56,7 @@ function loadUI(target, keys, focus, admin) {
 		end = Math.min(keys.length - 1, end + Math.min(1,Math.floor($(window).width() / MAX_WIDTH)))
 		t = keys.slice(t, end + 1).reverse()
 	
-		target.html(genLoadNewer() + jQuery.map(t, genHTML).join("") + target.html())
+		$("#content").html(genLoadNewer() + jQuery.map(t, genHTML).join("") + $("#content").html())
 		$.each(t, getDetails)
 		if(end < keys.length - 1) $("#loadNewer").click(loadNewer)
 	}
@@ -84,18 +70,18 @@ function loadUI(target, keys, focus, admin) {
 		var html = new Array()
         	html.push("<td id=\"")
                 html.push(key)
-                html.push("\"><div><a href=\"/blog/image/original/")
+                html.push("\"><a href=\"/blog/image/original/")
                 html.push(key)
                 html.push("\"><img src=\"/blog/image/preview/")
                 html.push(key)
-                html.push("\"/></a></div><div/>")
+                html.push("\"/></a></td>")
 		return html
 	}
 
 	function getDetails(i, key) {
 		$.getJSON("/blog/detail/" + key, function(data) {
 			var html = new Array()
-			html.push($("#" + key + " div:eq(0)").html())
+			html.push($("#" + key).html())
 			html.push("<h1>")
 			html.push(data.title)
 			html.push("</h1>")
@@ -120,7 +106,7 @@ function loadUI(target, keys, focus, admin) {
 				html.push("\">remove</a>")
 			}
 				
-			$("#" + key + " div:eq(0)").html(html.join(""))
+			$("#" + key).html(html.join(""))
 		})	
 	}
 }
