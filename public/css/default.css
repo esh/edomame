@@ -1,5 +1,5 @@
 body {
-	font-family: Helvetica;
+	font-family: Calibri, Helvetica;
 	background-color: white;
 	margin: 0;
 	padding: 0;
@@ -43,7 +43,7 @@ td {
 }
 
 #body {
-	margin: 100px 0px 0px 330px;
+	margin: 30px 0px 0px 330px;
 }
 
 #loadNewer div {
