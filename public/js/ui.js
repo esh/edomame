@@ -14,7 +14,12 @@ function nav(s) {
 
 function loadUI(keys, focus, admin) {
 	var MAX_WIDTH = 370
+	var MAX_HEIGHT = 370
 	var MIN_WIDTH = 278
+
+	$("#nav").css("padding-top", Math.floor(($(document).height() - MAX_HEIGHT) * 2 / 5 - 36))
+	$("#body").css("padding-top", Math.floor(($(document).height() - MAX_HEIGHT) * 2 / 5))
+
 	var loadAmount = calcLoadAmount() 
 	var end = keys.indexOf(focus)
 	var start = Math.max(0, end - loadAmount)

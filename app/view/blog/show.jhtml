@@ -34,7 +34,7 @@ require("utils/common.js")
 		</div>
 		<div id="body">
 			<table>
-				<tr id="content"/>
+				<tr id="content"></tr>
 			</table>
 		</div>
 		
