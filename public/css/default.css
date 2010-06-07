@@ -13,7 +13,7 @@ a {
 
 select {
 	font-size: 14px;
-	margin: 5px 0px 0px 0px;
+	margin: 0px 0px 0px 0px;
 }
 
 h1 {
@@ -31,7 +31,7 @@ img {
 }
 
 td {
-	padding: 0px 5px 0px 0px;
+	padding: 0px 8px 0px 0px;
 	margin: 0;
 	vertical-align:top;
 }
@@ -41,8 +41,8 @@ td {
 	text-align: right;
 	background-color: white;
 	height: 100%;
-	margin: 0px 0px 0px 20px;
-	padding: 0px 0px 0px 0px;
+	margin: 0px 0px 0px 0px;
+	padding: 0px 5px 0px 20px;
 }
 
 #body {

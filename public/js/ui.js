@@ -17,8 +17,8 @@ function loadUI(keys, focus, admin) {
 	var MAX_HEIGHT = 370
 	var MIN_WIDTH = 278
 
-	$("#nav").css("padding-top", Math.floor(($(document).height() - MAX_HEIGHT) * 2 / 5 - 36))
-	$("#body").css("padding-top", Math.floor(($(document).height() - MAX_HEIGHT) * 2 / 5))
+	$("#nav").css("padding-top", Math.floor(($(document).height() - MAX_HEIGHT) * 1 / 3 - 51))
+	$("#body").css("padding-top", Math.floor(($(document).height() - MAX_HEIGHT) * 1 / 3))
 
 	var loadAmount = calcLoadAmount() 
 	var end = keys.indexOf(focus)
@@ -49,7 +49,7 @@ function loadUI(keys, focus, admin) {
 		start = Math.max(0, start - loadAmount) 
 		t = keys.slice(start, t + 1).reverse()
 
-		$("#content").html($("#content").html() + jQuery.map(t, genHTML).join(""))
+		$("#content").append(jQuery.map(t, genHTML).join(""))
 		$.each(t, getDetails)
 		if(end < keys.length - 1) $("#loadNewer").click(loadNewer)
 	}
