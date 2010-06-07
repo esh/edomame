@@ -21,9 +21,6 @@ require("utils/common.js")
 			<h1>edomame</h1>
 			<img src="/public/img/logo.png"/>	
 			<br/>
-			<br/>
-			<br/>
-			<span style="font-size:18;font-weight:bold">tagged</span>
 			<select onchange="nav(this)">
 			<%
         		echo(params["cloud"].map(function(e) {

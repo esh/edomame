@@ -82,11 +82,11 @@ function loadUI(keys, focus, admin) {
 		$.getJSON("/blog/detail/" + key, function(data) {
 			var html = new Array()
 			html.push($("#" + key).html())
-			html.push("<h1>")
+			html.push("<h2>")
 			html.push(data.title)
-			html.push("</h1>")
+			html.push("</h2>")
 			html.push(data.date.toDateString())
-			html.push(" - Tags:&nbsp;")
+			html.push("&nbsp;-&nbsp;")
 			$.each(data.tags, function(i, tag) {
 				html.push("<a href=\"/")
 				html.push(tag)
