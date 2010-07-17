@@ -91,10 +91,16 @@
 						var metadata = Sanselan.getMetadata(photo)
 						var orientation = metadata.findEXIFValue(ExifTagConstants.EXIF_TAG_ORIENTATION)
 						orientation = orientation == null ? 1 : orientation.getIntValue()
-						log.info("orientation: " + orientation) 
-					}
-
-					if(gphoto.getWidth() > gphoto.getHeight()) {
+						log.info("orientation: " + orientation)
+				
+						if(orientation == 6 || orientation == 5) {
+							gphoto = is.applyTransform(ImagesServiceFactory.makeResize(370, gphoto.getHeight() * 370 / gphoto.getWidth()), gphoto)
+							gphoto = is.applyTransform(ImagesServiceFactory.makeRotate(90), gphoto)
+						} else if(orientation == 7 || orientation == 8) {
+							gphoto = is.applyTransform(ImagesServiceFactory.makeResize(370, gphoto.getHeight() * 370 / gphoto.getWidth()), gphoto)
+							gphoto = is.applyTransform(ImagesServiceFactory.makeRotate(270), gphoto)
+						} 
+					} else if(gphoto.getWidth() > gphoto.getHeight()) {
 						gphoto = is.applyTransform(ImagesServiceFactory.makeResize(370, gphoto.getHeight() * 370 / gphoto.getWidth()), gphoto)
 					} else {
 						gphoto = is.applyTransform(ImagesServiceFactory.makeResize(gphoto.getWidth() * 370 / gphoto.getHeight(), 370), gphoto)
