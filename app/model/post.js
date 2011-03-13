@@ -89,11 +89,11 @@
 						log.info("orientation: " + orientation)
 				
 						if(orientation == 3) {
-							gphoto = is.applyTransform(ImagesServiceFactory.makeRotate(90), gphoto)
+							gphoto = is.applyTransform(ImagesServiceFactory.makeRotate(180), gphoto)
 						} else if(orientation == 6) {
-							gphoto = is.applyTransform(ImagesServiceFactory.makeRotate(270), gphoto)
-						} else if(orientation == 8) {
 							gphoto = is.applyTransform(ImagesServiceFactory.makeRotate(90), gphoto)
+						} else if(orientation == 8) {
+							gphoto = is.applyTransform(ImagesServiceFactory.makeRotate(270), gphoto)
 						} 
 					}
 
