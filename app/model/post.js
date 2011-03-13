@@ -16,22 +16,11 @@
 		})
 	}
 
-	function translateKey(key) {
-		var mapping = cache.get("_mapping")
-		if(mapping == null) {
-			log.info("cache miss _mapping")
-			mapping = ds.get(KeyFactory.createKey("meta", "_mapping")).getProperty("data").getValue()
-			cache.put("_mapping", mapping)
-		}
-		mapping = eval(mapping)
-		return mapping[key]
-	}
-
 	function get(key) {
 		var model = cache.get(key)
 		if(model == null) {
 			log.info("cache miss: " + key) 
-			model = ds.get(KeyFactory.stringToKey(translateKey(key))).getProperty("data").getValue()
+			model = ds.get(KeyFactory.createKey("posts", parseInt(key))).getProperty("data").getValue()
 			cache.put(key, model)
 		}
 		
@@ -43,13 +32,12 @@
 		persist: function(key, title, tags, photo, ext, timestamp) {
 			var transaction = ds.beginTransaction()
 			try {
-				log.info(key + " " + title + " " + tags)
-				ext = ext.toLowerCase()
+				log.info("key:" + key + " title:" + title + " tags:" + tags)
 				var parent
 				var model
 
 				if(key) {
-					parent = KeyFactory.stringToKey(translateKey(key))
+					parent = KeyFactory.createKey("posts", parseInt(key))
 					model = get(key)
 					log.info("existing model: " + model.toSource()) 
 				} else {
@@ -67,7 +55,9 @@
 				model.date = timestamp ? new Date(timestamp) : new Date()
 		
 				if(photo && ext) {
-					model.ext = ext
+					log.info("got photo of ext:" + ext)
+
+					model.ext = ext.toLowerCase()
 					model.original = new Array()
 					// save the original by splitting into MAX_SIZE byte chunks
 					var chunk = 0
@@ -92,7 +82,7 @@
 					}
 
 					// handle orientation
-					if(ext == "jpg" || ext == "jpeg") {
+					if(model.ext == "jpg" || model.ext == "jpeg") {
 						var metadata = Sanselan.getMetadata(photo)
 						var orientation = metadata.findEXIFValue(ExifTagConstants.EXIF_TAG_ORIENTATION)
 						orientation = orientation == null ? 1 : orientation.getIntValue()
@@ -143,13 +133,13 @@
 				removeImages(model.original)
 				removeImages(model.preview)
 				
-				ds["delete"](KeyFactory.stringToKey(translateKey(key)))
+				ds["delete"](KeyFactory.createKey("posts", parseInt(key)))
 				cache["delete"](key)
 
 				transaction.commit()
 
 				// rebuild index
-				queue.add(TaskOptions.Builder.url("/_tasks/buildIndex"))	
+				queue.add(TaskOptions.Builder.url("/_tasks/buildIndex"))
 			} catch(e) {
 				log.severe(e)
 				log.severe("rolling back")
