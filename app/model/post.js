@@ -43,17 +43,17 @@
 				} else {
 					parent = ds.allocateIds("posts", 1).getStart()
 					model = new Object()
+					model.key = parent.getId()
+					model.date = timestamp ? new Date(timestamp) : new Date()
 				}
 
 				// split the tags into an array and ensure we have the "all" tag
 				tags = tags != null && tags.trim().length > 0 ? tags.trim().toLowerCase().split(" ") : new Array()
 				if(tags.indexOf("all") == -1) tags.push("all")
 	
-				model.key = parent.getId()
 				model.title = title
 				model.tags = tags
-				model.date = timestamp ? new Date(timestamp) : new Date()
-		
+
 				if(photo && ext) {
 					log.info("got photo of ext:" + ext)
 

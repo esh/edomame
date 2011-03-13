@@ -13,6 +13,7 @@
 	</servlet-mapping>
 	<security-constraint>
 		<web-resource-collection>
+			<url-pattern>/_admin/*</url-pattern>
 			<url-pattern>/_tasks/*</url-pattern>
 			<url-pattern>/_ah/mail/*</url-pattern>
 		</web-resource-collection>
