@@ -8,13 +8,11 @@
 	return {
 		buildIndex: function() {
 			log.info("rebuilding index")
-			var mapping = new Object()
 			var index = new Object()
 			var from = null
 
 			if(request.params.buildIndex != null) {
 				var t = eval(request.params.buildIndex)
-				mapping = t.mapping
 				index = t.index
 				from = KeyFactory.stringToKey(t.from)
 			}
@@ -27,9 +25,8 @@
 			for(var e in Iterator(query.asIterator())) {
 				var model = eval(e.getProperty("data").getValue())
 				var key = e.getKey().getId()
-
-				mapping[key] = KeyFactory.keyToString(e.getKey()) 
-				from = mapping[key]
+				
+				from = KeyFactory.keyToString(e.getKey())
 
 				model.tags.forEach(function(tag) {
 					if(!(tag in index)) {
@@ -43,8 +40,6 @@
 				})
 			}
 
-			//log.info("mapping: " + mapping.toSource())
-			//log.info("index: " + index.toSource())
 			log.info("count: " + query.countEntities())
 
 			if(query.countEntities() < 1000) {
@@ -53,7 +48,6 @@
 					ds["delete"](e.getKey())
 					cache["delete"](e.getKey().getName())
 				}
-				cache["delete"]("_mapping")
 				cache["delete"]("_tags")
 
 				var tags = new Array()
@@ -71,15 +65,10 @@
 				entity.setProperty("data", new Text(tags.sort().toSource()))
 				ds.put(entity)
 
-				entity = new Entity(KeyFactory.createKey("meta", "_mapping"))
-				entity.setProperty("data", new Text(mapping.toSource()))
-				ds.put(entity)
-
 				log.info("index built")
 			} else {
 				log.info("continuing index build...")
 				queue.add(TaskOptions.Builder.url("/_tasks/buildIndex").param("buildIndex", ({
-					mapping: mapping,
 					index: index,
 					from: from				
 				}).toSource()))
