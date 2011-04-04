@@ -16,4 +16,4 @@ httpserver(config, require("utils/dispatcher.js")([
 	{ route: /^\/_ah\/mail$/, handler: admin.mail },	
 	{ route: /^\/_tasks\/buildIndex$/, handler: tasks.buildIndex },
 	{ route: /^\/_tasks\/tweet$/, handler: tasks.tweet },
-	{ route: /./, handler: blog.show }]))
+	{ route: /^\/$/, handler: blog.show }]))

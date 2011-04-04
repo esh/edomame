@@ -12,31 +12,30 @@
 		else return ["unauthorized"]
 	}
 			
-	function detail(key) {
-		return ["ok", post.get(key).toSource()]
+	function detail(request, response, session) {
+		return ["ok", post.get(request.args[0]).toSource()]
 	}
 
-	function image(type, key) {
-		if(type == "original" || type == "preview") {
-			var p = post.get(key)
-			return ["ok", img.get(p[type]), "image/" + p.ext]
+	function image(request, response, session) {
+		if(request.args[0] == "original" || request.args[1] == "preview") {
+			var p = post.get(request.args[1])
+			return ["ok", img.get(p[request.args[0]]), "image/" + p.ext]
 		} else {
 			return ["error", "invalid type"]
 		}
 	}
 
-	function show(a, b) {
-		log.info("show: " + a + " " + b)
+	function show(request, response, session) {
+		log.info("show: " + request.args.toSource())
 		var type = "all"
 		var p
 
-		if(a != undefined && isNaN(a)) {
-			type = a
-		}
-		if(a != undefined && !isNaN(a)) {
-			p = post.get(a)
-		} else if(b != undefined && !isNaN(b)) {
-			p = post.get(b) 
+		if(request.args.length == 1 && isNaN(request.args[0])) {
+			type = request.args[0]
+		} else if(request.args.length == 1 && !isNaN(request.args[0])) {
+			p = post.get(request.args[0])
+		} else if(request.args.length >= 2 && !isNaN(request.args[1])) {
+			p = post.get(request.args[1]) 
 		}
 
 		return ["ok", render(
@@ -50,15 +49,15 @@
 				})]
 	}
 	
-	function create() {
+	function create(request, response, session) {
 		return secure(function() {	
 			return ["ok", render("view/blog/form.jhtml", new Object())]
 		})
 	}
 
-	function edit(key) {
+	function edit(request, response, session) {
 		return secure(function() {
-			var p = post.get(key)
+			var p = post.get(request.args[0])
 			p.key = key
 			p.tags = p.tags.join(" ")
 			
@@ -66,7 +65,7 @@
 		})
 	}
 	
-	function save() {
+	function save(request, response, session) {
 		return secure(function() {
 			var twit = request.params["key"] == null
 			var p = post.persist(request.params["key"], request.params["title"], request.params["tags"])
@@ -79,9 +78,9 @@
 		})
 	}
 	
-	function remove(key) {
+	function remove(request, response, session) {
 		return secure(function() {
-			post.remove(key)
+			post.remove(request.args[0])
 			return ["redirect", "/"] 
 		})
 	}

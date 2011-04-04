@@ -5,6 +5,8 @@
 			for(var i = 0 ; i < routes.length ; i++) {
 				var match = request.url.match(routes[i].route)
 				if(match) {
+					log.info("matched: " + match.toSource())
+
 					request.args = []
 					for(var j = 1 ; j < match.length ; j++) {
 						request.args.push(match[j])
