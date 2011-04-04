@@ -6,9 +6,9 @@
 	var cache = MemcacheServiceFactory.getMemcacheService()
 
 	return {
-		buildIndex: function() {
+		buildIndex: function(request, response, session) {
 			log.info("rebuilding index")
-			var index = new Object()
+			var index = { all:[] } 
 			var from = null
 
 			if(request.params.buildIndex != null) {
@@ -76,7 +76,7 @@
 	
 			return ["ok", "ok"]
 		},
-		tweet: function() {
+		tweet: function(request, response, session) {
 			var twitter = new TwitterFactory().getInstance()
 			twitter.setOAuthConsumer(config.twitterconsumerkey, config.twitterconsumersecret)
 			twitter.setOAuthAccessToken(new AccessToken(config.twitteraccesstoken, config.twitteraccesstokensecret))

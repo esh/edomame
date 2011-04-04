@@ -4,22 +4,22 @@
 	var cache = MemcacheServiceFactory.getMemcacheService()
 	var queue = QueueFactory.getQueue("tasks")
 
-	function login() {
+	function login(request, response, session) {
 			session["authorized"] = true
 			return ["redirect", "/"]
 	}
 	
-	function logout() {
+	function logout(request, response, session) {
 		session["authorized"] = false
 		return ["redirect", "/"]
 	}
 	
-	function clearCache() {
+	function clearCache(request, response, session) {
 		cache.clearAll()	
 		return ["ok", "ok"]	
 	}
 
-	function buildIndex() {
+	function buildIndex(request, response, session) {
 		queue.add(TaskOptions.Builder.url("/_tasks/buildIndex"))	
 		return ["ok", "ok"]	
 	}
