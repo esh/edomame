@@ -6,7 +6,7 @@
 	var queue = QueueFactory.getQueue("tasks")
 	
 	return {
-		mail: function(address) {
+		mail: function(request, response, session) {
 			var mail = request.mail
 			mail.getFrom().forEach(function(from) {
 				if(from.getAddress() == "chan@sikho.ca" && mail.getContentType().match(/multipart/)) {
