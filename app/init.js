@@ -1,9 +1,9 @@
 var config = require("config.js")
 var admin = require("handler/admin.js")()
-var ah = require("handler/ah.js)()
-var tasks = require("handler/tasks.js)()
-var blog = require("handler/blog.js)()
-var rss = require("handler/rss.js)()
+var ah = require("handler/ah.js")()
+var tasks = require("handler/tasks.js")()
+var blog = require("handler/blog.js")()
+var rss = require("handler/rss.js")()
 
 httpserver(config, require("utils/dispatcher.js")([
 	{ route: /^\/([0-9]+)$/, handler: blog.show },
