@@ -20,7 +20,7 @@
 
 	function image(type, request, response, session) {
 		var p = post.get(request.args[0])
-		return ["ok", img.get(post[type]), "image/" + p.ext]
+		return ["ok", img.get(p[type]), "image/" + p.ext]
 	}
 
 	function show(request, response, session) {
