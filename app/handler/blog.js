@@ -16,13 +16,9 @@
 		return ["ok", post.get(request.args[0]).toSource()]
 	}
 
-	function image(request, response, session) {
-		if(request.args[0] == "original" || request.args[1] == "preview") {
-			var p = post.get(request.args[1])
-			return ["ok", img.get(p[request.args[0]]), "image/" + p.ext]
-		} else {
-			return ["error", "invalid type"]
-		}
+	function image(type, request, response, session) {
+		var p = post.get(request.args[0])
+		return ["ok", img.get(type), "image/" + p.ext]
 	}
 
 	function show(request, response, session) {
@@ -88,7 +84,8 @@
 	return {
 		show: show,
 		detail: detail,
-		image: image,
+		original: image.curry("original"),
+		preview: image.curry("preview"),
 		edit: edit,
 		remove: remove,
 		create: create,
