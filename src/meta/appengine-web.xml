@@ -1,6 +1,6 @@
 <appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
 	<application>edomamejs</application>
-	<version>prod</version>
+	<version>dev</version>
 	<static-files>
         	<include path="/public/**.*"/>
 	</static-files>
