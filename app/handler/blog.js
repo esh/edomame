@@ -9,7 +9,7 @@
 
 	require("utils/common.js")
 
-	function secure(fn) {
+	function secure(session, fn) {
 		if(session["authorized"]) return fn()
 		else return ["unauthorized"]
 	}
@@ -47,16 +47,10 @@
 				})]
 	}
 	
-	function create(request, response, session) {
-		return secure(function() {	
-			return ["ok", render("view/blog/form.jhtml", new Object())]
-		})
-	}
-
 	function edit(request, response, session) {
-		return secure(function() {
+		return secure(session, function() {
 			var p = post.get(request.args[0])
-			p.key = key
+			p.key = request.args[0]
 			p.tags = p.tags.join(" ")
 			
 			return ["ok", render("view/blog/form.jhtml", p)]
@@ -64,7 +58,7 @@
 	}
 	
 	function save(request, response, session) {
-		return secure(function() {
+		return secure(session, function() {
 			var twit = request.params["key"] == null
 			var p = post.persist(request.params["key"], request.params["title"], request.params["tags"])
 					
@@ -77,7 +71,7 @@
 	}
 	
 	function remove(request, response, session) {
-		return secure(function() {
+		return secure(session, function() {
 			post.remove(request.args[0])
 			return ["redirect", "/"] 
 		})
@@ -90,7 +84,6 @@
 		preview: image.curry("preview"),
 		edit: edit,
 		remove: remove,
-		create: create,
 		save: save
 	}
 })

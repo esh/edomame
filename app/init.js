@@ -18,6 +18,9 @@ httpserver(config, require("utils/dispatcher.js")([
 	{ route: /^\/([a-zA-Z]+)$/, handler: blog.show },
 	{ route: /^\/([a-zA-Z]+)\/([0-9]+)$/, handler: blog.show },
 	{ route: /^\/blog\/detail\/([0-9]+)$/, handler: blog.detail },
+	{ route: /^\/blog\/edit\/([0-9]+)$/, handler: blog.edit },
+	{ route: /^\/blog\/remove\/([0-9]+)$/, handler: blog.remove },
+	{ route: /^\/blog\/save$/, handler: blog.save },
 	{ route: /^\/blog\/image\/original\/([0-9]+)$/, handler: blog.original },
 	{ route: /^\/blog\/image\/preview\/([0-9]+)$/, handler: blog.preview },
 	{ route: /^\/$/, handler: blog.show }]))
