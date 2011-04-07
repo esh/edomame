@@ -11,7 +11,7 @@ httpserver(config, require("utils/dispatcher.js")([
 	{ route: /^\/_admin\/logout$/, handler: admin.logout },	
 	{ route: /^\/_admin\/clearCache$/, handler: admin.clearCache },	
 	{ route: /^\/_admin\/buildIndex$/, handler: admin.buildIndex },	
-	{ route: /^\/_ah\/mail\/.*$/, handler: admin.mail },	
+	{ route: /^\/_ah\/mail\/.*$/, handler: ah.mail },	
 	{ route: /^\/_tasks\/buildIndex$/, handler: tasks.buildIndex },
 	{ route: /^\/_tasks\/tweet$/, handler: tasks.tweet },
 	{ route: /^\/([0-9]+)$/, handler: blog.show },
