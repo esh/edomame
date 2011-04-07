@@ -30,6 +30,7 @@ require("utils/common.js")
 			</select>
 			<br/>
 			<br/>
+			<a href="/rss">rss</a>&nbsp;
 			<a href="http://www.github.com/esh/latte">latte powered</a>
 		</div>
 		<div id="body">
