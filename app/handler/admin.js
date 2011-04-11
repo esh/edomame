@@ -4,6 +4,8 @@
 	var cache = MemcacheServiceFactory.getMemcacheService()
 	var queue = QueueFactory.getQueue("tasks")
 
+	var tagset = require("model/tagset.js")()
+	
 	function login(request, response, session) {
 			session["authorized"] = true
 			return ["redirect", "/"]
@@ -24,10 +26,18 @@
 		return ["ok", "ok"]	
 	}
 	
+	function migrateImg(request, response, session) {
+		tagset.get("all").forEach(function(e) {
+			queue.add(TaskOptions.Builder.url("/_tasks/migrateImg").param("key", e))
+		})
+		return ["ok", "ok"]	
+	}
+
 	return {
 		login: login,
 		logout: logout,
 		clearCache: clearCache,
-		buildIndex: buildIndex
+		buildIndex: buildIndex,
+		migrateImg: migrateImg 
 	}
 })

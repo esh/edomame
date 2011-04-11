@@ -1,11 +1,11 @@
 (function() {
-	importPackage(com.google.appengine.api.labs.taskqueue)
+	importPackage(com.google.appengine.api.labs.taskqueue, com.google.appengine.api.blobstore)
 
 	var queue = QueueFactory.getQueue("tasks")
+	var fs = FileServiceFactory.getFileService()
 	var post = require("model/post.js")()
 	var tagset = require("model/tagset.js")()
 	var tags = require("model/tags.js")()
-	var img = require("model/image.js")()
 
 	require("utils/common.js")
 
@@ -19,8 +19,7 @@
 	}
 
 	function image(type, request, response, session) {
-		var p = post.get(request.args[0])
-		return ["ok", img.get(p[type]), "image/" + p.ext]
+		return ["blob", new BlobKey(post.get(request.args[0]).images[type])]
 	}
 
 	function show(request, response, session) {

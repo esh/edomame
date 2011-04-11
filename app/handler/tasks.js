@@ -5,6 +5,14 @@
 	var queue = QueueFactory.getQueue("tasks")
 	var cache = MemcacheServiceFactory.getMemcacheService()
 
+
+	// temp
+	importPackage(com.google.appengine.api.files, java.nio)
+	var fs = FileServiceFactory.getFileService()
+
+	var post = require("model/post.js")()
+	var img = require("model/image.js")()
+
 	return {
 		buildIndex: function(request, response, session) {
 			log.info("rebuilding index")
@@ -89,6 +97,30 @@
 
 			log.info("tweeting: " + model.title + url) 
 			twitter.updateStatus(model.title + url)
+
+			return ["ok", "ok"]
+		},
+		migrateImg: function(request, response, session) {
+			log.info("migrating: " + request.params.key)
+			var p = post.get(request.params.key)
+			delete p.preview
+			delete p.original
+			log.info("saving: " + p.toSource())
+
+			var transaction = ds.beginTransaction()
+			try {
+				var entity = new Entity(KeyFactory.createKey("posts", parseInt(request.params.key)))
+				entity.setProperty("data", new Text(p.toSource()))
+				ds.put(entity)
+
+				transaction.commit()
+			} catch(e) {
+				log.severe(e)
+				log.severe("rolling back")
+				transaction.rollback()
+
+				throw e
+			}
 
 			return ["ok", "ok"]
 		}

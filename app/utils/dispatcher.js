@@ -1,4 +1,7 @@
 (function(routes) {
+	importPackage(com.google.appengine.api.blobstore)
+	var blobStoreService = BlobstoreServiceFactory.getBlobstoreService()
+	
 	return (function(request, response, session) {
 		try {
 			log.info("request: " + request.url)
@@ -24,6 +27,10 @@
 							response.setStatus(200)
 							response.getWriter().append(result[1])
 						}
+						break
+					case "blob":
+						log.info("blob:" + result.toSource())
+						blobStoreService.serve(result[1], response)
 						break
 					case "unauthorized":
 						response.sendError(401)
