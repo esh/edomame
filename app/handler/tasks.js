@@ -102,13 +102,15 @@
 		},
 		migrateImg: function(request, response, session) {
 			log.info("migrating: " + request.params.key)
-			var p = post.get(request.params.key)
-			delete p.preview
-			delete p.original
-			log.info("saving: " + p.toSource())
-
 			var transaction = ds.beginTransaction()
 			try {
+				var p = post.get(request.params.key)
+				ds["delete"](KeyFactory.stringToKey(p.original[0]))
+				ds["delete"](KeyFactory.stringToKey(p.preview[0]))
+				delete p.preview
+				delete p.original
+				log.info("saving: " + p.toSource())
+
 				var entity = new Entity(KeyFactory.createKey("posts", parseInt(request.params.key)))
 				entity.setProperty("data", new Text(p.toSource()))
 				ds.put(entity)
