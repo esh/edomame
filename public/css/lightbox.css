@@ -1,11 +1,11 @@
-#lightbox{	position: absolute;	left: 0; width: 100%; z-index: 100; text-align: center; line-height: 0;}
+#lightbox{position: absolute;left: 0; width: 100%; z-index: 100; text-align: center; line-height: 0;}
 #lightbox img{ width: auto; height: auto;}
 #lightbox a img{ border: none; }
 
 #outerImageContainer{ position: relative; background-color: #fff; width: 250px; height: 250px; margin: 0 auto; }
 #imageContainer{ padding: 10px; float: left; }
-#commentContainer{ width: 250px; height: 50px; padding: 10px; float: left; }
-
+#commentContainer{ width: 300px; height: 50px; padding: 10px; float: left; }
+#comment{ text-align:left;padding-top:30px;}
 #loading{ position: absolute; top: 40%; left: 0%; height: 25%; width: 100%; text-align: center; line-height: 0; }
 #hoverNav{ position: absolute; top: 0; left: 0; height: 100%; width: 100%; z-index: 10; }
 #imageContainer>#hoverNav{ left: 0;}

@@ -148,7 +148,7 @@ Lightbox.prototype = {
                     )
                 ]),
 		Builder.node('div',{id:'commentContainer'},
-			Builder.node('div',{id:'comment'}).update("hello world")
+			Builder.node('div',{id:'comment'}).update("hello")
 		)
             ]),
             Builder.node('div', {id:'imageDataContainer'},
@@ -283,7 +283,7 @@ Lightbox.prototype = {
         var heightCurrent = this.outerImageContainer.getHeight();
 
         // get new width and height + comment width
-        var widthNew  = (imgWidth  + 200 + LightboxOptions.borderSize * 2);
+        var widthNew  = (imgWidth  + 320 + LightboxOptions.borderSize * 2);
         var heightNew = (imgHeight + LightboxOptions.borderSize * 2);
 
         // scalars based on change from old to new
