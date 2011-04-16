@@ -148,7 +148,7 @@ Lightbox.prototype = {
                     )
                 ]),
 		Builder.node('div',{id:'commentContainer'},
-			Builder.node('div',{id:'comment'}).update("hello")
+			Builder.node('div',{id:'comment'})
 		)
             ]),
             Builder.node('div', {id:'imageDataContainer'},
@@ -283,7 +283,7 @@ Lightbox.prototype = {
         var heightCurrent = this.outerImageContainer.getHeight();
 
         // get new width and height + comment width
-        var widthNew  = (imgWidth  + 320 + LightboxOptions.borderSize * 2);
+        var widthNew  = (imgWidth  + 420 + LightboxOptions.borderSize * 2);
         var heightNew = (imgHeight + LightboxOptions.borderSize * 2);
 
         // scalars based on change from old to new
@@ -334,7 +334,8 @@ Lightbox.prototype = {
     //
     updateDetails: function() {
         this.caption.update(this.imageArray[this.activeImage][1] + '<a href="/blog/image/original/' + this.imageArray[this.activeImage][2] + '">(original)</a>').show();
-	this.comment.show();
+	this.comment.update('<fb:comments href="http://www.edomame.com/' +this.imageArray[this.activeImage][2] + '" num_posts="8" width="400px" height="200px"></fb:comments>').show();
+	FB.XFBML.parse(this.comment)
 
         // if image is part of set display 'Image x of x' 
         if (this.imageArray.length > 1){
