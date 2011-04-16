@@ -52,6 +52,7 @@
 				model.tags = tags
 
 				if(photo && ext) {
+					ext = ext.toLowerCase()
 					log.info("got photo of ext:" + ext)
 					
 					var gphoto = ImagesServiceFactory.makeImage(photo)
