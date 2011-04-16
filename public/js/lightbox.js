@@ -137,10 +137,6 @@ Lightbox.prototype = {
             Builder.node('div',{id:'outerImageContainer'}, [
                 Builder.node('div',{id:'imageContainer'}, [
                     Builder.node('img',{id:'lightboxImage'}), 
-                    Builder.node('div',{id:'hoverNav'}, [
-                        Builder.node('a',{id:'prevLink', href: '#' }),
-                        Builder.node('a',{id:'nextLink', href: '#' })
-                    ]),
                     Builder.node('div',{id:'loading'}, 
                         Builder.node('a',{id:'loadingLink', href: '#' }, 
                             Builder.node('img', {src: LightboxOptions.fileLoadingImage})
@@ -157,11 +153,17 @@ Lightbox.prototype = {
                         Builder.node('span',{id:'caption'}),
                         Builder.node('span',{id:'numberDisplay'})
                     ]),
-                    Builder.node('div',{id:'bottomNav'},
-                        Builder.node('a',{id:'bottomNavClose', href: '#' },
+                    Builder.node('div',{id:'bottomNav'}, [
+                    	Builder.node('a',{id:'prevLink', href: '#' }, [ 
+                            Builder.node('img', { src: "/public/img/prevlabel.gif" })
+                        ]),
+                    	Builder.node('a',{id:'nextLink', href: '#' }, [ 
+                            Builder.node('img', { src: "/public/img/nextlabel.gif" })
+                        ]),
+                        Builder.node('a',{id:'bottomNavClose', href: '#' }, [ 
                             Builder.node('img', { src: LightboxOptions.fileBottomNavCloseImage })
-                        )
-                    )
+                        ])
+                    ])
                 ])
             )
         ]));
@@ -178,7 +180,7 @@ Lightbox.prototype = {
         var th = this;
         (function(){
             var ids = 
-                'overlay lightbox outerImageContainer imageContainer comment lightboxImage hoverNav prevLink nextLink loading loadingLink ' + 
+                'overlay lightbox outerImageContainer imageContainer comment lightboxImage prevLink nextLink loading loadingLink ' + 
                 'imageDataContainer imageData imageDetails caption numberDisplay bottomNav bottomNavClose';   
             $w(ids).each(function(id){ th[id] = $(id); });
         })();
@@ -252,7 +254,6 @@ Lightbox.prototype = {
         if (LightboxOptions.animate) this.loading.show();
         this.lightboxImage.hide();
 	this.comment.hide();
-        this.hoverNav.hide();
         this.prevLink.hide();
         this.nextLink.hide();
 		// HACK: Opera9 does not currently support scriptaculous opacity and appear fx
@@ -306,10 +307,7 @@ Lightbox.prototype = {
         }
 
         (function(){
-            this.prevLink.setStyle({ height: imgHeight + 'px' });
-            this.nextLink.setStyle({ height: imgHeight + 'px' });
             this.imageDataContainer.setStyle({ width: widthNew + 'px' });
-
             this.showImage();
         }).bind(this).delay(timeout / 1000);
     },
@@ -364,9 +362,6 @@ Lightbox.prototype = {
     //  Display appropriate previous and next hover navigation.
     //
     updateNav: function() {
-
-        this.hoverNav.show();               
-
         // if not first image in set, display prev image button
         if (this.activeImage > 0) this.prevLink.show();
 
@@ -499,3 +494,7 @@ Lightbox.prototype = {
 		return [pageWidth,pageHeight];
 	}
 }
+
+
+
+
