@@ -215,12 +215,12 @@ Lightbox.prototype = {
 
         if ((imageLink.getAttribute("rel") == 'lightbox')){
             // if image is NOT part of a set, add single image to imageArray
-            this.imageArray.push([imageLink.href, imageLink.title]);         
+            this.imageArray.push([imageLink.href, imageLink.title, imageLink.id]);         
         } else {
             // if image is part of a set..
             this.imageArray = 
                 $$(imageLink.tagName + '[href][rel="' + imageLink.rel + '"]').
-                collect(function(anchor){ return [anchor.href, anchor.title]; }).
+                collect(function(anchor){ return [anchor.href, anchor.title, anchor.id]; }).
                 uniq();
             
             while (this.imageArray[imageNum][0] != imageLink.href) { imageNum++; }
@@ -327,8 +327,7 @@ Lightbox.prototype = {
     //  Display caption, image number, and bottom nav.
     //
     updateDetails: function() {
-    
-        this.caption.update(this.imageArray[this.activeImage][1]).show();
+        this.caption.update(this.imageArray[this.activeImage][1] + '<a href="/blog/image/original/' + this.imageArray[this.activeImage][2] + '">(original)</a>').show();
 
         // if image is part of set display 'Image x of x' 
         if (this.imageArray.length > 1){
