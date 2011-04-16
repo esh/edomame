@@ -29,7 +29,6 @@
 						}
 						break
 					case "blob":
-						log.info("blob:" + result.toSource())
 						blobStoreService.serve(result[1], response)
 						break
 					case "unauthorized":

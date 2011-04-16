@@ -21,7 +21,9 @@
 			cache.put(key, model)
 		}
 		
-		return eval(model)
+		model = eval(model)
+		model.key = key
+		return model
 	}
 
 	return {
@@ -47,7 +49,8 @@
 				// split the tags into an array and ensure we have the "all" tag
 				tags = tags != null && tags.trim().length > 0 ? tags.trim().toLowerCase().split(" ") : new Array()
 				if(tags.indexOf("all") == -1) tags.push("all")
-	
+
+				model.key = parent.getId()	
 				model.title = title
 				model.tags = tags
 
@@ -90,6 +93,25 @@
 					writeChannel.write(ByteBuffer.wrap(gphoto.getImageData()))
 					writeChannel.closeFinally()
 					model.images.preview = fs.getBlobKey(preview).getKeyString()
+
+					// resize the original for a preview image
+					if(gphoto.getWidth() > gphoto.getHeight()) {
+						gphoto = is.applyTransform(ImagesServiceFactory.makeResize(gphoto.getWidth() * 84 / gphoto.getHeight(), 84), gphoto)
+						var lo = (gphoto.getWidth() - 84) / 2
+						log.info("land: " + gphoto.getWidth() + "x" + gphoto.getHeight() + " " + lo)
+						gphoto = is.applyTransform(ImagesServiceFactory.makeCrop(lo / gphoto.getWidth(), 0, (lo + 84) / gphoto.getWidth(), 1.0), gphoto)
+					} else {
+						gphoto = is.applyTransform(ImagesServiceFactory.makeResize(84, gphoto.getHeight() * 84 / gphoto.getWidth()), gphoto)
+						var uo = (gphoto.getHeight() - 84) / 2
+						log.info("port: " + gphoto.getWidth() + "x" + gphoto.getHeight() + " " + uo)
+						gphoto = is.applyTransform(ImagesServiceFactory.makeCrop(0, uo / gphoto.getHeight(), 1.0, (uo + 84) / gphoto.getHeight()), gphoto)
+					}
+
+					var thumb = fs.createNewBlobFile("image/" + ext, "t_" + parent.getId())
+					writeChannel = fs.openWriteChannel(thumb, true)
+					writeChannel.write(ByteBuffer.wrap(gphoto.getImageData()))
+					writeChannel.closeFinally()
+					model.images.thumb = fs.getBlobKey(thumb).getKeyString()
 				}
 
 				log.info("saving: " + model.toSource())

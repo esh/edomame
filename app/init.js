@@ -6,6 +6,17 @@ var blog = require("handler/blog.js")()
 var rss = require("handler/rss.js")()
 
 httpserver(config, require("utils/dispatcher.js")([
+	{ route: /^\/$/, handler: blog.show },
+	{ route: /^\/([0-9]+)$/, handler: blog.show },
+	{ route: /^\/([a-zA-Z]+)$/, handler: blog.show },
+	{ route: /^\/([a-zA-Z]+)\/([0-9]+)$/, handler: blog.show },
+	{ route: /^\/blog\/image\/original\/([0-9]+)$/, handler: blog.original },
+	{ route: /^\/blog\/image\/preview\/([0-9]+)$/, handler: blog.preview },
+	{ route: /^\/blog\/image\/thumb\/([0-9]+)$/, handler: blog.thumb },
+	{ route: /^\/blog\/more\/([a-zA-Z]+)\/([0-9]+)$/, handler: blog.more },
+	{ route: /^\/blog\/edit\/([0-9]+)$/, handler: blog.edit },
+	{ route: /^\/blog\/remove\/([0-9]+)$/, handler: blog.remove },
+	{ route: /^\/blog\/save$/, handler: blog.save },
 	{ route: /^\/rss$/, handler: rss.show },
 	{ route: /^\/_admin\/login$/, handler: admin.login },
 	{ route: /^\/_admin\/logout$/, handler: admin.logout },	
@@ -15,14 +26,4 @@ httpserver(config, require("utils/dispatcher.js")([
 	{ route: /^\/_ah\/mail\/.*$/, handler: ah.mail },	
 	{ route: /^\/_tasks\/buildIndex$/, handler: tasks.buildIndex },
 	{ route: /^\/_tasks\/migrateImg$/, handler: tasks.migrateImg },
-	{ route: /^\/_tasks\/tweet$/, handler: tasks.tweet },
-	{ route: /^\/([0-9]+)$/, handler: blog.show },
-	{ route: /^\/([a-zA-Z]+)$/, handler: blog.show },
-	{ route: /^\/([a-zA-Z]+)\/([0-9]+)$/, handler: blog.show },
-	{ route: /^\/blog\/detail\/([0-9]+)$/, handler: blog.detail },
-	{ route: /^\/blog\/edit\/([0-9]+)$/, handler: blog.edit },
-	{ route: /^\/blog\/remove\/([0-9]+)$/, handler: blog.remove },
-	{ route: /^\/blog\/save$/, handler: blog.save },
-	{ route: /^\/blog\/image\/original\/([0-9]+)$/, handler: blog.original },
-	{ route: /^\/blog\/image\/preview\/([0-9]+)$/, handler: blog.preview },
-	{ route: /^\/$/, handler: blog.show }]))
+	{ route: /^\/_tasks\/tweet$/, handler: tasks.tweet }]))

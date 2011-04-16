@@ -14,34 +14,47 @@
 		else return ["unauthorized"]
 	}
 			
-	function detail(request, response, session) {
-		return ["ok", post.get(request.args[0]).toSource()]
-	}
-
 	function image(type, request, response, session) {
 		return ["blob", new BlobKey(post.get(request.args[0]).images[type])]
 	}
 
+	function getPosts(from, keys, inclusive) {
+		var end = Math.max(from != null ? keys.indexOf(from) : keys.length - 1)
+		var begin = Math.max(0, end - 25)
+		return keys.slice(begin, end + (inclusive ? 1 : 0)).map(function(e) { return post.get(e) })
+	}
+
+	function more(request, response, session) {
+		return ["ok", getPosts(parseInt(request.args[1]), tagset.get(request.args[0]), false).toSource(), "application/javascript"]
+	}
+ 
 	function show(request, response, session) {
-		log.info("show: " + request.args.toSource())
-		var type = "all"
-		var p
+		var type
+		var focus
 
 		if(request.args.length == 1 && isNaN(request.args[0])) {
 			type = request.args[0]
 		} else if(request.args.length == 1 && !isNaN(request.args[0])) {
-			p = post.get(request.args[0])
-		} else if(request.args.length >= 2 && !isNaN(request.args[1])) {
-			p = post.get(request.args[1]) 
+			type = "all";
+			focus = parseInt(post.get(request.args[0]).key)
+		} else if(request.args.length == 2 && !isNaN(request.args[1])) {
+			type = request.args[0]
+			focus = parseInt(post.get(request.args[1]).key)
+		} else {
+			type = "all";
 		}
 
+		var keys = tagset.get(type)
+		var posts = getPosts(focus, keys, true)
+ 
 		return ["ok", render(
 				"view/blog/show.jhtml",
-				{ 
+				{
+					top: keys.length > 0 ? keys.slice(-1)[0] : 0,
+					focus: focus,
+					posts: posts,
 					type: type, 
-					keys: tagset.get(type),
 					cloud: tags.get(),
-					post: p,
 					admin: session["authorized"] == true
 				})]
 	}
@@ -78,9 +91,10 @@
 	
 	return {
 		show: show,
-		detail: detail,
+		more: more,
 		original: image.curry("original"),
 		preview: image.curry("preview"),
+		thumb: image.curry("thumb"),
 		edit: edit,
 		remove: remove,
 		save: save

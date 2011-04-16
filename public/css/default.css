@@ -16,43 +16,32 @@ select {
 	margin: 0px 0px 0px 0px;
 }
 
-h1 {
-	font-size: 36px;
-	margin: 0px 0px 15px 0px;
+.thumb_link {
+	border: 0;	
 }
 
-h2 {
-	font-size: 24px;
-	margin: 10px 0px 0px 0px;
-}
-
-img {
-	border:0px;
-}
-
-td {
-	padding: 0px 8px 0px 0px;
+.thumb {
+	border: 1px solid white;
+	padding: 0;
 	margin: 0;
-	vertical-align:top;
+	width: 84px;
+	height: 84px;	
 }
 
 #nav {
-	position:fixed;
-	text-align: right;
-	background-color: white;
-	height: 100%;
-	margin: 0px 0px 0px 0px;
-	padding: 0px 5px 0px 20px;
+	width: 268px;
+	margin: 0;
+	padding-left: 10px;
+	float: left;
 }
 
-#body {
-	margin: 0px 0px 0px 280px;
+#content {
+	padding-top: 50px;
+	width: 500px;
+	float: left;
 }
 
-#loadNewer div {
-	width: 200px;
-	text-align:center;
-	font-size: 120px;
-	font-weight: bold;
-        cursor:pointer;
+#more {
+	font-size: 20px;
+	display: block;
 }

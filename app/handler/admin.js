@@ -30,6 +30,7 @@
 		tagset.get("all").forEach(function(e) {
 			queue.add(TaskOptions.Builder.url("/_tasks/migrateImg").param("key", e))
 		})
+		
 		return ["ok", "ok"]	
 	}
 
