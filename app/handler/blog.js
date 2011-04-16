@@ -20,7 +20,7 @@
 
 	function getPosts(from, keys, inclusive) {
 		var end = Math.max(from != null ? keys.indexOf(from) : keys.length - 1)
-		var begin = Math.max(0, end - 25)
+		var begin = Math.max(0, end - 48)
 		return keys.slice(begin, end + (inclusive ? 1 : 0)).map(function(e) { return post.get(e) })
 	}
 

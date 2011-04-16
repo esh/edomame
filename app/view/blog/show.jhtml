@@ -38,7 +38,7 @@ require("utils/common.js")
 		</div>
 		<div id="content">
 			<div id="thumbs"></div>
-			<div id="more" onclick="javascript:loadMore()">Load more posts</div>
+			<div id="more" onclick="javascript:loadMore()">load more posts</div>
 		</div>
 		
 		<script type="text/javascript">
