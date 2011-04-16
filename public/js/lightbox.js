@@ -110,6 +110,8 @@ Lightbox.prototype = {
         //                  </a>
         //              </div>
         //          </div>
+	//	    <div id="commentContainer">
+	//	    </div>
         //      </div>
         //      <div id="imageDataContainer">
         //          <div id="imageData">
@@ -132,7 +134,7 @@ Lightbox.prototype = {
 		objBody.appendChild(Builder.node('div',{id:'overlay'}));
 	
         objBody.appendChild(Builder.node('div',{id:'lightbox'}, [
-            Builder.node('div',{id:'outerImageContainer'}, 
+            Builder.node('div',{id:'outerImageContainer'}, [
                 Builder.node('div',{id:'imageContainer'}, [
                     Builder.node('img',{id:'lightboxImage'}), 
                     Builder.node('div',{id:'hoverNav'}, [
@@ -144,8 +146,11 @@ Lightbox.prototype = {
                             Builder.node('img', {src: LightboxOptions.fileLoadingImage})
                         )
                     )
-                ])
-            ),
+                ]),
+		Builder.node('div',{id:'commentContainer'},
+			Builder.node('div',{id:'comment'}).update("hello world")
+		)
+            ]),
             Builder.node('div', {id:'imageDataContainer'},
                 Builder.node('div',{id:'imageData'}, [
                     Builder.node('div',{id:'imageDetails'}, [
@@ -173,7 +178,7 @@ Lightbox.prototype = {
         var th = this;
         (function(){
             var ids = 
-                'overlay lightbox outerImageContainer imageContainer lightboxImage hoverNav prevLink nextLink loading loadingLink ' + 
+                'overlay lightbox outerImageContainer imageContainer comment lightboxImage hoverNav prevLink nextLink loading loadingLink ' + 
                 'imageDataContainer imageData imageDetails caption numberDisplay bottomNav bottomNavClose';   
             $w(ids).each(function(id){ th[id] = $(id); });
         })();
@@ -246,6 +251,7 @@ Lightbox.prototype = {
         // hide elements during transition
         if (LightboxOptions.animate) this.loading.show();
         this.lightboxImage.hide();
+	this.comment.hide();
         this.hoverNav.hide();
         this.prevLink.hide();
         this.nextLink.hide();
@@ -276,8 +282,8 @@ Lightbox.prototype = {
         var widthCurrent  = this.outerImageContainer.getWidth();
         var heightCurrent = this.outerImageContainer.getHeight();
 
-        // get new width and height
-        var widthNew  = (imgWidth  + LightboxOptions.borderSize * 2);
+        // get new width and height + comment width
+        var widthNew  = (imgWidth  + 200 + LightboxOptions.borderSize * 2);
         var heightNew = (imgHeight + LightboxOptions.borderSize * 2);
 
         // scalars based on change from old to new
@@ -328,6 +334,7 @@ Lightbox.prototype = {
     //
     updateDetails: function() {
         this.caption.update(this.imageArray[this.activeImage][1] + '<a href="/blog/image/original/' + this.imageArray[this.activeImage][2] + '">(original)</a>').show();
+	this.comment.show();
 
         // if image is part of set display 'Image x of x' 
         if (this.imageArray.length > 1){
