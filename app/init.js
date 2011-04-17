@@ -7,6 +7,7 @@ var rss = require("handler/rss.js")()
 
 httpserver(config, require("utils/dispatcher.js")([
 	{ route: /^\/$/, handler: blog.show },
+	{ route: /^\/rss$/, handler: rss.show },
 	{ route: /^\/([0-9]+)$/, handler: blog.show },
 	{ route: /^\/([a-zA-Z]+)$/, handler: blog.show },
 	{ route: /^\/([a-zA-Z]+)\/([0-9]+)$/, handler: blog.show },
@@ -17,7 +18,6 @@ httpserver(config, require("utils/dispatcher.js")([
 	{ route: /^\/blog\/edit\/([0-9]+)$/, handler: blog.edit },
 	{ route: /^\/blog\/remove\/([0-9]+)$/, handler: blog.remove },
 	{ route: /^\/blog\/save$/, handler: blog.save },
-	{ route: /^\/rss$/, handler: rss.show },
 	{ route: /^\/_admin\/login$/, handler: admin.login },
 	{ route: /^\/_admin\/logout$/, handler: admin.logout },	
 	{ route: /^\/_admin\/clearCache$/, handler: admin.clearCache },	
