@@ -32,7 +32,7 @@ function loadMore() {
 	new Ajax.Request("/blog/more/" + type + "/" + posts[posts.length - 1].key, { method:'get',
 		onSuccess: function(transport){
 			var more = eval(transport.responseText).reverse()
-			posts.concat(more)
+			posts = posts.concat(more)
 			$("thumbs").insert(more.map(genHTML).join(""))
 			lb.updateImageList()
 		}
@@ -46,3 +46,6 @@ function loadUI(top, focus, posts, admin) {
 		lb.start(document.getElementById(new String(focus)))
 	}
 }
+
+
+
