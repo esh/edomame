@@ -77,7 +77,14 @@
 
 					var original = fs.createNewBlobFile("image/" + ext, "o_" + parent.getId())
 					var writeChannel = fs.openWriteChannel(original, true)
-					writeChannel.write(ByteBuffer.wrap(gphoto.getImageData()))
+
+					var MAX_SIZE = 512000
+					var imageData = gphoto.getImageData()
+					var chunk = 0
+					for(var i = 0 ; i < Math.ceil(imageData.length / MAX_SIZE) ; i++) {
+						writeChannel.write(ByteBuffer.wrap(imageData, chunk * MAX_SIZE, Math.min(imageData.length - chunk * MAX_SIZE, MAX_SIZE)))
+						chunk++
+					}
 					writeChannel.closeFinally()
 					model.images.original  = fs.getBlobKey(original).getKeyString()
 				}

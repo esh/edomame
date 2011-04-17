@@ -100,6 +100,8 @@
 			return ["ok", "ok"]
 		},
 		processPost: function(request, response, session) {
+			var preview
+			var thumb
 			var transaction = ds.beginTransaction()
 			try {
 				log.info("processing: " + request.params.key)
@@ -118,7 +120,7 @@
 					gphoto = is.applyTransform(ImagesServiceFactory.makeResize(gphoto.getWidth() * 370 / gphoto.getHeight(), 370), gphoto)
 				}
 
-				var preview = fs.createNewBlobFile("image/" + ext, "p_" + parent.getId())
+				preview = fs.createNewBlobFile("image/" + ext, "p_" + p.key)
 				var writeChannel = fs.openWriteChannel(preview, true)
 				writeChannel.write(ByteBuffer.wrap(gphoto.getImageData()))
 				writeChannel.closeFinally()
@@ -137,13 +139,13 @@
 					gphoto = is.applyTransform(ImagesServiceFactory.makeCrop(0, uo / gphoto.getHeight(), 1.0, (uo + 84) / gphoto.getHeight()), gphoto)
 				}
 
-				var thumb = fs.createNewBlobFile("image/" + ext, "t_" + parent.getId())
+				thumb = fs.createNewBlobFile("image/" + ext, "t_" + p.key)
 				writeChannel = fs.openWriteChannel(thumb, true)
 				writeChannel.write(ByteBuffer.wrap(gphoto.getImageData()))
 				writeChannel.closeFinally()
 				p.images.thumb = fs.getBlobKey(thumb).getKeyString()
 
-				var entity = new Entity(KeyFactory.createKey("posts", parseInt(request.params.key)))
+				var entity = new Entity(KeyFactory.createKey("posts", parseInt(p.key)))
 				log.info("saving: " + p.toSource())
 				entity.setProperty("data", new Text(p.toSource()))
 				ds.put(entity)
@@ -153,6 +155,14 @@
 				log.severe(e)
 				log.severe("rolling back")
 				transaction.rollback()
+
+				if(preview) {
+					bs["delete"](fs.getBlobKey(preview))
+				}
+
+				if(thumb) {
+					bs["delete"](fs.getBlobKey(thumb))
+				}
 
 				throw e
 			}
