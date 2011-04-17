@@ -80,38 +80,6 @@
 					writeChannel.write(ByteBuffer.wrap(gphoto.getImageData()))
 					writeChannel.closeFinally()
 					model.images.original  = fs.getBlobKey(original).getKeyString()
-
-					// resize the original for a preview image
-					if(gphoto.getWidth() > gphoto.getHeight()) {
-						gphoto = is.applyTransform(ImagesServiceFactory.makeResize(370, gphoto.getHeight() * 370 / gphoto.getWidth()), gphoto)
-					} else {
-						gphoto = is.applyTransform(ImagesServiceFactory.makeResize(gphoto.getWidth() * 370 / gphoto.getHeight(), 370), gphoto)
-					}
-
-					var preview = fs.createNewBlobFile("image/" + ext, "p_" + parent.getId())
-					var writeChannel = fs.openWriteChannel(preview, true)
-					writeChannel.write(ByteBuffer.wrap(gphoto.getImageData()))
-					writeChannel.closeFinally()
-					model.images.preview = fs.getBlobKey(preview).getKeyString()
-
-					// resize the original for a preview image
-					if(gphoto.getWidth() > gphoto.getHeight()) {
-						gphoto = is.applyTransform(ImagesServiceFactory.makeResize(gphoto.getWidth() * 84 / gphoto.getHeight(), 84), gphoto)
-						var lo = (gphoto.getWidth() - 84) / 2
-						log.info("land: " + gphoto.getWidth() + "x" + gphoto.getHeight() + " " + lo)
-						gphoto = is.applyTransform(ImagesServiceFactory.makeCrop(lo / gphoto.getWidth(), 0, (lo + 84) / gphoto.getWidth(), 1.0), gphoto)
-					} else {
-						gphoto = is.applyTransform(ImagesServiceFactory.makeResize(84, gphoto.getHeight() * 84 / gphoto.getWidth()), gphoto)
-						var uo = (gphoto.getHeight() - 84) / 2
-						log.info("port: " + gphoto.getWidth() + "x" + gphoto.getHeight() + " " + uo)
-						gphoto = is.applyTransform(ImagesServiceFactory.makeCrop(0, uo / gphoto.getHeight(), 1.0, (uo + 84) / gphoto.getHeight()), gphoto)
-					}
-
-					var thumb = fs.createNewBlobFile("image/" + ext, "t_" + parent.getId())
-					writeChannel = fs.openWriteChannel(thumb, true)
-					writeChannel.write(ByteBuffer.wrap(gphoto.getImageData()))
-					writeChannel.closeFinally()
-					model.images.thumb = fs.getBlobKey(thumb).getKeyString()
 				}
 
 				log.info("saving: " + model.toSource())
@@ -123,9 +91,13 @@
 
 				transaction.commit()
 
-				// rebuild the index 
-				queue.add(TaskOptions.Builder.url("/_tasks/buildIndex"))	
+				// process the pics 
+				if(photo) {
+					queue.add(TaskOptions.Builder.url("/_tasks/processPost").param("key", model.key))	
+				}
 
+				// rebuild index
+				queue.add(TaskOptions.Builder.url("/_tasks/buildIndex"))	
 				return model 
 			} catch(e) {
 				log.severe(e)
