@@ -80,10 +80,8 @@
 
 					var MAX_SIZE = 512000
 					var imageData = gphoto.getImageData()
-					var chunk = 0
 					for(var i = 0 ; i < Math.ceil(imageData.length / MAX_SIZE) ; i++) {
-						writeChannel.write(ByteBuffer.wrap(imageData, chunk * MAX_SIZE, Math.min(imageData.length - chunk * MAX_SIZE, MAX_SIZE)))
-						chunk++
+						writeChannel.write(ByteBuffer.wrap(imageData, i * MAX_SIZE, Math.min(imageData.length - i * MAX_SIZE, MAX_SIZE)))
 					}
 					writeChannel.closeFinally()
 					model.images.original  = fs.getBlobKey(original).getKeyString()
@@ -93,9 +91,7 @@
 				var entity = new Entity(parent)
 				entity.setProperty("data", new Text(model.toSource()))
 				ds.put(entity)
-
 				cache["delete"](String(model.key))
-
 				transaction.commit()
 
 				// process the pics 
