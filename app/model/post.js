@@ -116,6 +116,7 @@
 				var model = get(key) 
 				removeImages(model.images.original)
 				removeImages(model.images.preview)
+				removeImages(model.images.thumb)
 				
 				ds["delete"](KeyFactory.createKey("posts", parseInt(key)))
 				cache["delete"](key)
