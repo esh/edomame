@@ -1,17 +1,15 @@
 (function() {
 	importPackage(com.google.appengine.api.datastore, com.google.appengine.api.labs.taskqueue, com.google.appengine.api.memcache, Packages.twitter4j, Packages.twitter4j.http)
+	importPackage(com.google.appengine.api.files, com.google.appengine.api.images, com.google.appengine.api.blobstore, java.nio)
 
 	var ds = DatastoreServiceFactory.getDatastoreService()
 	var queue = QueueFactory.getQueue("tasks")
 	var cache = MemcacheServiceFactory.getMemcacheService()
-
-
-	// temp
-	importPackage(com.google.appengine.api.files, com.google.appengine.api.images, com.google.appengine.api.blobstore, java.nio)
 	var fs = FileServiceFactory.getFileService()
 	var is = ImagesServiceFactory.getImagesService()
 	var bs = BlobstoreServiceFactory.getBlobstoreService()
 	var bi = new BlobInfoFactory()
+
 	var post = require("model/post.js")()
 
 	return {
@@ -101,18 +99,36 @@
 
 			return ["ok", "ok"]
 		},
-		migrateImg: function(request, response, session) {
-			log.info("migrating: " + request.params.key)
+		processPost: function(request, response, session) {
+			log.info("processing: " + request.params.key)
 			var p = post.get(request.params.key)
-			var blobkey = new BlobKey(p.images.preview)
-			log.info("blobkey: " + blobkey)
+			var blobkey = new BlobKey(p.images.original)
 			var info = bi.loadBlobInfo(blobkey)
 			log.info("blobinfo: " + info)
 			log.info("size: " + info.getSize())
-			var gphoto = ImagesServiceFactory.makeImage(bs.fetchData(blobkey, 0, info.getSize() - 1))
-			log.info("made image")
+			var MAX_SIZE = 512000
+			var imageData = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, info.getSize())
+			var imageDataBuffer = ByteBuffer.wrap(imageData)
+			for(var i = 0 ; i < Math.ceil(info.getSize() / MAX_SIZE) ; i++) {
+				imageDataBuffer.put(bs.fetchData(blobkey, i * MAX_SIZE, i * MAX_SIZE + Math.min(imageData.length - i * MAX_SIZE, MAX_SIZE) - 1))
+			}
+			var gphoto = ImagesServiceFactory.makeImage(imageData)
+			log.info("loaded image")
 
 			// resize the original for a preview image
+			if(gphoto.getWidth() > gphoto.getHeight()) {
+				gphoto = is.applyTransform(ImagesServiceFactory.makeResize(370, gphoto.getHeight() * 370 / gphoto.getWidth()), gphoto)
+			} else {
+				gphoto = is.applyTransform(ImagesServiceFactory.makeResize(gphoto.getWidth() * 370 / gphoto.getHeight(), 370), gphoto)
+			}
+
+			var preview = fs.createNewBlobFile(info.getContentType(), "p_" + p.key)
+			var writeChannel = fs.openWriteChannel(preview, true)
+			writeChannel.write(ByteBuffer.wrap(gphoto.getImageData()))
+			writeChannel.closeFinally()
+			p.images.preview = fs.getBlobKey(preview).getKeyString()
+
+			// resize the original for a thumb image
 			if(gphoto.getWidth() > gphoto.getHeight()) {
 				gphoto = is.applyTransform(ImagesServiceFactory.makeResize(gphoto.getWidth() * 84 / gphoto.getHeight(), 84), gphoto)
 				var lo = (gphoto.getWidth() - 84) / 2
@@ -125,24 +141,32 @@
 				gphoto = is.applyTransform(ImagesServiceFactory.makeCrop(0, uo / gphoto.getHeight(), 1.0, (uo + 84) / gphoto.getHeight()), gphoto)
 			}
 
-			var thumb = fs.createNewBlobFile("image/jpg", "t_" + p.key)
-			var writeChannel = fs.openWriteChannel(thumb, true)
+			var thumb = fs.createNewBlobFile(info.getContentType(), "t_" + p.key)
+			writeChannel = fs.openWriteChannel(thumb, true)
 			writeChannel.write(ByteBuffer.wrap(gphoto.getImageData()))
 			writeChannel.closeFinally()
 			p.images.thumb = fs.getBlobKey(thumb).getKeyString()
 
 			var transaction = ds.beginTransaction()
 			try {
-				var entity = new Entity(KeyFactory.createKey("posts", parseInt(request.params.key)))
+				var entity = new Entity(KeyFactory.createKey("posts", parseInt(p.key)))
 				log.info("saving: " + p.toSource())
 				entity.setProperty("data", new Text(p.toSource()))
 				ds.put(entity)
-
+				cache["delete"](String(p.key))
 				transaction.commit()
 			} catch(e) {
 				log.severe(e)
 				log.severe("rolling back")
 				transaction.rollback()
+
+				if(preview) {
+					bs["delete"](fs.getBlobKey(preview))
+				}
+
+				if(thumb) {
+					bs["delete"](fs.getBlobKey(thumb))
+				}
 
 				throw e
 			}
