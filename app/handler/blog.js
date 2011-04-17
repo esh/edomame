@@ -36,16 +36,16 @@
 			type = request.args[0]
 		} else if(request.args.length == 1 && !isNaN(request.args[0])) {
 			type = "all";
-			focus = parseInt(post.get(request.args[0]).key)
+			focus = post.get(request.args[0])
 		} else if(request.args.length == 2 && !isNaN(request.args[1])) {
 			type = request.args[0]
-			focus = parseInt(post.get(request.args[1]).key)
+			focus = post.get(request.args[1])
 		} else {
 			type = "all";
 		}
 
 		var keys = tagset.get(type)
-		var posts = getPosts(focus, keys, true)
+		var posts = getPosts(focus != null ? parseInt(focus.key) : null, keys, true)
  
 		return ["ok", render(
 				"view/blog/show.jhtml",

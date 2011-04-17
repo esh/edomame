@@ -8,7 +8,7 @@ require("utils/common.js")
 <html lang="en">
 	<head>
 		<meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
-		<meta property="og:site_name" content="Edomame - a photo blog of Ed's adventures"/>
+		<meta property="og:site_name" content="<%= params["focus"] != undefined ? params["focus"].title : "Edomame - a photo blog of Ed's adventures" %>"/>
 		<%= params["focus"] != undefined ? '<meta property="og:image" content="http://www.edomame.com/blog/image/preview/' + params["focus"].key + '"/>' : "" %>
 		<title><%= params["focus"] != undefined ? params["focus"].title : "Edomame - a photo blog of Ed's adventures" %></title>
 		<link rel="stylesheet" href="/public/css/default.css" type="text/css" media="screen"/>
