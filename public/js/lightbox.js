@@ -333,7 +333,9 @@ Lightbox.prototype = {
     updateDetails: function() {
         this.caption.update(this.imageArray[this.activeImage][1] + '<a href="/blog/image/original/' + this.imageArray[this.activeImage][2] + '">(original)</a>').show();
 	this.comment.update('<fb:comments href="http://www.edomame.com/' +this.imageArray[this.activeImage][2] + '" num_posts="8" width="400px" height="200px"></fb:comments>').show();
-	FB.XFBML.parse(this.comment)
+	try {
+		FB.XFBML.parse(this.comment)
+	} catch(ex) {}
 
         // if image is part of set display 'Image x of x' 
         if (this.imageArray.length > 1){

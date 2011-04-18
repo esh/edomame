@@ -17,8 +17,8 @@ require("utils/common.js")
 	<body>
 		<script type="text/javascript" src="/public/js/prototype.js"></script>
 		<script type="text/javascript" src="/public/js/scriptaculous.js?load=effects,builder"></script>
-		<script type="text/javascript" src="/public/js/lightbox.js"></script>
-		<script type="text/javascript" src="/public/js/ui2.js"></script>
+		<script type="text/javascript" src="/public/js/lightbox.js?v=1"></script>
+		<script type="text/javascript" src="/public/js/ui.js?v=1"></script>
 
 		<div id="nav">
 			<h1>edomame</h1>
