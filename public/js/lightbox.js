@@ -93,45 +93,9 @@ Lightbox.prototype = {
         var size = (LightboxOptions.animate ? 250 : 1) + 'px';
         
 
-        // Code inserts html at the bottom of the page that looks similar to this:
-        //
-        //  <div id="overlay"></div>
-        //  <div id="lightbox">
-        //      <div id="outerImageContainer">
-        //          <div id="imageContainer">
-        //              <img id="lightboxImage">
-        //              <div style="" id="hoverNav">
-        //                  <a href="#" id="prevLink"></a>
-        //                  <a href="#" id="nextLink"></a>
-        //              </div>
-        //              <div id="loading">
-        //                  <a href="#" id="loadingLink">
-        //                      <img src="/public/img/loading.gif">
-        //                  </a>
-        //              </div>
-        //          </div>
-	//	    <div id="commentContainer">
-	//	    </div>
-        //      </div>
-        //      <div id="imageDataContainer">
-        //          <div id="imageData">
-        //              <div id="imageDetails">
-        //                  <span id="caption"></span>
-        //                  <span id="numberDisplay"></span>
-        //              </div>
-        //              <div id="bottomNav">
-        //                  <a href="#" id="bottomNavClose">
-        //                      <img src="/public/img/close.gif">
-        //                  </a>
-        //              </div>
-        //          </div>
-        //      </div>
-        //  </div>
-
-
         var objBody = $$('body')[0];
 
-		objBody.appendChild(Builder.node('div',{id:'overlay'}));
+	objBody.appendChild(Builder.node('div',{id:'overlay'}));
 	
         objBody.appendChild(Builder.node('div',{id:'lightbox'}, [
             Builder.node('div',{id:'outerImageContainer'}, [
@@ -154,14 +118,14 @@ Lightbox.prototype = {
                         Builder.node('span',{id:'numberDisplay'})
                     ]),
                     Builder.node('div',{id:'bottomNav'}, [
-                    	Builder.node('a',{id:'prevLink', href: '#' }, [ 
-                            Builder.node('img', { src: "/public/img/prevlabel.gif" })
+                        Builder.node('a',{id:'bottomNavClose', href: '#' }, [ 
+                            Builder.node('img', { src: LightboxOptions.fileBottomNavCloseImage })
                         ]),
                     	Builder.node('a',{id:'nextLink', href: '#' }, [ 
                             Builder.node('img', { src: "/public/img/nextlabel.gif" })
                         ]),
-                        Builder.node('a',{id:'bottomNavClose', href: '#' }, [ 
-                            Builder.node('img', { src: LightboxOptions.fileBottomNavCloseImage })
+                   	Builder.node('a',{id:'prevLink', href: '#' }, [ 
+                            Builder.node('img', { src: "/public/img/prevlabel.gif" })
                         ])
                     ])
                 ])

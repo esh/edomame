@@ -11,14 +11,14 @@ require("utils/common.js")
 		<meta property="og:site_name" content="<%= params["focus"] != undefined ? params["focus"].title : "Edomame - a photo blog of Ed's adventures" %>"/>
 		<%= params["focus"] != undefined ? '<meta property="og:image" content="http://www.edomame.com/blog/image/preview/' + params["focus"].key + '"/>' : "" %>
 		<title><%= params["focus"] != undefined ? params["focus"].title : "Edomame - a photo blog of Ed's adventures" %></title>
-		<link rel="stylesheet" href="/public/css/default.css" type="text/css" media="screen"/>
-		<link rel="stylesheet" href="/public/css/lightbox.css" type="text/css" media="screen" />
+		<link rel="stylesheet" href="/public/css/default.css?v=3" type="text/css" media="screen"/>
+		<link rel="stylesheet" href="/public/css/lightbox.css?v=3" type="text/css" media="screen" />
 	</head>
 	<body>
 		<script type="text/javascript" src="/public/js/prototype.js"></script>
 		<script type="text/javascript" src="/public/js/scriptaculous.js?load=effects,builder"></script>
-		<script type="text/javascript" src="/public/js/lightbox.js?v=1"></script>
-		<script type="text/javascript" src="/public/js/ui.js?v=1"></script>
+		<script type="text/javascript" src="/public/js/lightbox.js?v=3"></script>
+		<script type="text/javascript" src="/public/js/ui.js?v=3"></script>
 
 		<div id="nav">
 			<h1>edomame</h1>
