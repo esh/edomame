@@ -19,10 +19,10 @@
 			var from = null
 
 			if(request.params.buildIndex != null) {
+				index = eval(ds.get(KeyFactory.createKey("meta", "_index")).getProperty("data").getValue())
 				var t = eval(request.params.buildIndex)
-				index = t.index
 				from = KeyFactory.stringToKey(t.from)
-			}
+			} 
 
 			var query = new com.google.appengine.api.datastore.Query("posts").addSort("__key__")
 			if(from) {
@@ -51,6 +51,7 @@
 
 			if(query.countEntities() < 1000) {
 				// remove old ones
+				ds["delete"](KeyFactory.createKey("meta", "_index"))
 				for(var e in Iterator(ds.prepare(new com.google.appengine.api.datastore.Query("meta")).asIterator())) {
 					ds["delete"](e.getKey())
 					cache["delete"](e.getKey().getName())
@@ -74,9 +75,12 @@
 
 				log.info("index built")
 			} else {
-				log.info("continuing index build...")
+				log.info("continuing index build from " + from)
+				var entity = new Entity(KeyFactory.createKey("meta", "_index"))
+				entity.setProperty("data", new Text(index.toSource()))
+				ds.put(entity)
+
 				queue.add(TaskOptions.Builder.url("/_tasks/buildIndex").param("buildIndex", ({
-					index: index,
 					from: from				
 				}).toSource()))
 			}
