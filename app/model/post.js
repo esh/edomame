@@ -29,9 +29,43 @@
 	return {
 		get: get,
 		persist: function(key, title, tags, photo, ext, timestamp) {
+			log.info("key:" + key + " title:" + title + " tags:" + tags)
+
+			if(photo && ext) {
+				ext = ext.toLowerCase()
+				log.info("got photo of ext:" + ext)
+				
+				var gphoto = ImagesServiceFactory.makeImage(photo)
+				// handle orientation
+				if(ext == "jpg" || ext == "jpeg") {
+					var metadata = Sanselan.getMetadata(photo)
+					var orientation = metadata.findEXIFValue(ExifTagConstants.EXIF_TAG_ORIENTATION)
+					orientation = orientation == null ? 1 : orientation.getIntValue()
+					log.info("orientation: " + orientation)
+			
+					if(orientation == 3) {
+						gphoto = is.applyTransform(ImagesServiceFactory.makeRotate(180), gphoto)
+					} else if(orientation == 6) {
+						gphoto = is.applyTransform(ImagesServiceFactory.makeRotate(90), gphoto)
+					} else if(orientation == 8) {
+						gphoto = is.applyTransform(ImagesServiceFactory.makeRotate(270), gphoto)
+					} 
+				}
+
+				var original = fs.createNewBlobFile("image/" + ext)
+				var writeChannel = fs.openWriteChannel(original, true)
+
+				var MAX_SIZE = 512000
+				var imageData = gphoto.getImageData()
+				for(var i = 0 ; i < Math.ceil(imageData.length / MAX_SIZE) ; i++) {
+					writeChannel.write(ByteBuffer.wrap(imageData, i * MAX_SIZE, Math.min(imageData.length - i * MAX_SIZE, MAX_SIZE)))
+				}
+				writeChannel.closeFinally()
+				photo = fs.getBlobKey(original).getKeyString()
+			}
+
 			var transaction = ds.beginTransaction()
 			try {
-				log.info("key:" + key + " title:" + title + " tags:" + tags)
 				var parent
 				var model
 
@@ -53,39 +87,7 @@
 				model.key = parent.getId()	
 				model.title = title
 				model.tags = tags
-
-				if(photo && ext) {
-					ext = ext.toLowerCase()
-					log.info("got photo of ext:" + ext)
-					
-					var gphoto = ImagesServiceFactory.makeImage(photo)
-					// handle orientation
-					if(ext == "jpg" || ext == "jpeg") {
-						var metadata = Sanselan.getMetadata(photo)
-						var orientation = metadata.findEXIFValue(ExifTagConstants.EXIF_TAG_ORIENTATION)
-						orientation = orientation == null ? 1 : orientation.getIntValue()
-						log.info("orientation: " + orientation)
-				
-						if(orientation == 3) {
-							gphoto = is.applyTransform(ImagesServiceFactory.makeRotate(180), gphoto)
-						} else if(orientation == 6) {
-							gphoto = is.applyTransform(ImagesServiceFactory.makeRotate(90), gphoto)
-						} else if(orientation == 8) {
-							gphoto = is.applyTransform(ImagesServiceFactory.makeRotate(270), gphoto)
-						} 
-					}
-
-					var original = fs.createNewBlobFile("image/" + ext, "o_" + parent.getId())
-					var writeChannel = fs.openWriteChannel(original, true)
-
-					var MAX_SIZE = 512000
-					var imageData = gphoto.getImageData()
-					for(var i = 0 ; i < Math.ceil(imageData.length / MAX_SIZE) ; i++) {
-						writeChannel.write(ByteBuffer.wrap(imageData, i * MAX_SIZE, Math.min(imageData.length - i * MAX_SIZE, MAX_SIZE)))
-					}
-					writeChannel.closeFinally()
-					model.images.original  = fs.getBlobKey(original).getKeyString()
-				}
+				model.images.original = photo
 
 				log.info("saving: " + model.toSource())
 				var entity = new Entity(parent)
@@ -106,6 +108,9 @@
 				log.severe(e)
 				log.severe("rolling back")
 				transaction.rollback()
+				if(photo) {
+					removeImages(photo)
+				}
 
 				throw e
 			}
