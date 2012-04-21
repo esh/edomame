@@ -16,6 +16,9 @@
 			<url-pattern>/_admin/*</url-pattern>
 			<url-pattern>/_tasks/*</url-pattern>
 			<url-pattern>/_ah/mail/*</url-pattern>
+			<url-pattern>/blog/edit/*</url-pattern>
+			<url-pattern>/blog/remove/*</url-pattern>
+			<url-pattern>/blog/save/*</url-pattern>
 		</web-resource-collection>
 		<auth-constraint>
 			<role-name>admin</role-name>

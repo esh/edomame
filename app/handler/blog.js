@@ -9,11 +9,6 @@
 
 	require("utils/common.js")
 
-	function secure(session, fn) {
-		if(session["authorized"]) return fn()
-		else return ["unauthorized"]
-	}
-			
 	function image(type, request, response, session) {
 		return ["blob", new BlobKey(post.get(request.args[0]).images[type])]
 	}
@@ -60,33 +55,27 @@
 	}
 	
 	function edit(request, response, session) {
-		return secure(session, function() {
-			var p = post.get(request.args[0])
-			p.key = request.args[0]
-			p.tags = p.tags.join(" ")
-			
-			return ["ok", render("view/blog/form.jhtml", p)]
-		})
+		var p = post.get(request.args[0])
+		p.key = request.args[0]
+		p.tags = p.tags.join(" ")
+		
+		return ["ok", render("view/blog/form.jhtml", p)]
 	}
 	
 	function save(request, response, session) {
-		return secure(session, function() {
-			var twit = request.params["key"] == null
-			var p = post.persist(request.params["key"], request.params["title"], request.params["tags"])
-					
-			if(twit && p.tags.indexOf("tweet") != -1) {
-				queue.add(TaskOptions.Builder.url("/_tasks/tweet").param("model", p.toSource()))
-			}
-			
-			return ["redirect", "/" + request.params["key"]]
-		})
+		var twit = request.params["key"] == null
+		var p = post.persist(request.params["key"], request.params["title"], request.params["tags"])
+				
+		if(twit && p.tags.indexOf("tweet") != -1) {
+			queue.add(TaskOptions.Builder.url("/_tasks/tweet").param("model", p.toSource()))
+		}
+		
+		return ["redirect", "/" + request.params["key"]]
 	}
 	
 	function remove(request, response, session) {
-		return secure(session, function() {
-			post.remove(request.args[0])
-			return ["redirect", "/"] 
-		})
+		post.remove(request.args[0])
+		return ["redirect", "/"] 
 	}
 	
 	return {
