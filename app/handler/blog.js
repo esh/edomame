@@ -22,6 +22,17 @@
 	function more(request, response, session) {
 		return ["ok", getPosts(parseInt(request.args[1]), tagset.get(request.args[0]), false).toSource(), "application/javascript"]
 	}
+
+	function newer(request, response, session) {
+		var min = parseInt(request.args[1])
+		var posts = tagset.get(request.args[0]).filter(function(key) {
+			return key > min
+		}).map(function(key) {
+			return post.get(key)		
+		})
+		
+		return ["ok", posts.toSource(), "application/javascript"]
+	}
  
 	function show(request, response, session) {
 		var type
@@ -81,6 +92,7 @@
 	return {
 		show: show,
 		more: more,
+		newer: newer,
 		original: image.curry("original"),
 		preview: image.curry("preview"),
 		thumb: image.curry("thumb"),

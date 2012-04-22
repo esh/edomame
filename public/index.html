@@ -13,7 +13,7 @@ function StartUp() {
 	
 	var maxKey = 0	
 	new PeriodicalExecuter(function(){
-			new Ajax.Request("/blog/more/wedding/" + maxKey, {
+			new Ajax.Request("/blog/newer/wedding/" + maxKey, {
 				method:'get',
 				onSuccess: function(transport){
 					var posts = eval(transport.responseText)
