@@ -41,9 +41,12 @@ var Protofade = Class.create({
 		this.num_slides		= this.slides.length;		
 		this.current_slide 	= 0;
 		this.end_slide		= this.num_slides - 1;
-			
+		
 		this.slides.invoke('hide');
-		this.slides[this.current_slide].show();
+
+		if(this.slides.length > 0) {
+			this.slides[this.current_slide].show();
+		}
 	},
 
 	addPic: function(pic) {
@@ -55,7 +58,11 @@ var Protofade = Class.create({
 
 		this.slides = this.element.childElements();
 		this.num_slides	= this.slides.length;		
-		this.end_slide		= this.num_slides - 1;
+		this.end_slide = this.num_slides - 1;
+
+		if(this.slides.length == 1) {
+			this.slides[0].show()
+		}
 	},
 	
 	startSlideshow: function(event) {

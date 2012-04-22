@@ -10,8 +10,10 @@ function StartUp() {
 	var slideshow = new Protofade('protofade', { delay: 2.0 });
 	
 	pics = [{src:"images/polino.jpg"}, {src:"images/arrone.jpg"}, {src:"images/polino2.jpg"}, {src:"images/logo.png"}]
-	//pics.each(slideshow.addPic)
-	slideshow.addPic(pics[1])
+	
+	for(var i = 0 ; i < pics.length ; i++) {
+		slideshow.addPic(pics[i])
+	}
 
 	slideshow.startSlideshow()
 }
@@ -24,12 +26,7 @@ document.observe ('dom:loaded', StartUp);
 <body style="background-color:white">
 <h1>Hello world</h1>
 <div id="wrapper">
-        <ul id="protofade">
-        	<li><img src="images/polino.jpg" alt="Polino"/></li>
-        	<!--li><img src="images/arrone.jpg" alt="Arrone"/></li> 
-        	<li><img src="images/polino2.jpg" alt="Polino"/></li>
-        	<li><img src="images/logo.png" alt="Polino"/></li-->
-    	</ul>
+        <ul id="protofade"/>
 </div>
 </body>
 </html>
