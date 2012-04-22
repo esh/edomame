@@ -1,7 +1,0 @@
-img { border:none; }
-ul,li { margin:0; padding:0; list-style-type:none; }
-
-/* protofade */
-#protofade  { position:relative; margin:0; padding:0px; width:700px; height:180px; overflow:hidden; }
-#protofade li { position:absolute; top:0; left:0; margin:0; padding:0; background:none;}
-

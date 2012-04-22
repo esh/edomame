@@ -26,8 +26,7 @@ var Protofade = Class.create({
 		this.options = {
       		duration: 1,
 			  delay: 10.0,
-			  randomize: false,
-			  autostart:true,
+			  autostart:false,
 			  controls:false,
 			  eSquare:false,
 			  eRows: 3, 
@@ -40,46 +39,13 @@ var Protofade = Class.create({
 		this.element		= $(element);
 		this.slides		= this.element.childElements();
 		this.num_slides		= this.slides.length;		
-		this.current_slide 	= (this.options.randomize) ? (Math.floor(Math.random()*this.num_slides)) : 0;
+		this.current_slide 	= 0;
 		this.end_slide		= this.num_slides - 1;
 			
 		this.slides.invoke('hide');
 		this.slides[this.current_slide].show();
-				
-		if (this.options.autostart) { 
-			this.startSlideshow();
-		}				
-		
-		if (this.options.eSquare) {
-			this.buildEsquare();
-		}
 	},
 	
-	buildEsquare: function() {		
-		this.eSquares 	= [];
-		var elDimension	 	= this.element.getDimensions();
-		var elWidth  		= elDimension.width;
-		var elHeight 		= elDimension.height;
-				
-		var sqWidth 		= elWidth / this.options.eCols;
-		var sqHeight 		= elHeight / this.options.eRows;
-	
-		$R(0, this.options.eCols-1).each(function(col) {
-			this.eSquares[col] = [];							 	
-			$R(0, this.options.eRows-1).each(function(row) {
-				var sqLeft = col * sqWidth;
-			    var sqTop  = row * sqHeight;
-				this.eSquares[col][row] = new Element('div').setStyle({
- 														    opacity: 0, backgroundColor: this.options.eColor,
-															position: 'absolute', 'z-index': 5,
-															left: sqLeft + 'px', top: sqTop + 'px',
-															width: sqWidth + 'px', height: sqHeight + 'px'		
-														});
-				this.element.insert(this.eSquares[col][row]);				 							 										 
-			}.bind(this))
-		}.bind(this));			
-	},
-
 	startSlideshow: function(event) {
 		if (event) { Event.stop(event); }
 		if (!this.running)	{

@@ -7,11 +7,10 @@
 <script type="text/javascript" src="js/protofade.1.2.js?v=1"></script>
 <script type="text/javascript">
 function StartUp() {
-	new Protofade('protofade', { randomize:true });
-	//new Protofade('protofade2', { eSquare:true, eColor: '#000000' });
-
-pics = [{src:"images/polino.jpg"}, {src:"images/arrone.jpg"}, {src:"images/polino2.jpg"}, {src:"images/logo.png"}]
-
+	var slideshow = new Protofade('protofade', { delay: 2.0 });
+	slideshow.startSlideshow()
+	
+	pics = [{src:"images/polino.jpg"}, {src:"images/arrone.jpg"}, {src:"images/polino2.jpg"}, {src:"images/logo.png"}]
 }
 
 document.observe ('dom:loaded', StartUp);
