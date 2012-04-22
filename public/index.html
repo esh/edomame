@@ -8,9 +8,12 @@
 <script type="text/javascript">
 function StartUp() {
 	var slideshow = new Protofade('protofade', { delay: 2.0 });
-	slideshow.startSlideshow()
 	
 	pics = [{src:"images/polino.jpg"}, {src:"images/arrone.jpg"}, {src:"images/polino2.jpg"}, {src:"images/logo.png"}]
+	//pics.each(slideshow.addPic)
+	slideshow.addPic(pics[1])
+
+	slideshow.startSlideshow()
 }
 
 document.observe ('dom:loaded', StartUp);
@@ -23,9 +26,9 @@ document.observe ('dom:loaded', StartUp);
 <div id="wrapper">
         <ul id="protofade">
         	<li><img src="images/polino.jpg" alt="Polino"/></li>
-        	<li><img src="images/arrone.jpg" alt="Arrone"/></li> 
+        	<!--li><img src="images/arrone.jpg" alt="Arrone"/></li> 
         	<li><img src="images/polino2.jpg" alt="Polino"/></li>
-        	<li><img src="images/logo.png" alt="Polino"/></li>
+        	<li><img src="images/logo.png" alt="Polino"/></li-->
     	</ul>
 </div>
 </body>

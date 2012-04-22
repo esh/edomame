@@ -45,6 +45,18 @@ var Protofade = Class.create({
 		this.slides.invoke('hide');
 		this.slides[this.current_slide].show();
 	},
+
+	addPic: function(pic) {
+		var html = new Array()
+		html.push('<li style="display:none"><img src="')
+		html.push(pic.src)
+		html.push('"/></li>')
+		$("protofade").insert(html.join(""))
+
+		this.slides = this.element.childElements();
+		this.num_slides	= this.slides.length;		
+		this.end_slide		= this.num_slides - 1;
+	},
 	
 	startSlideshow: function(event) {
 		if (event) { Event.stop(event); }
@@ -80,15 +92,6 @@ var Protofade = Class.create({
 			new Effect.Appear(this.slides[next], { sync: true }) 
   		], { duration: this.options.duration });
 		
-		if (this.options.eSquare) {			
-			$R(0, this.options.eCols-1).each(function(col) {	 						 	
-				$R(0, this.options.eRows-1).each(function(row) {
-					var eSquare = this.eSquares[col][row];
-					var delay = Math.random() * 150;				
-					setTimeout(this.delayedAppear.bind(this, eSquare), delay);
-				}.bind(this))
-			}.bind(this));	
-		}
 		
 		this.current_slide = next;		
 	},
