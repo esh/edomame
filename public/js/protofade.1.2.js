@@ -50,11 +50,13 @@ var Protofade = Class.create({
 	},
 
 	addPic: function(pic) {
-		var html = new Array()
-		html.push('<li style="display:none"><img src="')
-		html.push(pic.src)
-		html.push('"/></li>')
-		$("protofade").insert(html.join(""))
+		var li = document.createElement("li")
+		li.style = "display:none"
+		var img = document.createElement("img")
+		img.src = pic.src
+		li.appendChild(img)		
+	
+		$("protofade").appendChild(li)
 
 		this.slides = this.element.childElements();
 		this.num_slides	= this.slides.length;		

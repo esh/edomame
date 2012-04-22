@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Wedding</title>
+<script type="text/javascript" src="js/prototype.js"></script>
+<script type="text/javascript" src="js/scriptaculous.js?load=effects"></script>
+<script type="text/javascript" src="js/protofade.1.2.js?v=1"></script>
+<script type="text/javascript">
+function StartUp() {
+	var slideshow = new Protofade('protofade', { delay: 2.0 });
+
+	slideshow.startSlideshow()
+	
+	var maxKey = 0	
+	new PeriodicalExecuter(function(){
+			new Ajax.Request("/blog/more/wedding/" + maxKey, {
+				method:'get',
+				onSuccess: function(transport){
+					var posts = eval(transport.responseText)
+					for(var i = 0 ; i < posts.length ; i++) {
+						if(posts[i].key > maxKey) {
+							maxKey = posts[i].key
+						}
+
+						slideshow.addPic({
+							src: "/blog/image/original/" + posts[i].key,
+							title: posts[i].title
+						})
+					}
+				}
+			})
+		}, 5)
+}
+
+document.observe ('dom:loaded', StartUp);
+
+</script>
+<link href="css/styles.css?v=1" rel="stylesheet" type="text/css" />
+</head>
+<body style="background-color:white">
+<h1>Hello world</h1>
+<div id="wrapper">
+        <ul id="protofade"/>
+</div>
+</body>
+</html>
