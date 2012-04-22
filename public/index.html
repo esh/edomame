@@ -9,26 +9,27 @@
 function StartUp() {
 	var slideshow = new Protofade('protofade', { delay: 2.0 });
 	
-	pics = [{src:"images/polino.jpg"}, {src:"images/arrone.jpg"}, {src:"images/polino2.jpg"}]
-	
-	for(var i = 0 ; i < pics.length ; i++) {
-		slideshow.addPic(pics[i])
-	}
-
 	slideshow.startSlideshow()
+	
+	var maxKey = 0	
+	new PeriodicalExecuter(function(){
+			new Ajax.Request("/blog/more/wedding/" + maxKey, {
+				method:'get',
+				onSuccess: function(transport){
+					var posts = eval(transport.responseText)
+					for(var i = 0 ; i < posts.length ; i++) {
+						if(posts[i].key > maxKey) {
+							maxKey = posts[i].key
+						}
 
-	new Ajax.Request("/blog/more/wedding/0", {
-		method:'get',
-		onSuccess: function(transport){
-			var posts = eval(transport.responseText)
-			for(var i = 0 ; i < posts.length ; i++) {
-				slideshow.addPic({
-					src: "/blog/image/original/" + posts[i].key,
-					title: posts[i].title
-				})
-			}
-		}
-	})
+						slideshow.addPic({
+							src: "/blog/image/original/" + posts[i].key,
+							title: posts[i].title
+						})
+					}
+				}
+			})
+		}, 5)
 }
 
 document.observe ('dom:loaded', StartUp);
