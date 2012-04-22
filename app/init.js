@@ -7,7 +7,6 @@ var rss = require("handler/rss.js")()
 
 httpserver(config, require("utils/dispatcher.js")([
 	{ route: /^\/$/, handler: blog.show },
-	{ route: /^\/_wedding$/, handler: rss.wedding },
 	{ route: /^\/rss$/, handler: rss.show },
 	{ route: /^\/([0-9]+)$/, handler: blog.show },
 	{ route: /^\/([a-zA-Z]+)$/, handler: blog.show },

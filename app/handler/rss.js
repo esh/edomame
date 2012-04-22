@@ -26,12 +26,6 @@
 						rss.channel.item += post
 						return rss
 					}), "application/rss+xml"]
-		},
-		wedding: function(request, response, session) {
-			require("utils/common.js")
-			var post = require("model/post.js")()
-			var keys = require("model/tagset.js")().get("wedding")
-			return ["ok", keys.map(function(key) { return post.get(key) }).toSource(), "application/javascript"]
 		}
 	}
 })

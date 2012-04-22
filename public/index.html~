@@ -9,7 +9,7 @@
 function StartUp() {
 	var slideshow = new Protofade('protofade', { delay: 2.0 });
 	
-	pics = [{src:"images/polino.jpg"}, {src:"images/arrone.jpg"}, {src:"images/polino2.jpg"}]
+	pics = [{src:"images/polino.jpg"}, {src:"images/arrone.jpg"}, {src:"images/polino2.jpg"}, {src:"images/logo.png"}]
 	
 	for(var i = 0 ; i < pics.length ; i++) {
 		slideshow.addPic(pics[i])
@@ -17,18 +17,15 @@ function StartUp() {
 
 	slideshow.startSlideshow()
 
-	new Ajax.Request("/blog/more/wedding/0", {
-		method:'get',
+	slideshow.addPic({src:"images/nikko.jpg"})
+
+/*
+	new Ajax.Request("/blog/more/" + type + "/" + posts[posts.length - 1].key, { method:'get',
 		onSuccess: function(transport){
-			var posts = eval(transport.responseText)
-			for(var i = 0 ; i < posts.length ; i++) {
-				slideshow.addPic({
-					src: "/blog/image/original/" + posts[i].key,
-					title: posts[i].title
-				})
-			}
+			var more = eval(transport.responseText).reverse()
 		}
 	})
+*/
 }
 
 document.observe ('dom:loaded', StartUp);
