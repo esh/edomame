@@ -2,15 +2,6 @@ img { border:none; }
 ul,li { margin:0; padding:0; list-style-type:none; }
 
 /* protofade */
-#slider-container, #slider-container2, #slider-container3, #slider-container4 { width:700px; margin:0 auto 30px auto;border: }
-#protofade, #protofade2, #protofade3, #protofade4 { position:relative; margin:0; padding:0px; width:700px; height:180px; overflow:hidden; }
-
-#slider-container, #slider-container2 { border: 1px solid #CCCCCC; }
-#protofade3, #protofade4 { border: 1px solid #CCCCCC; }
-
-#slider-container4, #protofade4 { height:190px; }
-
-
-#protofade li, #protofade2 li, #protofade3 li { position:absolute; top:0; left:0; margin:0; padding:0; background:none;}
-#protofade4 div { position:absolute; top:0; left:0; margin:0; padding:10px; background:none; text-align:left}
+#protofade  { position:relative; margin:0; padding:0px; width:700px; height:180px; overflow:hidden; }
+#protofade li { position:absolute; top:0; left:0; margin:0; padding:0; background:none;}
 

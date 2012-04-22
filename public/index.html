@@ -9,8 +9,8 @@
 <script type="text/javascript">
 function StartUp() {
 	
-	new Protofade('protofade', { randomize:true });
-	new Protofade('protofade2', { eSquare:true, eColor: '#000000' });
+	// new Protofade('protofade', { randomize:true });
+	new Protofade('protofade', { eSquare:true, eColor: '#000000' });
 }
 
 document.observe ('dom:loaded', StartUp);
@@ -20,42 +20,19 @@ document.observe ('dom:loaded', StartUp);
 <link href="css/slideshow.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-<h1>Protofade</h1>
-<div id="wrapper">
 
-<div class="text">
-<p>This script allows you to have simple and smooth (cross-fading...) image galleries and other content slideshows: degrade beautiful without javascript. Protofade requires <a href="http://prototypejs.org" title="Prototype">Prototype</a> (1.6.1) and <a href="http://script.aculo.us">Scriptaculous</a> Effects (1.8.2).</p>
-<pre>
-    <code>new Protofade(element,{[options]});</code>
-    </pre>
-</div>
-<h2>1) Example (random)</h2>
-	<div id="slider-container">
+<div>
         <ul id="protofade">
         	<li><img src="images/polino.jpg" alt="Polino" /></li>
-			<li><img src="images/cese-di-sotto.jpg" alt="Cese di Sotto"/></li>
-            <li><img src="images/s.pietro-in-valle.jpg" alt="San Pietro in Valle" /></li>
-			<li><img src="images/ponte-delle-torri.jpg" alt="Ponte delle Torri"/></li>
-           <li><img src="images/arrone.jpg" alt="Arrone"/></li> 
-           <li><img src="images/polino2.jpg" alt="Polino"/></li>
-           <li><img src="images/rocca-albornoz.jpg" alt="Spoleto"/></li>
-           <li><img src="images/Umbriano.jpg" alt="Umbriano"/></li>                
-    	</ul>
-	</div>
-    
-<h2>2) Example (eSquare) (NEW!!!)</h2>   
-  <div id="slider-container2">
-        <ul id="protofade2">
-        	<li><img src="images/polino.jpg" alt="Polino" /></li>
-			<li><img src="images/cese-di-sotto.jpg" alt="Cese di Sotto"/></li>
-            <li><img src="images/s.pietro-in-valle.jpg" alt="San Pietro in Valle" /></li>
-			<li><img src="images/ponte-delle-torri.jpg" alt="Ponte delle Torri"/></li>
-           <li><img src="images/arrone.jpg" alt="Arrone"/></li> 
-           <li><img src="images/polino2.jpg" alt="Polino"/></li>
-           <li><img src="images/rocca-albornoz.jpg" alt="Spoleto"/></li>
-           <li><img src="images/Umbriano.jpg" alt="Umbriano"/></li>                
+		<li><img src="images/cese-di-sotto.jpg" alt="Cese di Sotto"/></li>
+        	<li><img src="images/s.pietro-in-valle.jpg" alt="San Pietro in Valle" /></li>
+		<li><img src="images/ponte-delle-torri.jpg" alt="Ponte delle Torri"/></li>
+        	<li><img src="images/arrone.jpg" alt="Arrone"/></li> 
+        	<li><img src="images/polino2.jpg" alt="Polino"/></li>
+        	<li><img src="images/rocca-albornoz.jpg" alt="Spoleto"/></li>
+        	<li><img src="images/Umbriano.jpg" alt="Umbriano"/></li>                
     	</ul>
 </div>
-  
+    
 </body>
 </html>
