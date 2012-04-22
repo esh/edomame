@@ -16,6 +16,16 @@ function StartUp() {
 	}
 
 	slideshow.startSlideshow()
+
+	slideshow.addPic({src:"images/nikko.jpg"})
+
+/*
+	new Ajax.Request("/blog/more/" + type + "/" + posts[posts.length - 1].key, { method:'get',
+		onSuccess: function(transport){
+			var more = eval(transport.responseText).reverse()
+		}
+	})
+*/
 }
 
 document.observe ('dom:loaded', StartUp);
