@@ -22,60 +22,37 @@
 */
 
 var Protofade = Class.create({
-
 	initialize: function(element, options) {		
 		this.options = {
       		duration: 1,
-			delay: 4.0,
-			randomize: false,
-			autostart:true,
-			controls:false,
-			eSquare:false,
-			eRows: 3, 
-			eCols: 5,
-			eColor: '#FFFFFF'
-    	}
+			  delay: 10.0,
+			  randomize: false,
+			  autostart:true,
+			  controls:false,
+			  eSquare:false,
+			  eRows: 3, 
+			  eCols: 5,
+			  eColor: '#FFFFFF'
+    		}
+
 		Object.extend(this.options, options || {});
 
-    	this.element        = $(element);
-		this.slides			= this.element.childElements();
+		this.element		= $(element);
+		this.slides		= this.element.childElements();
 		this.num_slides		= this.slides.length;		
 		this.current_slide 	= (this.options.randomize) ? (Math.floor(Math.random()*this.num_slides)) : 0;
 		this.end_slide		= this.num_slides - 1;
-		
+			
 		this.slides.invoke('hide');
 		this.slides[this.current_slide].show();
 				
 		if (this.options.autostart) { 
 			this.startSlideshow();
 		}				
-		if (this.options.controls) {
-			this.addControls();
-		}
+		
 		if (this.options.eSquare) {
 			this.buildEsquare();
 		}
-	},
-	
-	addControls: function() {
-		this.wrapper 		= this.element.up();
-		this.controls		= new Element('div', { 'class': 'controls' });
-		this.wrapper.insert(this.controls);
-		
-		this.btn_next 		= new Element('a', { 'class': 'next', 'title': 'Next', href: '#' }).update('Next');
-		this.btn_previous	= new Element('a', { 'class': 'previous', 'title': 'Previous', href: '#' }).update('Previous');
-		this.btn_start		= new Element('a', { 'class': 'start', 'title': 'Start', href: '#' }).update('Start');
-		this.btn_stop		= new Element('a', { 'class': 'stop', 'title': 'Stop', href: '#' }).update('Stop');
-		
-		this.btns = [this.btn_previous, this.btn_next, this.btn_start, this.btn_stop];
-		this.btns.each(function(el){
-			this.controls.insert(el);
-		}.bind(this));
-		
-		this.btn_previous.observe('click', this.moveToPrevious.bindAsEventListener(this));
-		this.btn_next.observe('click', this.moveToNext.bindAsEventListener(this));
-		this.btn_start.observe('click', this.startSlideshow.bindAsEventListener(this));
-		this.btn_stop.observe('click', this.stopSlideshow.bindAsEventListener(this));
 	},
 	
 	buildEsquare: function() {		
@@ -121,18 +98,6 @@ var Protofade = Class.create({
 		}	 
 	},
 
-	moveToPrevious: function (event) {
-		if (event) { Event.stop(event); }
-		this.stopSlideshow();
-  		this.updateSlide(this.current_slide-1);
-	},
-
-	moveToNext: function (event) {
-		if (event) { Event.stop(event); }
-		this.stopSlideshow();
-  		this.updateSlide(this.current_slide+1);
-	},
-	
 	updateSlide: function(next_slide) {		
 		if (next_slide > this.end_slide) { 
 			next_slide = 0; 
@@ -169,5 +134,4 @@ var Protofade = Class.create({
 			new Effect.Appear ( eSquare, { from: opacity, to: 0, duration: this.options.duration/1.25} )
 		], { sync: false });			
 	}
-
 });
