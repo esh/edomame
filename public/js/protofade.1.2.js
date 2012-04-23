@@ -99,13 +99,14 @@ var Protofade = Class.create({
 		this.fadeInOut(next_slide, this.current_slide);		
 	},
 
- 	fadeInOut: function (next, current) {		
+ 	fadeInOut: function (next, current) {
 		new Effect.Parallel([
 			new Effect.Fade(this.slides[current], { sync: true }),
 			new Effect.Appear(this.slides[next], { sync: true }) 
   		], { duration: this.options.duration });
-		
-		
+	
+		// this is how we do it, research effects	
+		$("container").setStyle("width: 600px; margin: 0 auto")	
 		this.current_slide = next;		
 	},
 	
