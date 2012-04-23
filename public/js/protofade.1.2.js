@@ -48,15 +48,22 @@ var Protofade = Class.create({
 		var img = document.createElement("img")
 
 		Event.observe(img, 'load', (function() {
+			//this.meta.push({ width: img.width })
+
 			var li = document.createElement("li")
 			li.setAttribute("style", "display:none")
 			li.appendChild(img)
 
 			$("protofade").appendChild(li)
 
-			this.slides = this.element.childElements();
+			this.slides = this.element.childElements()
 			this.num_slides	= this.slides.length;		
 			this.end_slide = this.num_slides - 1;
+
+			this.meta = []
+			for(var i = 0 ; i < this.num_slides ; i++) {
+				this.meta.unshift({ width : this.slides[i].select("img")[0].width })
+			}
 
 			if(this.slides.length == 1) {
 				this.slides[0].show()
@@ -98,17 +105,9 @@ var Protofade = Class.create({
 		new Effect.Parallel([
 			new Effect.Fade(this.slides[current], { sync: true }),
 			new Effect.Appear(this.slides[next], { sync: true }),
-			new Effect.Morph('container', { style: {paddingLeft: '100px'} })
+			new Effect.Morph('container', { style: {paddingLeft: 0.5 * (document.viewport.getWidth() - this.meta[current].width) + 'px'} })
   		], { duration: this.options.duration });
 	
 		this.current_slide = next;		
-	},
-	
-	delayedAppear: function(eSquare)	{
-		var opacity = Math.random();
-		new Effect.Parallel([ 
-			new Effect.Appear ( eSquare, { from: 0, to: opacity, duration: this.options.duration/4 } ),
-			new Effect.Appear ( eSquare, { from: opacity, to: 0, duration: this.options.duration/1.25} )
-		], { sync: false });			
 	}
 });
