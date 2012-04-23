@@ -50,12 +50,13 @@ var Protofade = Class.create({
 	},
 
 	addPic: function(pic) {
-		var li = document.createElement("li")
-		li.style = "display:none"
 		var img = document.createElement("img")
-		li.appendChild(img)
 
-		Event.observe(img, 'load', function() {
+		Event.observe(img, 'load', (function() {
+			var li = document.createElement("li")
+			li.setAttribute("style", "display:none")
+			li.appendChild(img)
+
 			$("protofade").appendChild(li)
 
 			this.slides = this.element.childElements();
@@ -65,7 +66,7 @@ var Protofade = Class.create({
 			if(this.slides.length == 1) {
 				this.slides[0].show()
 			}
-		})
+		}).bind(this))
 
 		img.src = pic.src
 	},
