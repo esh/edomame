@@ -37,16 +37,11 @@ var Protofade = Class.create({
 		Object.extend(this.options, options || {});
 
 		this.element		= $(element);
-		this.slides		= this.element.childElements();
+		this.slides		= [] 
+		this.meta 		= []
 		this.num_slides		= this.slides.length;		
 		this.current_slide 	= 0;
 		this.end_slide		= this.num_slides - 1;
-		
-		this.slides.invoke('hide');
-
-		if(this.slides.length > 0) {
-			this.slides[this.current_slide].show();
-		}
 	},
 
 	addPic: function(pic) {
