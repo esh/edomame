@@ -9,6 +9,8 @@
 function StartUp() {
 	var slideshow = new Protofade('protofade', { delay: 2.0 });
 
+	slideshow.addPic({src: "img/logo.png"})
+	slideshow.addPic({src: "img/close.gif"})
 	slideshow.startSlideshow()
 	
 	var maxKey = 0	
@@ -38,9 +40,9 @@ document.observe('dom:loaded', StartUp);
 <link href="css/styles.css?v=1" rel="stylesheet" type="text/css" />
 </head>
 <body style="background-color:white">
-<h1>Hello world</h1>
 <div id="wrapper">
         <ul id="protofade"/>
 </div>
+<h1>Caption Here</h1>
 </body>
 </html>

@@ -56,7 +56,6 @@ var Protofade = Class.create({
 		li.appendChild(img)
 
 		Event.observe(img, 'load', function() {
-		
 			$("protofade").appendChild(li)
 
 			this.slides = this.element.childElements();
