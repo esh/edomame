@@ -7,12 +7,8 @@
 <script type="text/javascript" src="js/protofade.1.2.js?v=1"></script>
 <script type="text/javascript">
 function StartUp() {
-	var slideshow = new Protofade('protofade', { delay: 2.0 });
+	var slideshow = new Protofade('protofade', { delay: 8.0 });
 
-	$("protofade").setStyle("height: " + (document.viewport.getHeight() - 120) + "px")
-	slideshow.addPic({src: "img/logo.png"})
-	slideshow.addPic({src: "img/close.gif"})
-	slideshow.addPic({src: "img/bullet.gif"})
 	slideshow.startSlideshow()
 	
 	var maxKey = 0	
@@ -28,7 +24,7 @@ function StartUp() {
 
 						slideshow.addPic({
 							src: "/blog/image/original/" + posts[i].key,
-							title: posts[i].title
+							caption: posts[i].title
 						})
 					}
 				}
@@ -41,10 +37,10 @@ document.observe('dom:loaded', StartUp);
 </script>
 <link href="css/styles.css?v=1" rel="stylesheet" type="text/css" />
 </head>
-<body style="background-color:white">
+<body>
+<h1 id="caption">Caption Here</h1>
 <div id="container">
         <ul id="protofade"/>
 </div>
-<h1 id="capition">Caption Here</h1>
 </body>
 </html>

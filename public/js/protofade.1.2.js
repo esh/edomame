@@ -48,6 +48,7 @@ var Protofade = Class.create({
 		var img = document.createElement("img")
 
 		Event.observe(img, 'load', (function() {
+			img.setAttribute("alt", pic.caption)
 			var li = document.createElement("li")
 			li.setAttribute("style", "display:none")
 			li.appendChild(img)
@@ -60,7 +61,11 @@ var Protofade = Class.create({
 
 			this.meta = []
 			for(var i = 0 ; i < this.num_slides ; i++) {
-				this.meta.push({ width : this.slides[i].select("img")[0].width })
+				this.meta.push({
+					caption: this.slides[i].select("img")[0].alt,
+					width : this.slides[i].select("img")[0].width,
+					height : this.slides[i].select("img")[0].height
+				})
 			}
 
 			if(this.slides.length == 1) {
@@ -103,9 +108,14 @@ var Protofade = Class.create({
 		new Effect.Parallel([
 			new Effect.Fade(this.slides[current], { sync: true }),
 			new Effect.Appear(this.slides[next], { sync: true }),
-			new Effect.Morph('container', { style: {paddingLeft: 0.5 * (document.viewport.getWidth() - this.meta[next].width) + 'px'} })
-  		], { duration: this.options.duration });
-	
+			new Effect.Morph('container', {
+				style: {
+					paddingLeft: 0.5 * (document.viewport.getWidth() - this.meta[next].width) + 'px',
+				}
+			})
+		], { duration: this.options.duration });
+
+		$("caption").update(this.meta[next].caption)
 		this.current_slide = next;		
 	}
 });
