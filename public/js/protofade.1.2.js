@@ -48,8 +48,6 @@ var Protofade = Class.create({
 		var img = document.createElement("img")
 
 		Event.observe(img, 'load', (function() {
-			//this.meta.push({ width: img.width })
-
 			var li = document.createElement("li")
 			li.setAttribute("style", "display:none")
 			li.appendChild(img)
@@ -62,7 +60,7 @@ var Protofade = Class.create({
 
 			this.meta = []
 			for(var i = 0 ; i < this.num_slides ; i++) {
-				this.meta.unshift({ width : this.slides[i].select("img")[0].width })
+				this.meta.push({ width : this.slides[i].select("img")[0].width })
 			}
 
 			if(this.slides.length == 1) {
@@ -105,7 +103,7 @@ var Protofade = Class.create({
 		new Effect.Parallel([
 			new Effect.Fade(this.slides[current], { sync: true }),
 			new Effect.Appear(this.slides[next], { sync: true }),
-			new Effect.Morph('container', { style: {paddingLeft: 0.5 * (document.viewport.getWidth() - this.meta[current].width) + 'px'} })
+			new Effect.Morph('container', { style: {paddingLeft: 0.5 * (document.viewport.getWidth() - this.meta[next].width) + 'px'} })
   		], { duration: this.options.duration });
 	
 		this.current_slide = next;		
