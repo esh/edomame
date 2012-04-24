@@ -9,6 +9,7 @@
 function StartUp() {
 	var slideshow = new Protofade('protofade', { delay: 2.0 });
 
+	$("protofade").setStyle("height: " + (document.viewport.getHeight() - 120) + "px")
 	slideshow.addPic({src: "img/logo.png"})
 	slideshow.addPic({src: "img/close.gif"})
 	slideshow.addPic({src: "img/bullet.gif"})
