@@ -46,8 +46,9 @@ var Protofade = Class.create({
 
 	addPic: function(pic) {
 		var img = document.createElement("img")
+		img.src = pic.src
 
-		Event.observe(img, 'load', (function() {
+		//Event.observe(img, 'load', (function() {
 			img.setAttribute("alt", pic.caption)
 			var li = document.createElement("li")
 			li.setAttribute("style", "display:none")
@@ -71,9 +72,9 @@ var Protofade = Class.create({
 			if(this.slides.length == 1) {
 				this.slides[0].show()
 			}
-		}).bind(this))
+		//}).bind(this))
 
-		img.src = pic.src
+		//img.src = pic.src
 	},
 	
 	startSlideshow: function(event) {
