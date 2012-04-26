@@ -106,12 +106,40 @@ var Protofade = Class.create({
 	},
 
  	fadeInOut: function (next, current) {
+		var img = this.slides[next].select("img")[0]
+		var width = this.meta[next].width
+		var height = this.meta[next].height
+		var ratio
+
+		var twidth = width
+		var theight = height
+		for(;;) {
+			if(twidth > height) {
+				ratio = Math.min(2, (document.viewport.getWidth() - 60) / twidth)
+			} else {
+				ratio = Math.min(2, (document.viewport.getHeight() - 60) / theight)
+			}
+
+			twidth = twidth * ratio
+			theight = theight * ratio
+
+			if(twidth < document.viewport.getWidth() - 60 && theight < document.viewport.getHeight()) {
+				break;
+			}
+		}
+
 		new Effect.Parallel([
 			new Effect.Fade(this.slides[current], { sync: true }),
-			new Effect.Appear(this.slides[next], { sync: true }),
+			new Effect.Appear(this.slides[next], { sync: true }), 
+			new Effect.Morph(img, {
+				style: {
+					width: twidth + 'px',
+					height: theight + 'px'
+				}
+			}),
 			new Effect.Morph('container', {
 				style: {
-					paddingLeft: 0.5 * (document.viewport.getWidth() - this.meta[next].width) + 'px',
+					paddingLeft: 0.5 * (document.viewport.getWidth() - twidth) + 'px',
 				}
 			})
 		], { duration: this.options.duration });
