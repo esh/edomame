@@ -7,9 +7,8 @@
 <script type="text/javascript" src="js/protofade.1.2.js?v=1"></script>
 <script type="text/javascript">
 function StartUp() {
+	$("protofade").setAttribute("style",  "position:relative; margin:0 auto; padding:0; width:100%; height: " + document.viewport.getHeight() + "px; overflow:hidden")
 	var slideshow = new Protofade('protofade', { delay: 8.0 });
-	//slideshow.addPic({ src:"img/logo.png", caption: "hello yo"})
-	//slideshow.addPic({ src:"img/big.jpg", caption: "biggg"})
 	slideshow.startSlideshow()
 	
 	var maxKey = 0	
