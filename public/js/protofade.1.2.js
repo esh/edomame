@@ -63,9 +63,7 @@ var Protofade = Class.create({
 			this.meta = []
 			for(var i = 0 ; i < this.num_slides ; i++) {
 				this.meta.push({
-					caption: this.slides[i].select("img")[0].alt,
-					width : this.slides[i].select("img")[0].width,
-					height : this.slides[i].select("img")[0].height
+					caption: this.slides[i].select("img")[0].alt
 				})
 			}
 
@@ -107,12 +105,10 @@ var Protofade = Class.create({
 
  	fadeInOut: function (next, current) {
 		var img = this.slides[next].select("img")[0]
-		var width = this.meta[next].width
-		var height = this.meta[next].height
+		var twidth = img.width
+		var theight = img.height
 		var ratio
 
-		var twidth = width
-		var theight = height
 		for(;;) {
 			if(twidth > document.viewport.getWidth() - 60) {
 				ratio = Math.min(2, (document.viewport.getWidth() - 60) / twidth)
@@ -123,7 +119,7 @@ var Protofade = Class.create({
 			twidth = twidth * ratio
 			theight = theight * ratio
 
-			if(twidth < document.viewport.getWidth() - 60 && theight < document.viewport.getHeight()) {
+			if(twidth < document.viewport.getWidth() && theight < document.viewport.getHeight()) {
 				break;
 			}
 		}
