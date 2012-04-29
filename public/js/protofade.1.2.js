@@ -114,7 +114,7 @@ var Protofade = Class.create({
 		var twidth = width
 		var theight = height
 		for(;;) {
-			if(twidth > height) {
+			if(twidth > document.viewport.getWidth() - 60) {
 				ratio = Math.min(2, (document.viewport.getWidth() - 60) / twidth)
 			} else {
 				ratio = Math.min(2, (document.viewport.getHeight() - 60) / theight)
